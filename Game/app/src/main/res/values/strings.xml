@@ -19,6 +19,8 @@
     <string name="title">Monster Attack</string>
     <string name="credits1">Coded with </string>
     <string name="credits2">by 020363 </string>
+    <string name="silent">Silent</string>
+    <string name="difficulty">Difficulty</string>
 
 
 </resources>

@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.ImageView;
 
-import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.animations.elements.Element;
 
 public class MenuTowerAnimator  implements Runnable {
@@ -38,15 +37,25 @@ public class MenuTowerAnimator  implements Runnable {
         }
 
     }
+    public void start(){
+        synchronized (this){
+            repeat=true;
+        }
+        handler.postDelayed(this,ms);
+
+    }
 
     @Override
     public void run() {
         //submit to run as asyncTask
         state=((state+1)%max);
-        new MenuAnimatorAsyncTask().execute(state,menuTower,getDrawable.apply(ids[state]));
         synchronized (this){
             if(repeat){
+                new MenuAnimatorRepeaterAsyncTask().execute(state,menuTower,getDrawable.apply(ids[state]));
                 handler.postDelayed(this,ms);
+            }
+            else {
+                new MenuAnimatorTerminalAsyncTask().execute(state,menuTower,getDrawable.apply(ids[drawableElement.terminal]));
             }
         }
 
@@ -55,7 +64,17 @@ public class MenuTowerAnimator  implements Runnable {
 
 
 }
-class MenuAnimatorAsyncTask  extends AsyncTask<Object,Void,Void>{
+class MenuAnimatorRepeaterAsyncTask extends AsyncTask<Object,Void,Void>{
+    @Override
+    protected Void doInBackground(Object... params) {
+        int state = (Integer)params[0];
+        ImageView menuTower=(ImageView)params[1];
+        Drawable drawable=(Drawable)params[2];
+        menuTower.setImageDrawable(drawable);
+        return null;
+    }
+}
+class MenuAnimatorTerminalAsyncTask extends AsyncTask<Object,Void,Void>{
     @Override
     protected Void doInBackground(Object... params) {
         int state = (Integer)params[0];

@@ -14,7 +14,7 @@ public enum Element {
             R.drawable.sa7,
             R.drawable.sa8,
             R.drawable.sa9
-    },9),
+    },9,0),
     STORMIDLE(new int[]{
             R.drawable.si1,
             R.drawable.si1,
@@ -31,12 +31,12 @@ public enum Element {
             R.drawable.si12,
             R.drawable.si13
 
-    },13),
+    },13,3),
 
     POISONIDLE(new int[]{
         R.drawable.pa1,R.drawable.pa2,R.drawable.pa3,
                 R.drawable.pa4,R.drawable.pa5,R.drawable.pa6,
-                R.drawable.pa7,R.drawable.pa8,R.drawable.pa9},9),
+                R.drawable.pa7,R.drawable.pa8,R.drawable.pa9},9,0),
     POISONATTACK(new int[]{
             R.drawable.pi1,
             R.drawable.pi2,
@@ -80,13 +80,15 @@ public enum Element {
             R.drawable.pi40,
             R.drawable.pi41,
             R.drawable.pi42,
-            R.drawable.pi43},43);
+            R.drawable.pi43},43,0);
 
     public int ids[];
     public int max;
+    public int terminal;
 
-    Element(int[] ids,int max) {
+    Element(int[] ids,int max,int terminal) {
         this.ids = ids;
         this.max=max;
+        this.terminal=terminal;
     }
 }
