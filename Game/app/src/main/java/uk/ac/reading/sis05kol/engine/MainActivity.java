@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -31,11 +32,14 @@ public class MainActivity extends Activity {
 
         FrameLayout l = findViewById(R.id.menuContainer);
         FragmentTransaction tr = getFragmentManager().beginTransaction();
-        tr.add(R.id.menuContainer, MainMenuFragment.newInstance("A", "B", this::getDrawable), mainMenuTag);
+        tr.add(R.id.menuContainer, MainMenuFragment.newInstance("A", "B", this::getDrawable,this::playButtonAction,this::exitButtonAction), mainMenuTag);
         tr.commitNow();
 
         final Function<Integer, Drawable> func = this::getDrawable;
 
+
+    }
+    public Void playButtonAction(Void b){
         new Handler().postDelayed(new Runnable() {
             @SuppressLint("ResourceType")
             @Override
@@ -49,6 +53,17 @@ public class MainActivity extends Activity {
 
                 tr.commitNow();
             }
-        }, 1000);
+        },50);
+        return null;
+    }
+    public Void exitButtonAction(Void b){
+        new Handler().postDelayed(new Runnable() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void run() {
+                finishAndRemoveTask();
+            }
+        },50);
+        return null;
     }
 }
