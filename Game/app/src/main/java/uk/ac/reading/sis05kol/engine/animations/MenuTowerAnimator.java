@@ -30,21 +30,17 @@ public class MenuTowerAnimator  implements Runnable {
         this.getDrawable=getDrawable;
         handler.postDelayed(this,ms);
     }
-
     public void kill(){
         synchronized (this){
             repeat=false;
         }
-
     }
     public void start(){
         synchronized (this){
             repeat=true;
         }
         handler.postDelayed(this,ms);
-
     }
-
     @Override
     public void run() {
         //submit to run as asyncTask
@@ -58,11 +54,7 @@ public class MenuTowerAnimator  implements Runnable {
                 new MenuAnimatorTerminalAsyncTask().execute(state,menuTower,getDrawable.apply(ids[drawableElement.terminal]));
             }
         }
-
-
     }
-
-
 }
 class MenuAnimatorRepeaterAsyncTask extends AsyncTask<Object,Void,Void>{
     @Override
