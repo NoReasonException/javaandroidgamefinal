@@ -1,11 +1,15 @@
-package uk.ac.reading.sis05kol.engine;
+package uk.ac.reading.sis05kol.engine.game;
 
 //Other parts of the android libraries that we use
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
-public class TheGame extends GameThread{
+import uk.ac.reading.sis05kol.engine.R;
+import uk.ac.reading.sis05kol.engine.game.GameThread;
+import uk.ac.reading.sis05kol.engine.game.GameView;
+
+public class TheGame extends GameThread {
 
     //Will store the image of a ball
     private Bitmap mBall;

@@ -1,4 +1,4 @@
-package uk.ac.reading.sis05kol.engine;
+package uk.ac.reading.sis05kol.engine.game;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.TextView;
+
+import uk.ac.reading.sis05kol.engine.R;
 
 public class GameActivity extends Activity {
 

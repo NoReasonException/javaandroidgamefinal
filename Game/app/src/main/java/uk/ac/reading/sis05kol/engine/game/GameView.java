@@ -1,10 +1,7 @@
-package uk.ac.reading.sis05kol.engine;
+package uk.ac.reading.sis05kol.engine.game;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -154,7 +151,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 					//Start a new thread
 					//Should be this to update screen with old game: new GameThread(this, thread);
 					//The method should set all fields in new thread to the value of old thread's fields 
-					thread = new TheGame(this); 
+					thread = new TheGame(this);
 					thread.setRunning(true);
 					thread.start();
 				}

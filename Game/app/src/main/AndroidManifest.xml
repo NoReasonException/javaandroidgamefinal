@@ -17,7 +17,7 @@
         </activity>
 
 
-        <activity android:name=".GameActivity">
+        <activity android:name=".game.GameActivity">
 
         </activity>
     </application>

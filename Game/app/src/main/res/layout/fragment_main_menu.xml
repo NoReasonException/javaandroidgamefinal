@@ -1,0 +1,234 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+tools:context="uk.ac.reading.sis05kol.engine.menufragments.MainMenuFragment"
+ >
+
+<AbsoluteLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Ghost and dialog -->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ghost_menu1"
+        android:layout_x="130dip"
+        android:layout_y="130dip"
+        android:id="@+id/ghost"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cloud"
+        android:layout_x="160dip"
+        android:layout_y="10dip"
+        android:id="@+id/cloud"/>
+
+    <TextView
+
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="181dp"
+        android:layout_y="42dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="@string/you_wanna_loose_again" />
+
+    <!-- Background , title , buttons and labels-->
+
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg" />
+
+    <TextView
+
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="95dp"
+        android:layout_y="210dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="@string/title"
+        android:textColor="#c0d41b"
+        android:textSize="65px" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button1"
+        android:layout_x="20dip"
+        android:layout_y="480dip"
+        android:id="@+id/play"/>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button1"
+        android:layout_x="190dip"
+        android:layout_y="480dip"
+        android:id="@+id/options"/>
+
+
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="235dip"
+        android:layout_y="500dip"
+        android:id="@+id/exit_text"
+        android:text="@string/exit"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        />
+
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="65dip"
+        android:layout_y="500dip"
+        android:id="@+id/play_text"
+        android:text="@string/play"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        />
+
+
+    <!-- credits -->
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="40dp"
+        android:layout_y="600dp"
+        android:src="@drawable/title" />
+
+    <TextView
+
+        android:id="@+id/credits1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="60dp"
+        android:layout_y="640dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="@string/credits1"
+        android:textColor="#c0d41b"
+
+        android:textSize="45px" />
+
+
+    <TextView
+
+        android:id="@+id/credits2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="200dp"
+        android:layout_y="640dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="@string/credits2"
+        android:textColor="#c0d41b"
+
+        android:textSize="45px" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="30dp"
+        android:layout_y="640dp"
+        android:src="@drawable/love" />
+
+
+    <!--Menu - silent buttons-->
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="30dp"
+        android:layout_y="380dp"
+        android:src="@drawable/title" />
+
+    <TextView
+
+        android:id="@+id/silenttext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="50dp"
+        android:layout_y="415dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="@string/silent"
+        android:textColor="#c0d41b"
+        android:textSize="65px" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_x="250dp"
+        android:layout_y="350dp"
+        android:src="@drawable/pa1"
+        android:id="@+id/tower"/>
+
+    <!--Difficulty button-->
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="30dp"
+        android:layout_y="270dp"
+        android:src="@drawable/title" />
+
+    <TextView
+
+        android:id="@+id/difficultytext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="50dp"
+        android:layout_y="305dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="@string/difficulty"
+        android:textColor="#c0d41b"
+        android:textSize="65px" />
+
+    <ImageView
+        android:id="@+id/tower2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_x="250dp"
+        android:layout_y="240dp"
+        android:src="@drawable/pa1" />
+
+    <ImageView
+        android:id="@+id/tower3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_x="195dp"
+        android:layout_y="240dp"
+        android:src="@drawable/pa1" />
+
+    <ImageView
+        android:id="@+id/tower4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_x="140dp"
+        android:layout_y="240dp"
+        android:src="@drawable/pa1" />
+
+</AbsoluteLayout>
+
+</RelativeLayout>

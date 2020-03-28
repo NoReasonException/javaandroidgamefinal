@@ -1,19 +1,18 @@
-package uk.ac.reading.sis05kol.engine;
+package uk.ac.reading.sis05kol.engine.game;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+
+import uk.ac.reading.sis05kol.engine.R;
 
 public abstract class GameThread extends Thread {
 	//Different mMode states
