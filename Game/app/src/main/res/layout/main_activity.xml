@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,4 +10,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
-</RelativeLayout>
+    <!-- credits -->
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="40dp"
+        android:layout_y="600dp"
+        android:src="@drawable/title" />
+
+    <TextView
+
+        android:id="@+id/credits1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="60dp"
+        android:layout_y="640dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="@string/credits1"
+        android:textColor="#c0d41b"
+
+        android:textSize="45px" />
+
+
+    <TextView
+
+        android:id="@+id/credits2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="200dp"
+        android:layout_y="640dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="@string/credits2"
+        android:textColor="#c0d41b"
+
+        android:textSize="45px" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="30dp"
+        android:layout_y="640dp"
+        android:src="@drawable/love" />
+
+
+</AbsoluteLayout>

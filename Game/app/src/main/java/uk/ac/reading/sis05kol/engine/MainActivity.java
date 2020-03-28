@@ -2,21 +2,18 @@ package uk.ac.reading.sis05kol.engine;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.arch.core.util.Function;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-
-import uk.ac.reading.sis05kol.engine.animations.ButtonClickedAnimation;
-import uk.ac.reading.sis05kol.engine.animations.MenuTowerAnimator;
-import uk.ac.reading.sis05kol.engine.animations.elements.Element;
 import uk.ac.reading.sis05kol.engine.menufragments.MainMenuFragment;
+import uk.ac.reading.sis05kol.engine.menufragments.SelectLevelFragment;
 
 public class MainActivity extends Activity {
 
@@ -34,12 +31,24 @@ public class MainActivity extends Activity {
 
         FrameLayout l = findViewById(R.id.menuContainer);
         FragmentTransaction tr = getFragmentManager().beginTransaction();
-        tr.add(R.id.menuContainer, MainMenuFragment.newInstance("A","B",this::getDrawable),mainMenuTag);
+        tr.add(R.id.menuContainer, MainMenuFragment.newInstance("A", "B", this::getDrawable), mainMenuTag);
         tr.commitNow();
 
+        final Function<Integer, Drawable> func = this::getDrawable;
 
+        new Handler().postDelayed(new Runnable() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void run() {
+                FrameLayout l = findViewById(R.id.menuContainer);
+                FragmentTransaction tr = getFragmentManager().beginTransaction();
+                tr.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
+                Fragment fragment =getFragmentManager().findFragmentById(R.id.menuContainer);
+                Fragment replace = SelectLevelFragment.newInstance("A","B");
+                tr.replace(R.id.menuContainer,replace);
 
-
-
+                tr.commitNow();
+            }
+        }, 1000);
     }
 }

@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="uk.ac.reading.sis05kol.engine.menufragments.SelectLevelFragment"
+    >
+
+    <AbsoluteLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Ghost and dialog -->
+
+        <ImageView
+            android:id="@+id/ghost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="30dip"
+            android:layout_y="130dip"
+            android:src="@drawable/preparethetroops" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cloud"
+            android:layout_x="20dip"
+            android:layout_y="10dip"
+            android:id="@+id/cloud"/>
+
+        <TextView
+
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="50dp"
+            android:layout_y="55dp"
+            android:font="@font/font"
+            android:fontFamily="@font/font"
+            android:text="@string/prepare_the_solders" />
+
+        <!-- major-->
+        <ImageView
+            android:id="@+id/ghostmajor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="280dip"
+            android:layout_y="100dip"
+            android:src="@drawable/yes_sir" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cloudmajor"
+            android:layout_x="200dip"
+            android:layout_y="10dip"
+            android:id="@+id/cloudmajor"/>
+
+        <TextView
+
+            android:id="@+id/textmajor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="250dp"
+            android:layout_y="53dp"
+            android:font="@font/font"
+            android:fontFamily="@font/font"
+            android:text="@string/major_yes_sir" />
+
+        <!-- Background , title , buttons and labels-->
+
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg" />
+
+        <TextView
+
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="95dp"
+            android:layout_y="210dp"
+            android:font="@font/font"
+            android:fontFamily="@font/font"
+            android:text="@string/title"
+            android:textColor="#c0d41b"
+            android:textSize="65px" />
+    </AbsoluteLayout>
+
+</RelativeLayout>
