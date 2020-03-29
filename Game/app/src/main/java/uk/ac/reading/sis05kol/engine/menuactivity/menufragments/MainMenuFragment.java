@@ -1,4 +1,4 @@
-package uk.ac.reading.sis05kol.engine.menufragments;
+package uk.ac.reading.sis05kol.engine.menuactivity.menufragments;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import uk.ac.reading.sis05kol.engine.R;
-import uk.ac.reading.sis05kol.engine.animations.MainMenuButtonAnimator;
-import uk.ac.reading.sis05kol.engine.animations.MenuTowerAnimator;
-import uk.ac.reading.sis05kol.engine.animations.elements.Element;
+import uk.ac.reading.sis05kol.engine.menuactivity.animations.MainMenuButtonAnimator;
+import uk.ac.reading.sis05kol.engine.menuactivity.animations.MenuTowerAnimator;
+import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
+import uk.ac.reading.sis05kol.engine.menuactivity.menufragments.HandlersSet.MainMenuFragmentHandlers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,21 +48,17 @@ public class MainMenuFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment MainMenuFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment newInstance(String param1, String param2,Function<Integer,Drawable>getDrawable,Function<Void,Void>playButtonCallback,Function<Void,Void>exitButtonCallback) {
+    public static Fragment newInstance(MainMenuFragmentHandlers handlers,Function<Integer,Drawable>getDrawable) {
 
         MainMenuFragment fragment = new MainMenuFragment();
         Bundle args = new Bundle();
-        fragment.getDrawable=getDrawable;
-        fragment.playButtonCallback=playButtonCallback;
-        fragment.exitButtonCallback=exitButtonCallback;
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+        fragment.getDrawable=getDrawable;
+        fragment.playButtonCallback=handlers.getPlayButtonCallback();
+        fragment.exitButtonCallback=handlers.getExitButtonCallback();
         return fragment;
     }
 
@@ -92,20 +89,8 @@ public class MainMenuFragment extends Fragment {
         ImageView exit = (ImageView)i.findViewById(R.id.options);
 
         play.setOnTouchListener(new MainMenuButtonAnimator(getResources(),playButtonCallback));
-        play.setOnClickListener(new View.OnClickListener() {
-
-            private Function<Void,Void>playButtonCallback;
-            public View.OnClickListener init(Function<Void,Void>playButtonCallback){
-                this.playButtonCallback=playButtonCallback;
-                return this;
-            }
-            @Override
-            public void onClick(View view) {
-
-                this.playButtonCallback.apply(null);
-            }
-        }.init(this.playButtonCallback));
         exit.setOnTouchListener(new MainMenuButtonAnimator(getResources(),exitButtonCallback));
+
     }
     public void setUpAnimators(View i){
         ImageView silentTower=i.findViewById(R.id.tower);

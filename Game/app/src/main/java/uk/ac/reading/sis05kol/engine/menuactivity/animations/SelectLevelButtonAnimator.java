@@ -1,11 +1,9 @@
-package uk.ac.reading.sis05kol.engine.animations;
+package uk.ac.reading.sis05kol.engine.menuactivity.animations;
 
-import android.content.res.Resources;
+import android.arch.core.util.Function;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-
-import uk.ac.reading.sis05kol.engine.R;
 
 public class SelectLevelButtonAnimator implements View.OnTouchListener {
 
@@ -13,9 +11,11 @@ public class SelectLevelButtonAnimator implements View.OnTouchListener {
     private float x;
     private float y;
     private boolean pressed=false;
-    public SelectLevelButtonAnimator(View v) {
+    private Function<Void,Void> callback;
+    public SelectLevelButtonAnimator(View v,Function<Void,Void>callback) {
         this.x=v.getScaleX();
         this.y=v.getScaleY();
+        this.callback=callback;
 
     }
 
@@ -27,6 +27,7 @@ public class SelectLevelButtonAnimator implements View.OnTouchListener {
             view.setScaleX(x);
             view.setScaleY(y);
             pressed=false;
+            this.callback.apply(null);
 
         } else if(!pressed) {
             view1.setAlpha(0.5f);

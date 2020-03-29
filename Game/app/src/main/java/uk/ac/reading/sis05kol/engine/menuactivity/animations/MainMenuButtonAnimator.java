@@ -1,4 +1,4 @@
-package uk.ac.reading.sis05kol.engine.animations;
+package uk.ac.reading.sis05kol.engine.menuactivity.animations;
 
 import android.arch.core.util.Function;
 import android.content.res.Resources;
