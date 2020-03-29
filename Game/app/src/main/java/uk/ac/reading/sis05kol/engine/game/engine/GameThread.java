@@ -1,4 +1,4 @@
-package uk.ac.reading.sis05kol.engine.game;
+package uk.ac.reading.sis05kol.engine.game.engine;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -116,7 +116,8 @@ public abstract class GameThread extends Thread {
 					if (mMode == STATE_RUNNING) {
 						updatePhysics();
 					}
-					doDraw(canvasRun);
+					if(canvasRun!=null)
+						doDraw(canvasRun);
 				}
 			} 
 			finally {
@@ -135,9 +136,6 @@ public abstract class GameThread extends Thread {
 		synchronized (monitor) {
 			mCanvasWidth = width;
 			mCanvasHeight = height;
-
-			// don't forget to resize the background image
-			mBackgroundImage = Bitmap.createScaledBitmap(mBackgroundImage, width, height, true);
 		}
 	}
 
@@ -146,7 +144,8 @@ public abstract class GameThread extends Thread {
 		
 		if(canvas == null) return;
 
-		if(mBackgroundImage != null) canvas.drawBitmap(mBackgroundImage, 0, 0, null);
+		if(mBackgroundImage != null) canvas.drawBitmap(mBackgroundImage, 150, 150, null);
+
 	}
 	
 	private void updatePhysics() {

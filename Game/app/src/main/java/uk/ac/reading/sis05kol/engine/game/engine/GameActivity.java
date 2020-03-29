@@ -1,7 +1,10 @@
-package uk.ac.reading.sis05kol.engine.game;
+package uk.ac.reading.sis05kol.engine.game.engine;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -10,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import uk.ac.reading.sis05kol.engine.R;
+import uk.ac.reading.sis05kol.engine.game.TheGame;
 
 public class GameActivity extends Activity {
 
@@ -21,6 +25,7 @@ public class GameActivity extends Activity {
     private GameView mGameView;
 
     /** Called when the activity is first created. */
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,16 +33,33 @@ public class GameActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 
         setContentView(R.layout.game_main);
 
+        init(savedInstanceState);
+
+    }
+
+    void init(Bundle savedInstanceState){
+        //get references to all needed views
         mGameView = (GameView)findViewById(R.id.gamearea);
         mGameView.setStatusView((TextView)findViewById(R.id.text));
         mGameView.setScoreView((TextView)findViewById(R.id.score));
 
+
         this.startGame(mGameView, null, savedInstanceState);
     }
 
+    /**
+     * starts the game by creating a new game thread and assign it to gameView
+     * @param gView
+     * @param gThread
+     * @param savedInstanceState
+     */
     private void startGame(GameView gView, GameThread gThread, Bundle savedInstanceState) {
 
         //Set up a new game, we don't care about previous states
@@ -53,16 +75,26 @@ public class GameActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-
         if(mGameThread.getMode() == GameThread.STATE_RUNNING) {
             mGameThread.setState(GameThread.STATE_PAUSE);
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mGameThread.getMode() == GameThread.STATE_PAUSE) {
+            mGameThread.setState(GameThread.STATE_RUNNING);
+        }
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void destruct(){
+
 
         mGameView.cleanup();
         mGameThread = null;

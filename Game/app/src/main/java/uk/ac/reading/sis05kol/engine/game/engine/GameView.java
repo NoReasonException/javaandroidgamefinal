@@ -1,7 +1,6 @@
-package uk.ac.reading.sis05kol.engine.game;
+package uk.ac.reading.sis05kol.engine.game.engine;
 
 import android.content.Context;
-import android.hardware.Sensor;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -10,6 +9,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
+
+import uk.ac.reading.sis05kol.engine.game.TheGame;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private volatile GameThread thread;
@@ -22,10 +23,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	//Pointers to the views
 	private TextView mScoreView;
 	private TextView mStatusView;
-
-    Sensor accelerometer;
-    Sensor magnetometer;
-
 
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);

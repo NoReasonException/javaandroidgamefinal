@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import uk.ac.reading.sis05kol.engine.R;
-import uk.ac.reading.sis05kol.engine.game.GameActivity;
+import uk.ac.reading.sis05kol.engine.game.engine.GameActivity;
 import uk.ac.reading.sis05kol.engine.menuactivity.menufragments.HandlersSet.MainMenuFragmentHandlers;
 import uk.ac.reading.sis05kol.engine.menuactivity.menufragments.HandlersSet.SelectLevelFragmentHandlers;
 import uk.ac.reading.sis05kol.engine.menuactivity.menufragments.MainMenuFragment;
@@ -29,6 +29,7 @@ public class MenuActivity extends Activity {
     private Fragment selectLevelFragment;
     private MainMenuFragmentHandlers mainMenuHandlers;
     private SelectLevelFragmentHandlers selectLevelHandlers;
+    private Boolean allowCreateNewActivity=true;
     @SuppressLint({"ClickableViewAccessibility", "SourceLockedOrientationActivity"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,13 @@ public class MenuActivity extends Activity {
         },50);
         return null;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        allowCreateNewActivity=true;
+    }
+
     public Void exitButtonAction(Void b){
         new Handler().postDelayed(new Runnable() {
             @SuppressLint("ResourceType")
@@ -107,7 +115,13 @@ public class MenuActivity extends Activity {
             @SuppressLint("ResourceType")
             @Override
             public void run() {
-                startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                synchronized (this) {
+                    if (allowCreateNewActivity) {
+                        startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                        allowCreateNewActivity = false;
+                    }
+                }
+
             }
         },50);
         return null;
@@ -117,8 +131,13 @@ public class MenuActivity extends Activity {
             @SuppressLint("ResourceType")
             @Override
             public void run() {
+                synchronized (this) {
+                    if (allowCreateNewActivity) {
+                        startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                        allowCreateNewActivity = false;
+                    }
+                }
 
-                startActivity(new Intent(getApplicationContext(), GameActivity.class));
             }
         },50);
         return null;
@@ -128,8 +147,13 @@ public class MenuActivity extends Activity {
             @SuppressLint("ResourceType")
             @Override
             public void run() {
+                synchronized (this) {
+                    if (allowCreateNewActivity) {
+                        startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                        allowCreateNewActivity = false;
+                    }
+                }
 
-                startActivity(new Intent(getApplicationContext(), GameActivity.class));
             }
         },50);
         return null;
@@ -139,8 +163,13 @@ public class MenuActivity extends Activity {
             @SuppressLint("ResourceType")
             @Override
             public void run() {
+                synchronized (this) {
+                    if (allowCreateNewActivity) {
+                        startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                        allowCreateNewActivity = false;
+                    }
+                }
 
-                startActivity(new Intent(getApplicationContext(), GameActivity.class));
             }
         },50);
         return null;
