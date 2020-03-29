@@ -37,4 +37,7 @@ public class Map {
         return d;
     }
 
+    public HashMap<Position, Drawable> getMap() {
+        return map;
+    }
 }

@@ -1,7 +1,9 @@
 package uk.ac.reading.sis05kol.engine.game.core.renderer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.util.Pair;
@@ -12,14 +14,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
+import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 
 public class Renderer {
-    private Map map;
     private Pair<Integer,Integer> screenSize;   //screenSize given
     private Pair<Integer,Integer> tileCountXY;  //given only x , y must be calculated
     private Pair<Integer,Integer> tileSizeXY;   //must be calculated
+    private Context context;
+    private Bitmap test;
+    private int x = 0;
+
 
     private String loggerTag="RENDERER";
 
@@ -27,9 +34,13 @@ public class Renderer {
     Random r=new Random();
 
 
-    public Renderer(Map map, Pair<Integer, Integer> screenSize,int tileCountX) {
-        this.map = map;
+    public Renderer(Pair<Integer, Integer> screenSize,int tileCountX,Context context) {
         this.screenSize = screenSize;
+        this.context=context;
+        test=BitmapFactory.decodeResource
+                (context.getResources(),
+                        R.drawable.small_red_ball);
+
         tileCountXY=tileCountXYCalculate(screenSize,tileCountX);
         tileSizeXY=tileSizeXYCalculate(screenSize,tileCountXY);
 
@@ -77,6 +88,13 @@ public class Renderer {
         randomTileIndex.put(screenPosition,newIndex);
         return newIndex;
 
+    }
+
+    public void drawMap(Canvas canvas, Map map){
+        for (Drawable i:
+             map.getMap().values()) {
+            canvas.drawBitmap(i.getAnimator().getBitmap(),i.getPosition().getX(),i.getPosition().getY(),null);
+        }
     }
 
     public Pair<Integer, Integer> getTileSizeXY() {

@@ -1,35 +1,33 @@
 package uk.ac.reading.sis05kol.engine.game.core.object;
 
+import android.animation.Animator;
 import android.graphics.Bitmap;
 
 import java.util.Objects;
 
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
+import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
 
 public class Drawable {
-    private Position position;
-    private Bitmap bitmap;
+    private Position            position;
+    private DrawableAnimator    animator;
 
-    public Drawable(Position p,Bitmap bitmap) {
+
+    public Drawable(Position p, DrawableAnimator animator) {
         this.position = p;
-        this.bitmap=bitmap;
+        this.animator=animator;
     }
 
     public Position getPosition() {
         return position;
     }
 
+    public DrawableAnimator getAnimator() { return animator; }
+
     public void setPosition(Position p) {
         this.position = p;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
 
     @Override
     public boolean equals(Object o) {

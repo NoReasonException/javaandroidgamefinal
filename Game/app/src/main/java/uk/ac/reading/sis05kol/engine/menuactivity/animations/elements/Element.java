@@ -33,6 +33,59 @@ public enum Element {
 
     },13,3),
 
+    FIREATTACK(new int[]{
+            R.drawable.fa1,
+            R.drawable.fa2,
+            R.drawable.fa3,
+            R.drawable.fa4,
+            R.drawable.fa5,
+            R.drawable.fa6,
+            R.drawable.fa7,
+            R.drawable.fa8,
+            R.drawable.fa9},9,0),
+
+    FIREIDLE(new int[]{
+            R.drawable.fi1,
+            R.drawable.fi2,
+            R.drawable.fi3,
+            R.drawable.fi4,
+            R.drawable.fi5,
+            R.drawable.fi6,
+            R.drawable.fi7,
+            R.drawable.fi8,
+            R.drawable.fi9,
+            R.drawable.fi10,
+            R.drawable.fi11,
+            R.drawable.fi12,
+            R.drawable.fi13,
+            R.drawable.fi14,
+            R.drawable.fi15,
+            R.drawable.fi16,
+            R.drawable.fi17,
+            R.drawable.fi18,
+            R.drawable.fi19,
+            R.drawable.fi20,
+            R.drawable.fi21,
+            R.drawable.fi22,
+            R.drawable.fi23,
+            R.drawable.fi24,
+            R.drawable.fi25,
+            R.drawable.fi26,
+            R.drawable.fi27
+    },27,0),
+
+    ICEATTACK(new int[]{
+            R.drawable.ia1,
+            R.drawable.ia2,
+            R.drawable.ia3,
+            R.drawable.ia4,
+            R.drawable.ia5,
+            R.drawable.ia6,
+            R.drawable.ia7,
+            R.drawable.ia8,
+            R.drawable.ia9},9,0),
+
+
     POISONIDLE(new int[]{
         R.drawable.pa1,R.drawable.pa2,R.drawable.pa3,
                 R.drawable.pa4,R.drawable.pa5,R.drawable.pa6,

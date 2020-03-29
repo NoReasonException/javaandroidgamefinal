@@ -13,9 +13,12 @@ import java.util.stream.Collectors;
 import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
+import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
+import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
 import uk.ac.reading.sis05kol.engine.game.engine.GameThread;
 import uk.ac.reading.sis05kol.engine.game.engine.GameView;
+import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
 
 public class TheGame extends GameThread {
 
@@ -70,10 +73,12 @@ public class TheGame extends GameThread {
                 Double.valueOf(mCanvasWidth).intValue(),
                 Double.valueOf(mCanvasHeight).intValue());
         tileCountX=10;
-        renderer=new Renderer(map,screenSize,tileCountX);
+        renderer=new Renderer(screenSize,tileCountX,mGameView.getContext());
 
         grass=scaleResources(grass,renderer.getTileSizeXY());
 
+        map.setDrawableAtPosition(new Position(10,10),new Drawable(new Position(10,10),
+                new DrawableAnimator(Element.ICEATTACK,mGameView.getContext(),0.2f)));
 
         Log.i(loggerTag,".setupBeginning() Complete");
 
@@ -84,6 +89,8 @@ public class TheGame extends GameThread {
         super.doDraw(canvas); //clear canvas
         if(grass ==null||renderer==null)return;
         renderer.drawBackground(canvas, grass);
+        renderer.drawMap(canvas,map);
+
     }
 
 
