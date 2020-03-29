@@ -78,7 +78,7 @@ public class TheGame extends GameThread {
         grass=scaleResources(grass,renderer.getTileSizeXY());
 
         map.setDrawableAtPosition(new Position(10,10),new Drawable(new Position(10,10),
-                new DrawableAnimator(Element.ICEATTACK,mGameView.getContext(),0.2f)));
+                new DrawableAnimator(Element.ICEIDLE,mGameView.getContext(),0.2f)));
 
         Log.i(loggerTag,".setupBeginning() Complete");
 
