@@ -17,6 +17,7 @@ import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.dynamicdrawables.BlueGhost;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.staticdrawables.BluePortal;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.staticdrawables.FireTower;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.staticdrawables.RedPortal;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
 import uk.ac.reading.sis05kol.engine.game.engine.GameThread;
@@ -33,6 +34,7 @@ public class TheGame extends GameThread {
 
     private List<Bitmap> grass;
     private List<Bitmap> sand;
+    private Path path;
 
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView) {
@@ -92,7 +94,7 @@ public class TheGame extends GameThread {
 
         grass=scaleTiles(grass,renderer.getTileSizeXY());
         sand=scaleTiles(sand,renderer.getTileSizeXY());
-
+        path=Path.getTesting();
         Drawable portal = new BluePortal(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(0,0)));
         Drawable portalend = new RedPortal(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(3,7)));
 
@@ -108,9 +110,9 @@ public class TheGame extends GameThread {
         super.doDraw(canvas); //clear canvas
         if(grass ==null||renderer==null)return;
         renderer.drawBackground(canvas, grass);
-        renderer.drawPath(canvas, sand,Path.getTesting());
+        renderer.drawPath(canvas, sand,path);
         renderer.drawMap(canvas,map);
-        renderer.updateMoveables(map,Path.getTesting());
+        renderer.updateMoveables(map,path);
 
     }
 
@@ -122,9 +124,14 @@ public class TheGame extends GameThread {
         Position tilePosition=renderer.fromAbsoluteToTilePosition(new Position(
                 Float.valueOf(x).intValue(),Float.valueOf(y).intValue()));
         Position absolutePosition = renderer.fromTileToAbsolutePosition(tilePosition);
-        Log.i(loggerTag,"actionOnTouch ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
-        Drawable d = new BluePortal(mGameView.getContext(),absolutePosition);
-        map.setDrawableAtPosition(tilePosition,d);
+        if(!path.existsInPath(tilePosition)){
+            Drawable d = new FireTower(mGameView.getContext(),absolutePosition);
+            map.setDrawableAtPosition(tilePosition,d);
+            Log.i(loggerTag,"actionOnTouch added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
+        }else {
+            Log.i(loggerTag,"actionOnTouch not added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
+        }
+
 
     }
 

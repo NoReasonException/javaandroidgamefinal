@@ -124,6 +124,21 @@ public class Path {
 
     }
 
+    public boolean existsInPath(Position p){
+        return _existsInPath(p,getFirst());
+    }
+    private boolean _existsInPath(Position p,Node curr){
+        boolean b ;
+        if(p.equals(curr.getPosition())){
+            return true;
+        }
+        for(Node i:curr.getLinks()){
+            b=_existsInPath(p,i);
+            if(b)return true;
+        }
+        return false;
+    }
+
     public Path(Pair<Integer, Integer> validTileSize, Node first) {
         this.validTileSize = validTileSize;
         this.first = first;
