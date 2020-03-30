@@ -1,20 +1,25 @@
 package uk.ac.reading.sis05kol.engine.game.core.map;
 
 
-import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.Pair;
 
 import java.util.HashMap;
 
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 
+/**
+ * Map is considered only with tile coordinates
+ */
 public class Map {
-    private HashMap<Position, Drawable> map;
+    private HashMap<Position, Drawable> map=new HashMap<>();
+
     private String loggerTag="MAP";
 
-    public Map() {
-        this.map = new HashMap<>();
-        Log.i(loggerTag,"Initialization Complete");
+    public Map(Drawable inportal, Drawable outPortal, Pair<Integer,Integer> tileCountXY) {
+        map.put(new Position(0,0),inportal);
+        map.put(new Position(tileCountXY.first-1,tileCountXY.second-1),outPortal);
+
     }
 
     //TODO draw checks
@@ -30,9 +35,7 @@ public class Map {
 
     }
     public Drawable moveDrawable(Position p , Drawable d){
-        map.remove(d.getPosition());
         map.put(p,d);
-        d.setPosition(p);
         Log.i(loggerTag,".moveDrawable moved object "+d+" to "+p.toString());
         return d;
     }

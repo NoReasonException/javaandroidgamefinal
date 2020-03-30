@@ -168,7 +168,115 @@ public enum Element {
             R.drawable.pi40,
             R.drawable.pi41,
             R.drawable.pi42,
-            R.drawable.pi43},43,0);
+            R.drawable.pi43},43,0),
+
+    BLUEPORTAL(new int[]{
+            R.drawable.pbo01,
+            R.drawable.pbo02,
+            R.drawable.pbo03,
+            R.drawable.pbo04,
+            R.drawable.pbo05,
+            R.drawable.pbo06,
+            R.drawable.pbo07,
+            R.drawable.pbo08,
+            R.drawable.pbo09,
+            R.drawable.pbo10,
+            R.drawable.pbo11,
+            R.drawable.pbo12,
+            R.drawable.pbo13,
+            R.drawable.pbo14,
+            R.drawable.pbo15,
+    },15,0),
+    REDPORTAL(new int[]{
+        R.drawable.pro01,
+                R.drawable.pro02,
+                R.drawable.pro03,
+                R.drawable.pro04,
+                R.drawable.pro05,
+                R.drawable.pro06,
+                R.drawable.pro07,
+                R.drawable.pro08,
+                R.drawable.pro09,
+                R.drawable.pro10,
+                R.drawable.pro11,
+                R.drawable.pro12,
+                R.drawable.pro13,
+                R.drawable.pro14,
+                R.drawable.pro15
+    },15,0),
+
+
+    GHOSTBLUEUP(new int[]{
+            R.drawable.gbu00,
+            R.drawable.gbu01,
+            R.drawable.gbu02,
+            R.drawable.gbu03,
+            R.drawable.gbu04,
+            R.drawable.gbu05,
+            R.drawable.gbu06,
+            R.drawable.gbu07,
+            R.drawable.gbu08,
+            R.drawable.gbu09,
+            R.drawable.gbu10,
+            R.drawable.gbu11,
+            R.drawable.gbu12,
+            R.drawable.gbu13
+    },13,0),
+    GHOSTBLUERIGHT(new int[]{
+            R.drawable.gbr00,
+            R.drawable.gbr01,
+            R.drawable.gbr02,
+            R.drawable.gbr03,
+            R.drawable.gbr04,
+            R.drawable.gbr05,
+            R.drawable.gbr06,
+            R.drawable.gbr07,
+            R.drawable.gbr08,
+            R.drawable.gbr09,
+            R.drawable.gbr10,
+            R.drawable.gbr11,
+            R.drawable.gbr12,
+            R.drawable.gbr13
+
+    },13,0),
+    GHOSTBLUEDOWN(new int[]{
+            R.drawable.gbd00,
+            R.drawable.gbd01,
+            R.drawable.gbd02,
+            R.drawable.gbd03,
+            R.drawable.gbd04,
+            R.drawable.gbd05,
+            R.drawable.gbd06,
+            R.drawable.gbd07,
+            R.drawable.gbd08,
+            R.drawable.gbd09,
+            R.drawable.gbd10,
+            R.drawable.gbd11,
+            R.drawable.gbd12,
+            R.drawable.gbd13
+
+    },13,0),
+    GHOSTBLUELEFT(new int[]{
+            R.drawable.gbl00,
+            R.drawable.gbl01,
+            R.drawable.gbl02,
+            R.drawable.gbl03,
+            R.drawable.gbl04,
+            R.drawable.gbl05,
+            R.drawable.gbl06,
+            R.drawable.gbl07,
+            R.drawable.gbl08,
+            R.drawable.gbl09,
+            R.drawable.gbl10,
+            R.drawable.gbl11,
+            R.drawable.gbl12,
+            R.drawable.gbl13
+
+    },13,0);
+
+
+
+
 
     public int ids[];
     public int max;

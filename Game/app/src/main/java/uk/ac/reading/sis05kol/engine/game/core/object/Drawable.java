@@ -1,51 +1,48 @@
 package uk.ac.reading.sis05kol.engine.game.core.object;
 
-import android.animation.Animator;
 import android.graphics.Bitmap;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
 
 public class Drawable {
-    private Position            position;
-    private DrawableAnimator    animator;
+    protected final int DEFAULT_ANIMATOR=0;
+    protected Position absolutePosition;
+    protected List<DrawableAnimator> animators =new ArrayList<>();
 
 
-    public Drawable(Position p, DrawableAnimator animator) {
-        this.position = p;
-        this.animator=animator;
+    public Drawable(DrawableAnimator animator,Position absolutePosition) {
+        this.animators.add(animator);
+        this.absolutePosition=absolutePosition;
     }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public DrawableAnimator getAnimator() { return animator; }
-
-    public void setPosition(Position p) {
-        this.position = p;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Drawable drawable = (Drawable) o;
-        return Objects.equals(position, drawable.position);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(position);
+    public Drawable(List<DrawableAnimator> animators,Position absolutePosition) {
+        this.animators =animators;
+        this.absolutePosition=absolutePosition;
     }
 
     @Override
     public String toString() {
         return "Drawable{" +
-                "position=" + position +
+                "element=" + animators +
                 '}';
+    }
+
+    public Position getAbsolutePosition() {
+        return absolutePosition;
+    }
+
+    /**
+     * Assuming that every Drawable as AT LEAST one drawable
+     * @return
+     */
+    public Bitmap getBitmap(){
+        return animators.get(DEFAULT_ANIMATOR).getBitmap();
+    }
+
+    public void setAbsolutePosition(Position absolutePosition) {
+        this.absolutePosition = absolutePosition;
     }
 }

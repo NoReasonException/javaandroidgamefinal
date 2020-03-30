@@ -51,4 +51,12 @@ public class DrawableAnimator {
         state=(state+1)%element.max;
         return b;
     }
+    public void reset(){
+        state=0;
+    }
+
+    @Override
+    public String toString() {
+        return element.toString();
+    }
 }

@@ -13,12 +13,14 @@ import java.util.stream.Collectors;
 import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
+import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
-import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.dynamicdrawables.BlueGhost;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.staticdrawables.BluePortal;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.staticdrawables.RedPortal;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
 import uk.ac.reading.sis05kol.engine.game.engine.GameThread;
 import uk.ac.reading.sis05kol.engine.game.engine.GameView;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
 
 public class TheGame extends GameThread {
 
@@ -30,19 +32,21 @@ public class TheGame extends GameThread {
     private String loggerTag="THEGAME";
 
     private List<Bitmap> grass;
+    private List<Bitmap> sand;
 
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView) {
         //House keeping
         super(gameView);
 
-        grass=loadResources(gameView);
+        grass= loadGrass(gameView);
+        sand=loadSand(gameView);
 
 
 
     }
 
-    public List<Bitmap> loadResources(GameView gameView){
+    public List<Bitmap> loadGrass(GameView gameView){
 
         return new ArrayList<Bitmap>(Arrays.asList(
                 BitmapFactory.decodeResource
@@ -59,7 +63,18 @@ public class TheGame extends GameThread {
                                 R.drawable.grass4)));
 
     }
-    public List<Bitmap> scaleResources(List<Bitmap> resources, Pair<Integer,Integer>tileSize){
+    public List<Bitmap> loadSand(GameView gameView){
+
+        return new ArrayList<Bitmap>(Arrays.asList(
+                BitmapFactory.decodeResource
+                        (gameView.getContext().getResources(),
+                                R.drawable.sand1),
+                BitmapFactory.decodeResource
+                        (gameView.getContext().getResources(),
+                                R.drawable.sand2)));
+
+    }
+    public List<Bitmap> scaleTiles(List<Bitmap> resources, Pair<Integer,Integer>tileSize){
         return resources.stream().
                 map((b)->Bitmap.createScaledBitmap(b, tileSize.first, tileSize.second, true)).
                 collect(Collectors.toList());
@@ -68,20 +83,24 @@ public class TheGame extends GameThread {
     //This is run before a new game (also after an old game)
     @Override
     public void setupBeginning() {
-        map = new Map();
+
         Pair<Integer,Integer>screenSize=new Pair<Integer,Integer>(
                 Double.valueOf(mCanvasWidth).intValue(),
                 Double.valueOf(mCanvasHeight).intValue());
-        tileCountX=10;
+        tileCountX=4;
         renderer=new Renderer(screenSize,tileCountX,mGameView.getContext());
 
-        grass=scaleResources(grass,renderer.getTileSizeXY());
+        grass=scaleTiles(grass,renderer.getTileSizeXY());
+        sand=scaleTiles(sand,renderer.getTileSizeXY());
 
-        map.setDrawableAtPosition(new Position(10,10),new Drawable(new Position(10,10),
-                new DrawableAnimator(Element.ICEIDLE,mGameView.getContext(),0.2f)));
+        Drawable portal = new BluePortal(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(0,0)));
+        Drawable portalend = new RedPortal(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(3,7)));
+
+        map = new Map(portal,portalend,renderer.getTileCountXY());
+        map.setDrawableAtPosition(new Position(3,5),new BlueGhost(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(2,4))));
+
 
         Log.i(loggerTag,".setupBeginning() Complete");
-
     }
 
     @Override
@@ -89,7 +108,9 @@ public class TheGame extends GameThread {
         super.doDraw(canvas); //clear canvas
         if(grass ==null||renderer==null)return;
         renderer.drawBackground(canvas, grass);
+        renderer.drawPath(canvas, sand,Path.getTesting());
         renderer.drawMap(canvas,map);
+        renderer.updateMoveables(map,Path.getTesting());
 
     }
 
@@ -97,6 +118,13 @@ public class TheGame extends GameThread {
     //This is run whenever the phone is touched by the user
     @Override
     protected void actionOnTouch(float x, float y) {
+        if(renderer==null||map==null||mGameView==null)return;
+        Position tilePosition=renderer.fromAbsoluteToTilePosition(new Position(
+                Float.valueOf(x).intValue(),Float.valueOf(y).intValue()));
+        Position absolutePosition = renderer.fromTileToAbsolutePosition(tilePosition);
+        Log.i(loggerTag,"actionOnTouch ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
+        Drawable d = new BluePortal(mGameView.getContext(),absolutePosition);
+        map.setDrawableAtPosition(tilePosition,d);
 
     }
 

@@ -20,6 +20,14 @@ public class Position {
         return y;
     }
 
+    public Position setX(int x) {
+        return new Position(x,this.y);
+    }
+
+    public Position setY(int y) {
+        return new Position(this.x,y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
