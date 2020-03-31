@@ -2,6 +2,7 @@ package uk.ac.reading.sis05kol.engine.game;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 
@@ -35,6 +36,8 @@ public class TheGame extends GameThread {
     private List<Bitmap> grass;
     private List<Bitmap> sand;
     private Path path;
+
+    private Handler handler=new Handler();
 
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView) {
@@ -99,7 +102,8 @@ public class TheGame extends GameThread {
         Drawable portalend = new RedPortal(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(3,7)));
 
         map = new Map(portal,portalend,renderer.getTileCountXY());
-        map.setDrawableAtPosition(new Position(3,5),new BlueGhost(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(2,4))));
+        map.setDrawableAtPosition(new Position(1,0),
+                new BlueGhost(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(1,0))));
 
 
         Log.i(loggerTag,".setupBeginning() Complete");
@@ -108,11 +112,11 @@ public class TheGame extends GameThread {
     @Override
     protected void doDraw(Canvas canvas) {
         super.doDraw(canvas); //clear canvas
-        if(grass ==null||renderer==null)return;
-        renderer.drawBackground(canvas, grass);
-        renderer.drawPath(canvas, sand,path);
-        renderer.drawMap(canvas,map);
-        renderer.updateMoveables(map,path);
+            if (grass == null || renderer == null) return;
+            renderer.drawBackground(canvas, grass);
+            renderer.drawPath(canvas, sand, path);
+            renderer.drawMap(canvas, map);
+            renderer.updateMoveables(map, path);
 
     }
 
@@ -121,17 +125,22 @@ public class TheGame extends GameThread {
     @Override
     protected void actionOnTouch(float x, float y) {
         if(renderer==null||map==null||mGameView==null)return;
-        Position tilePosition=renderer.fromAbsoluteToTilePosition(new Position(
-                Float.valueOf(x).intValue(),Float.valueOf(y).intValue()));
-        Position absolutePosition = renderer.fromTileToAbsolutePosition(tilePosition);
-        if(!path.existsInPath(tilePosition)){
-            Drawable d = new FireTower(mGameView.getContext(),absolutePosition);
-            map.setDrawableAtPosition(tilePosition,d);
-            Log.i(loggerTag,"actionOnTouch added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
-        }else {
-            Log.i(loggerTag,"actionOnTouch not added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
-        }
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Position tilePosition=renderer.fromAbsoluteToTilePosition(new Position(
+                        Float.valueOf(x).intValue(),Float.valueOf(y).intValue()));
+                Position absolutePosition = renderer.fromTileToAbsolutePosition(tilePosition);
+                if(!path.existsInPath(tilePosition)){
+                    Drawable d = new FireTower(mGameView.getContext(),absolutePosition);
+                    map.setDrawableAtPosition(tilePosition,d);
+                    Log.i(loggerTag,"actionOnTouch added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
+                }else {
+                    Log.i(loggerTag,"actionOnTouch not added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
+                }
 
+            }
+        });
 
     }
 

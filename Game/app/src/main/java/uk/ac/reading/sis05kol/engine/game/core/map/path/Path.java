@@ -14,21 +14,34 @@ public class Path {
     private Node first;
     private static String loggerTag="PATH";
     private static Path instance;
+
+    private static final int DOWNINDEX=0;
+    private static final int UPINDEX=1;
+    private static final int RIGHTINDEX=2;
+    private static final int LEFTINDEX=3;
     public static class Node{
         private Position position;
+        private int animatorIndex=0;
         private List<Node> links=new ArrayList<Node>();
         private Random random=new Random();
 
-        public Node(Position position, List<Node> links) {
+        public Node(Position position, List<Node> links,int animatorIndex) {
             this.position = position;
             this.links = links;
+            this.animatorIndex=animatorIndex;
         }
-        public Node(Position position) {
+        public Node(Position position,int animatorIndex) {
             this.position = position;
+            this.animatorIndex=animatorIndex;
         }
-        public Node(Position position, Node link) {
+        public Node(Position position, Node link,int animatorIndex) {
             this.position = position;
             this.links.add(link);
+            this.animatorIndex=animatorIndex;
+        }
+
+        public int getAnimatorIndex() {
+            return animatorIndex;
         }
 
         public Node addNode(Node node){
@@ -55,6 +68,12 @@ public class Path {
             return links.get(next);
         }
 
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "position=" + position +
+                    '}';
+        }
     }
 
     public Node getFirst() {
@@ -67,11 +86,11 @@ public class Path {
             Node i53ref;
             Node i84ref;
 
-            Node i11 = new Node(new Position(0, 0));
-            Node i12 = new Node(new Position(1, 0));
-            Node i22 = new Node(new Position(1, 1));
-            Node i32 = new Node(new Position(1, 2));
-            Node i42 = new Node(new Position(1, 3));
+            Node i11 = new Node(new Position(0, 0),DOWNINDEX);
+            Node i12 = new Node(new Position(1, 0),DOWNINDEX);
+            Node i22 = new Node(new Position(1, 1),DOWNINDEX);
+            Node i32 = new Node(new Position(1, 2),DOWNINDEX);
+            Node i42 = new Node(new Position(1, 3),DOWNINDEX);
 
             i42ref = i11.
                     addNode(i12)
@@ -80,11 +99,11 @@ public class Path {
                     .addNode(i42);
 
             {
-                Node i33 = new Node(new Position(2, 2));
-                Node i34 = new Node(new Position(3, 2));
-                Node i44 = new Node(new Position(3, 3));
-                Node i54 = new Node(new Position(3, 4));
-                Node i53 = new Node(new Position(2, 4));
+                Node i33 = new Node(new Position(2, 2),LEFTINDEX);
+                Node i34 = new Node(new Position(3, 2),LEFTINDEX);
+                Node i44 = new Node(new Position(3, 3),DOWNINDEX);
+                Node i54 = new Node(new Position(3, 4),DOWNINDEX);
+                Node i53 = new Node(new Position(2, 4),DOWNINDEX);
 
                 i53ref = i33
                         .addNode(i34)
@@ -96,14 +115,14 @@ public class Path {
             }
 
 
-            Node i52 = new Node(new Position(1, 4));
-            Node i62 = new Node(new Position(1, 5));
-            Node i61 = new Node(new Position(0, 5));
-            Node i71 = new Node(new Position(0, 6));
-            Node i81 = new Node(new Position(0, 7));
-            Node i82 = new Node(new Position(1, 7));
-            Node i83 = new Node(new Position(2, 7));
-            Node i84 = new Node(new Position(3, 7));
+            Node i52 = new Node(new Position(1, 4),DOWNINDEX);
+            Node i62 = new Node(new Position(1, 5),LEFTINDEX);
+            Node i61 = new Node(new Position(0, 5),LEFTINDEX);
+            Node i71 = new Node(new Position(0, 6),DOWNINDEX);
+            Node i81 = new Node(new Position(0, 7),RIGHTINDEX);
+            Node i82 = new Node(new Position(1, 7),RIGHTINDEX);
+            Node i83 = new Node(new Position(2, 7),RIGHTINDEX);
+            Node i84 = new Node(new Position(3, 7),RIGHTINDEX);
             i84ref = i52
                     .addNode(i62)
                     .addNode(i61)
@@ -122,6 +141,19 @@ public class Path {
         }
         return instance;
 
+    }
+
+    public Node getNodeByPosition(Position tilePosition){
+        if(!existsInPath(tilePosition))return null;
+        return _getNodeByPosition(tilePosition,getFirst());
+
+    }
+    public Node _getNodeByPosition(Position tilePosition,Node curr){
+        if(curr.getPosition().equals(tilePosition))return curr;
+        for (Node i :curr.getLinks()) {
+            return _getNodeByPosition(tilePosition,i);
+        }
+        return null;
     }
 
     public boolean existsInPath(Position p){

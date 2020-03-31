@@ -29,7 +29,7 @@ public class Renderer {
     private String loggerTag="RENDERER";
 
     private HashMap<Pair<Integer,Integer>,Integer> randomGrassTileIndex =new HashMap<>();
-    Random r=new Random();
+    private Random random =new Random();
 
 
     public Renderer(Pair<Integer, Integer> screenSize,int tileCountX,Context context) {
@@ -76,7 +76,7 @@ public class Renderer {
 
     }
     private Integer genRandomGrassTileIndex(Pair<Integer,Integer>screenPosition, int max){
-        int newIndex=Math.abs(r.nextInt(max));
+        int newIndex=Math.abs(random.nextInt(max));
         randomGrassTileIndex.put(screenPosition,newIndex);
         return newIndex;
 
@@ -93,10 +93,8 @@ public class Renderer {
     }
 
     public void drawMap(Canvas canvas, Map map){
-        for (Position p:
-             map.getMap().keySet()) {
-            Drawable d=map.getMap().get(p);
-            assert d != null;
+        for (Position p: map.getDrawableObjects()) {
+            Drawable d=map.getDrawableAtPosition(p);
             canvas.drawBitmap(d.getBitmap(),d.getAbsolutePosition().getX(),d.getAbsolutePosition().getY(),null);
         }
 
@@ -104,12 +102,12 @@ public class Renderer {
     public void updateMoveables(Map map,Path path){
         Position newPosition;
         Moveable curr;
-        for (Position p:
-                map.getMap().keySet()) {
-            Drawable d=map.getMap().get(p);
+        for (Position p: map.getDrawableObjects()) {
+
+            Drawable d=map.getDrawableAtPosition(p);
             if(d instanceof Moveable){
                 curr=(Moveable)d;
-                newPosition=curr.nextMove(path,this::fromAbsoluteToTilePosition,this::fromTileToAbsolutePosition);
+                newPosition=curr.nextMove(path,this::fromAbsoluteToTilePosition,this::fromTileToAbsolutePositionWithRedundancy);
                 d.setAbsolutePosition(newPosition);
             }
 
@@ -126,6 +124,12 @@ public class Renderer {
         return new Position(
                 tilePosition.getX()*tileSizeXY.first,
                 tilePosition.getY()*tileSizeXY.second
+        );
+    }
+    public Position fromTileToAbsolutePositionWithRedundancy(Position tilePosition){
+        return new Position(
+                tilePosition.getX()*tileSizeXY.first+random.nextInt(20),
+                tilePosition.getY()*tileSizeXY.second+random.nextInt(20)
         );
     }
 
