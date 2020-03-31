@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import uk.ac.reading.sis05kol.engine.R;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.Moveable;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.Actionable;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
@@ -29,6 +29,7 @@ public class Renderer {
     private String loggerTag="RENDERER";
 
     private HashMap<Pair<Integer,Integer>,Integer> randomGrassTileIndex =new HashMap<>();
+    private HashMap<Position,Integer> randomSandTileIndex =new HashMap<>();
     private Random random =new Random();
 
 
@@ -86,9 +87,19 @@ public class Renderer {
         _drawPath(canvas,backgroundTile,path.getFirst());
     }
     public void _drawPath(Canvas canvas,List<Bitmap> backgroundTile,Path.Node currNode){
-        canvas.drawBitmap(backgroundTile.get(0),currNode.getPosition().getX()*tileSizeXY.first,currNode.getPosition().getY()*tileSizeXY.second,null);
+        canvas.drawBitmap(backgroundTile.get(getSandTileIndex(currNode.getPosition(),backgroundTile.size())),currNode.getPosition().getX()*tileSizeXY.first,currNode.getPosition().getY()*tileSizeXY.second,null);
         for (Path.Node n :currNode.getLinks()) {
             _drawPath(canvas,backgroundTile,n);
+        }
+    }
+    private Integer getSandTileIndex(Position tilePosition, int max){
+        if(randomSandTileIndex.containsKey(tilePosition)){
+            return randomSandTileIndex.get(tilePosition);
+        }else{
+            int newIndex=Math.abs(random.nextInt(max));
+            randomSandTileIndex.put(tilePosition,newIndex);
+            return newIndex;
+
         }
     }
 
@@ -100,17 +111,16 @@ public class Renderer {
 
     }
     public void updateMoveables(Map map,Path path){
-        Position newPosition;
-        Moveable curr;
         for (Position p: map.getDrawableObjects()) {
-
-            Drawable d=map.getDrawableAtPosition(p);
-            if(d instanceof Moveable){
-                curr=(Moveable)d;
-                newPosition=curr.nextMove(path,this::fromAbsoluteToTilePosition,this::fromTileToAbsolutePositionWithRedundancy);
-                d.setAbsolutePosition(newPosition);
+            Drawable d = map.getDrawableAtPosition(p);
+            //TODO bug fixme! https://app.asana.com/0/1168799679896241/1169218700246419
+            if(d!=null){
+                d.getNextAction(
+                        path,
+                        this::fromAbsoluteToTilePosition,
+                        this::fromTileToAbsolutePositionWithRedundancy)
+                        .performAction(map);
             }
-
         }
     }
 

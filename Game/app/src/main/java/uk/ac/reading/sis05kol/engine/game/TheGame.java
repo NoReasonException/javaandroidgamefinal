@@ -16,11 +16,12 @@ import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
-import uk.ac.reading.sis05kol.engine.game.core.object.drawables.dynamicdrawables.BlueGhost;
-import uk.ac.reading.sis05kol.engine.game.core.object.drawables.staticdrawables.BluePortal;
-import uk.ac.reading.sis05kol.engine.game.core.object.drawables.staticdrawables.FireTower;
-import uk.ac.reading.sis05kol.engine.game.core.object.drawables.staticdrawables.RedPortal;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.BluePortal;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.FireTower;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.RedPortal;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
+import uk.ac.reading.sis05kol.engine.game.core.schenario.DifficultyLevel1;
+import uk.ac.reading.sis05kol.engine.game.core.schenario.Schenario;
 import uk.ac.reading.sis05kol.engine.game.engine.GameThread;
 import uk.ac.reading.sis05kol.engine.game.engine.GameView;
 
@@ -38,6 +39,7 @@ public class TheGame extends GameThread {
     private Path path;
 
     private Handler handler=new Handler();
+    private Schenario schenario;
 
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView) {
@@ -46,6 +48,7 @@ public class TheGame extends GameThread {
 
         grass= loadGrass(gameView);
         sand=loadSand(gameView);
+        schenario=new DifficultyLevel1();
 
 
 
@@ -102,8 +105,6 @@ public class TheGame extends GameThread {
         Drawable portalend = new RedPortal(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(3,7)));
 
         map = new Map(portal,portalend,renderer.getTileCountXY());
-        map.setDrawableAtPosition(new Position(1,0),
-                new BlueGhost(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(1,0))));
 
 
         Log.i(loggerTag,".setupBeginning() Complete");
@@ -117,6 +118,7 @@ public class TheGame extends GameThread {
             renderer.drawPath(canvas, sand, path);
             renderer.drawMap(canvas, map);
             renderer.updateMoveables(map, path);
+            schenario.trigger(map,mGameView.getContext(),handler,renderer::fromAbsoluteToTilePosition,renderer::fromTileToAbsolutePosition);
 
     }
 
@@ -131,7 +133,7 @@ public class TheGame extends GameThread {
                 Position tilePosition=renderer.fromAbsoluteToTilePosition(new Position(
                         Float.valueOf(x).intValue(),Float.valueOf(y).intValue()));
                 Position absolutePosition = renderer.fromTileToAbsolutePosition(tilePosition);
-                if(!path.existsInPath(tilePosition)){
+                if(!path.existsInPath(tilePosition) && !map.existsDrawableAtPosition(tilePosition)){
                     Drawable d = new FireTower(mGameView.getContext(),absolutePosition);
                     map.setDrawableAtPosition(tilePosition,d);
                     Log.i(loggerTag,"actionOnTouch added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);

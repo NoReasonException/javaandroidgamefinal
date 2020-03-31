@@ -5,10 +5,11 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.Actionable;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
 
-public class Drawable {
+abstract public class Drawable implements Actionable {
     protected final int DEFAULT_ANIMATOR=0;
     protected Position absolutePosition;
     protected List<DrawableAnimator> animators =new ArrayList<>();

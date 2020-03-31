@@ -272,7 +272,12 @@ public enum Element {
             R.drawable.gbl12,
             R.drawable.gbl13
 
-    },13,0);
+    },13,0),
+    FIREPROJECTILE(new int[]{
+            R.drawable.fp1,
+            R.drawable.fp2,
+
+    },2,0);
 
 
 

@@ -7,6 +7,7 @@ import android.util.Pair;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 
@@ -32,6 +33,12 @@ public class Map {
             return d;
         }
     }
+
+    public boolean existsDrawableAtPosition(Position p){
+        synchronized (map){
+            return map.containsKey(p);
+        }
+    }
     public Drawable setDrawableAtPosition(Position p, Drawable d ){
         synchronized (map){
             Drawable prev = map.put(p,d);
@@ -40,10 +47,15 @@ public class Map {
         }
 
     }
-    public Drawable moveDrawable(Position p , Drawable d){
+    public Drawable moveDrawable(Position old,Position newp , Drawable d){
         synchronized (map){
-            map.put(p,d);
-            Log.i(loggerTag,".moveDrawable moved object "+d+" to "+p.toString());
+            if(map.get(old)!=null && (map.get(old)!= d||map.get(newp)!=null)){
+                Log.w(loggerTag,"invalid call of .moveDrawable by object "+d+" to "+newp.toString()+" another object exists there");
+                return d;
+            }
+            map.remove(old);
+            map.put(newp,d);
+            Log.i(loggerTag,".moveDrawable moved object "+d+" to "+newp.toString());
             return d;
         }
     }
