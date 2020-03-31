@@ -117,6 +117,7 @@ public class Renderer {
             if(d!=null){
                 d.getNextAction(
                         path,
+                        context,
                         this::fromAbsoluteToTilePosition,
                         this::fromTileToAbsolutePositionWithRedundancy)
                         .performAction(map);

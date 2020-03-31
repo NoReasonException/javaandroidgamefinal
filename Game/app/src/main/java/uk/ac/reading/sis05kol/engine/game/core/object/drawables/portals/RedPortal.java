@@ -16,7 +16,7 @@ public class RedPortal extends Drawable {
     }
 
     @Override
-    public Action getNextAction(Path p, Function<Position, Position> fromAbsoluteToTileConversion, Function<Position, Position> fromTileToAbsoluteConversion) {
+    public Action getNextAction(Path p,Context context, Function<Position, Position> fromAbsoluteToTileConversion, Function<Position, Position> fromTileToAbsoluteConversion) {
         return Action.buildIdleAction();
     }
 }

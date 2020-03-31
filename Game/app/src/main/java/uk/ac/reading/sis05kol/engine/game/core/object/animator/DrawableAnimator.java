@@ -7,6 +7,7 @@ import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import uk.ac.reading.sis05kol.engine.R;
@@ -15,7 +16,7 @@ import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
 public class DrawableAnimator {
 
     private Element element;
-    private List<Bitmap> bitmapArray=new ArrayList<>();
+    protected List<Bitmap> bitmapArray=new ArrayList<>();
     private int state ;
 
     public DrawableAnimator(Element element,Context context) {
@@ -23,6 +24,7 @@ public class DrawableAnimator {
         this.state = 0;
         this.bitmapArray= resourcesToMemory(element,context);
     }
+
     public DrawableAnimator(Element element, Context context,float scale) {
         this(element,context);
 

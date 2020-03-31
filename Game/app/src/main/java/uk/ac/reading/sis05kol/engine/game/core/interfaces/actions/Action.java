@@ -14,8 +14,11 @@ abstract public class Action {
                                          Function<Position,Position>fromTileToAbsolutePosition){
         return new MoveAction(oldPos,newPos,entity,fromAbsoluteToTilePosition,fromTileToAbsolutePosition);
     }
-    public static Action buildEmplaceObjectAction(){
-        return new EmplaceObjectAction();
+    public static Action buildEmplaceObjectAction(Drawable entity,
+                                                  Function<Position,Position>fromAbsoluteToTilePosition,
+                                                  Function<Position,Position>fromTileToAbsolutePosition){
+        return new EmplaceObjectAction(entity,fromAbsoluteToTilePosition,fromTileToAbsolutePosition);
+
     }
     public static Action buildIdleAction(){
         return new IdleAction();

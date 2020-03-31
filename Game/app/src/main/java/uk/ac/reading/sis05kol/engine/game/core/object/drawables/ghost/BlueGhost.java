@@ -38,7 +38,7 @@ public class BlueGhost extends Drawable{
     }
 
     @Override
-    public Action getNextAction(Path path, Function<Position, Position> fromAbsoluteToTileConversion, Function<Position, Position> fromTileToAbsoluteConversion) {
+    public Action getNextAction(Path path,Context context, Function<Position, Position> fromAbsoluteToTileConversion, Function<Position, Position> fromTileToAbsoluteConversion) {
         Position tilePosition = fromAbsoluteToTileConversion.apply(getAbsolutePosition());
         Path.Node currNode=path.getNodeByPosition(tilePosition);
 
