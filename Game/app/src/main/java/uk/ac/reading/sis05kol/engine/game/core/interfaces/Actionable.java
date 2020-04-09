@@ -4,12 +4,24 @@ import android.arch.core.util.Function;
 import android.content.Context;
 
 import uk.ac.reading.sis05kol.engine.game.core.interfaces.actions.Action;
+import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 
 public interface Actionable {
     public Action getNextAction(Path p,
-                                Context context,
-                                Function<Position,Position> fromAbsoluteToTileConversion,
-                                Function<Position,Position> fromTileToAbsoluteConversion);
+                                Map m,
+                                Context context);
+    //,
+    //                        this::fromAbsoluteToTilePosition,
+    //                        this::fromTileToAbsolutePositionWithRedundancy
+
+    default public Function<Void,Void> getOnCollisionHandler() {
+        return new Function<Void, Void>() {
+            @Override
+            public Void apply(Void input) {
+                return null;
+            }
+        };
+    }
 }

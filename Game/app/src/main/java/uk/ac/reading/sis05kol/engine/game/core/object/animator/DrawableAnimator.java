@@ -1,16 +1,12 @@
 package uk.ac.reading.sis05kol.engine.game.core.object.animator;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import uk.ac.reading.sis05kol.engine.R;
+import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
 
 public class DrawableAnimator {
@@ -18,17 +14,14 @@ public class DrawableAnimator {
     private Element element;
     protected List<Bitmap> bitmapArray=new ArrayList<>();
     private int state ;
+    private LevelInfo levelInfo;
 
-    public DrawableAnimator(Element element,Context context) {
+    public DrawableAnimator(Element element, Context context, LevelInfo levelInfo) {
         this.element = element;
         this.state = 0;
+        this.levelInfo=levelInfo;
         this.bitmapArray= resourcesToMemory(element,context);
-    }
-
-    public DrawableAnimator(Element element, Context context,float scale) {
-        this(element,context);
-
-        bitmapArray=reshapeResources(bitmapArray,scale);
+        bitmapArray=reshapeResources(bitmapArray,levelInfo.getScale());
     }
     private List<Bitmap> reshapeResources(List<Bitmap>resources, float scale){
         return resources.stream().

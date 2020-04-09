@@ -8,12 +8,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import android.arch.core.util.Function;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.Actionable;
 import uk.ac.reading.sis05kol.engine.game.core.interfaces.actions.Action;
+import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
+import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
+import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
 
 public class BlueGhost extends Drawable{
@@ -24,12 +26,19 @@ public class BlueGhost extends Drawable{
     private int currentIndex=DOWNINDEX;
     private static String loggerTag="BLUEGHOST";
     private Random random=new Random();
-    public BlueGhost(Context context, Position absolutePosition) {
+    private int acceptablePixelDeviation=5;
+    private int speed=3;
+    private int plusSpeedOffset=1;
+
+    private Path.Node currentNode;
+
+    private boolean toDestruct=false;
+    public BlueGhost(Context context, LevelInfo levelInfo, Position absolutePosition) {
         super(Arrays.asList(
-                new DrawableAnimator(Element.GHOSTBLUEDOWN, context,0.2f),
-                new DrawableAnimator(Element.GHOSTBLUEUP, context,0.2f),
-                new DrawableAnimator(Element.GHOSTBLUERIGHT, context,0.2f),
-                new DrawableAnimator(Element.GHOSTBLUELEFT, context,0.2f)),absolutePosition);
+                new DrawableAnimator(Element.GHOSTBLUEDOWN, context,levelInfo),
+                new DrawableAnimator(Element.GHOSTBLUEUP, context,levelInfo),
+                new DrawableAnimator(Element.GHOSTBLUERIGHT, context,levelInfo),
+                new DrawableAnimator(Element.GHOSTBLUELEFT, context,levelInfo)),absolutePosition);
     }
 
     @Override
@@ -38,32 +47,98 @@ public class BlueGhost extends Drawable{
     }
 
     @Override
-    public Action getNextAction(Path path,Context context, Function<Position, Position> fromAbsoluteToTileConversion, Function<Position, Position> fromTileToAbsoluteConversion) {
-        Position tilePosition = fromAbsoluteToTileConversion.apply(getAbsolutePosition());
+    public Action getNextAction(Path path, Map map, Context context) {
+
+        if(toDestruct){
+            return Action.buildDeleteMeAction(null,null, CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(getAbsolutePosition()),this);
+        }
+
+        Position tilePosition = CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(getAbsolutePosition());
         Path.Node currNode=path.getNodeByPosition(tilePosition);
 
-        Log.i(loggerTag,"i am in"+getAbsolutePosition()+" node "+String.valueOf(currNode));
-        if(currNode==null){
-            Position newPosition = getAbsolutePosition().setX(getAbsolutePosition().getX()+random.nextInt(10)).setY(getAbsolutePosition().getY()+random.nextInt(10));
-            return Action.buildMoveAction(
-                    tilePosition,newPosition,this,fromAbsoluteToTileConversion,fromTileToAbsoluteConversion
-            );
+        if(currentNode==null){
+            currentNode=currNode;
         }
-        currentIndex=currNode.getAnimatorIndex();
-        List<Path.Node> nodes = currNode.getLinks();
+        else if(currNode!=null && currentNode.getLinks().contains(currNode)){
+            currentNode=currNode;
+            Log.i(loggerTag,"i am in"+getAbsolutePosition()+" node "+String.valueOf(currentNode));
+        }
+
+
+
+
+
+
+
+        Log.i(loggerTag,"i am in"+getAbsolutePosition()+" node "+String.valueOf(currentNode));
+
+        currentIndex=currentNode.getAnimatorIndex();
+        List<Path.Node> nodes = currentNode.getLinks();
         if(nodes==null||nodes.size()==0){
             Position newPosition = getAbsolutePosition();
-            return Action.buildMoveAction(tilePosition,newPosition,this,fromAbsoluteToTileConversion,fromTileToAbsoluteConversion);
+            return Action.buildMoveAction(null,null,tilePosition,newPosition,this);
         }
         Path.Node next=nodes.get(0);
-        Log.i(loggerTag,"i am in node "+String.valueOf(currNode)+" and next node is"+next);
+        Log.i(loggerTag,"i am in node "+String.valueOf(currentNode)+" and next node is"+next);
         Position tilePositionNext=next.getPosition();
-        Position absolutePositionNext=fromTileToAbsoluteConversion.apply(tilePositionNext);
-        Position newPosition= getAbsolutePosition().
-                setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? 4 : -4))
-                .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?4:-4));
+        Position absolutePositionNext=CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(tilePositionNext);
 
-        return Action.buildMoveAction(tilePosition,newPosition,this,fromAbsoluteToTileConversion,fromTileToAbsoluteConversion);
+        int xDeviation=Math.abs(absolutePositionNext.getX()-getAbsolutePosition().getX());
+        int yDeviation=Math.abs(absolutePositionNext.getY()-getAbsolutePosition().getY());
+        Position newPosition;
+        if(xDeviation<=acceptablePixelDeviation){
+            if(yDeviation>acceptablePixelDeviation) {
+                newPosition= getAbsolutePosition()
+                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed+plusSpeedOffset:-speed));
+            }else {
+                newPosition= getAbsolutePosition().
+                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed +plusSpeedOffset: -speed))
+                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed+plusSpeedOffset:-speed));
+            }
+        }else if(yDeviation<=acceptablePixelDeviation){
+            if(xDeviation>acceptablePixelDeviation) {
+                newPosition= getAbsolutePosition().
+                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed+plusSpeedOffset : -speed));
+            }
+            else {
+                newPosition= getAbsolutePosition().
+                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed +plusSpeedOffset: -speed))
+                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed+plusSpeedOffset:-speed));
+            }
+        }
+        else {
+            newPosition= getAbsolutePosition().
+                    setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed +plusSpeedOffset: -speed))
+                    .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed+plusSpeedOffset:-speed));
+        }
 
+
+
+        return Action.buildMoveAction(null,null,tilePosition,newPosition,this);
+
+    }
+
+    public void setToDestruct(boolean toDestruct) {
+        this.toDestruct = toDestruct;
+    }
+
+    @Override
+    public Function<Void, Void> getOnCollisionHandler() {
+
+
+        return new Function<Void, Void>() {
+            BlueGhost drawable;
+
+            @Override
+            public Void apply(Void input) {
+                //drawable.setToDestruct(true);
+                return null;
+
+            }
+            public Function<Void, Void>init(BlueGhost drawable){
+                this.drawable=drawable;
+                return this;
+            }
+        }.init(this);
     }
 }

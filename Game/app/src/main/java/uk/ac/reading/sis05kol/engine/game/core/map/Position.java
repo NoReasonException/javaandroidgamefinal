@@ -27,6 +27,13 @@ public class Position {
     public Position setY(int y) {
         return new Position(this.x,y);
     }
+    public Position addX(int offset) {
+        return new Position(x+offset,this.y);
+    }
+
+    public Position addY(int offset) {
+        return new Position(this.x+offset,y);
+    }
 
     @Override
     public boolean equals(Object o) {

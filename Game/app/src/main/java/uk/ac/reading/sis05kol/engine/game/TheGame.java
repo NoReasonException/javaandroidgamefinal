@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import uk.ac.reading.sis05kol.engine.R;
+import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
+import uk.ac.reading.sis05kol.engine.game.core.info.RendererInfo;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
@@ -22,8 +24,10 @@ import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.RedPorta
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
 import uk.ac.reading.sis05kol.engine.game.core.schenario.DifficultyLevel1;
 import uk.ac.reading.sis05kol.engine.game.core.schenario.Schenario;
+import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 import uk.ac.reading.sis05kol.engine.game.engine.GameThread;
 import uk.ac.reading.sis05kol.engine.game.engine.GameView;
+
 
 public class TheGame extends GameThread {
 
@@ -31,7 +35,6 @@ public class TheGame extends GameThread {
     private Map map;
     private Position bottomLeftMaxPosition;
     private Renderer renderer;
-    private int tileCountX;
     private String loggerTag="THEGAME";
 
     private List<Bitmap> grass;
@@ -40,19 +43,51 @@ public class TheGame extends GameThread {
 
     private Handler handler=new Handler();
     private Schenario schenario;
+    private LevelInfo levelInfo;
+    private RendererInfo rendererInfo;
 
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView) {
         //House keeping
         super(gameView);
 
+        levelInfo=new LevelInfo(7,0.08f);
         grass= loadGrass(gameView);
         sand=loadSand(gameView);
-        schenario=new DifficultyLevel1();
-
-
-
+        schenario=new DifficultyLevel1(levelInfo);
     }
+    //This is run before a new game (also after an old game)
+    @Override
+    public void setupBeginning() {
+
+        Pair<Integer,Integer>screenSize=new Pair<Integer,Integer>(
+                Double.valueOf(mCanvasWidth).intValue(),
+                Double.valueOf(mCanvasHeight).intValue());
+
+
+
+        renderer=new Renderer(screenSize,levelInfo,mGameView.getContext());
+        rendererInfo=renderer.getInfo();
+        //levelInfo=levelInfo.setInitialPositionOfObjectOffset(new Pair<Integer,Integer>(Double.valueOf(renderer.getTileSizeXY().first*0.1).intValue(),Double.valueOf(renderer.getTileSizeXY().second*0.1).intValue()));
+
+
+
+
+
+
+
+        grass=scaleTiles(grass,renderer.getTileSizeXY());
+        sand=scaleTiles(sand,renderer.getTileSizeXY());
+        path=Path.getTesting();
+        Drawable portal = new BluePortal(mGameView.getContext(), CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(0,0)),levelInfo);
+        Drawable portalend = new RedPortal(mGameView.getContext(),CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(3,7)),levelInfo);
+
+        map = new Map(portal,portalend,renderer.getTileCountXY());
+
+
+        Log.i(loggerTag,".setupBeginning() Complete");
+    }
+
 
     public List<Bitmap> loadGrass(GameView gameView){
 
@@ -88,27 +123,6 @@ public class TheGame extends GameThread {
                 collect(Collectors.toList());
     }
 
-    //This is run before a new game (also after an old game)
-    @Override
-    public void setupBeginning() {
-
-        Pair<Integer,Integer>screenSize=new Pair<Integer,Integer>(
-                Double.valueOf(mCanvasWidth).intValue(),
-                Double.valueOf(mCanvasHeight).intValue());
-        tileCountX=4;
-        renderer=new Renderer(screenSize,tileCountX,mGameView.getContext());
-
-        grass=scaleTiles(grass,renderer.getTileSizeXY());
-        sand=scaleTiles(sand,renderer.getTileSizeXY());
-        path=Path.getTesting();
-        Drawable portal = new BluePortal(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(0,0)));
-        Drawable portalend = new RedPortal(mGameView.getContext(),renderer.fromTileToAbsolutePosition(new Position(3,7)));
-
-        map = new Map(portal,portalend,renderer.getTileCountXY());
-
-
-        Log.i(loggerTag,".setupBeginning() Complete");
-    }
 
     @Override
     protected void doDraw(Canvas canvas) {
@@ -118,7 +132,7 @@ public class TheGame extends GameThread {
             renderer.drawPath(canvas, sand, path);
             renderer.drawMap(canvas, map);
             renderer.updateMoveables(map, path);
-            schenario.trigger(map,mGameView.getContext(),handler,renderer::fromAbsoluteToTilePosition,renderer::fromTileToAbsolutePosition);
+            renderer.updateSchenario(schenario,handler,map);
 
     }
 
@@ -130,15 +144,16 @@ public class TheGame extends GameThread {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Position tilePosition=renderer.fromAbsoluteToTilePosition(new Position(
+                Position tilePosition=CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(new Position(
                         Float.valueOf(x).intValue(),Float.valueOf(y).intValue()));
-                Position absolutePosition = renderer.fromTileToAbsolutePosition(tilePosition);
-                if(!path.existsInPath(tilePosition) && !map.existsDrawableAtPosition(tilePosition)){
-                    Drawable d = new FireTower(mGameView.getContext(),absolutePosition);
+                Position absolutePosition = CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(tilePosition);
+                absolutePosition=absolutePosition.addX(rendererInfo.getInitialPositionOfObjectOffset().first).addY(rendererInfo.getInitialPositionOfObjectOffset().second);
+                if(!path.existsInPath(tilePosition) && !map.existsObjectAtPosition(tilePosition)){
+                    Drawable d = new FireTower(mGameView.getContext(),levelInfo,absolutePosition);
                     map.setDrawableAtPosition(tilePosition,d);
                     Log.i(loggerTag,"actionOnTouch added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
                 }else {
-                    Log.i(loggerTag,"actionOnTouch not added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
+                    Log.i(loggerTag,"actionOnTouch not added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition+" exists? "+map.getDrawableAtPosition(tilePosition));
                 }
 
             }

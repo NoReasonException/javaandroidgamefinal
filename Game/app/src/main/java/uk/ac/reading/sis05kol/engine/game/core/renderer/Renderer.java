@@ -4,18 +4,22 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
 import uk.ac.reading.sis05kol.engine.R;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.Actionable;
+import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
+import uk.ac.reading.sis05kol.engine.game.core.info.RendererInfo;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.actions.Action;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
+import uk.ac.reading.sis05kol.engine.game.core.schenario.Schenario;
+import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
 public class Renderer {
     private Pair<Integer,Integer> screenSize;   //screenSize given
@@ -24,24 +28,27 @@ public class Renderer {
     private Context context;
     private Bitmap test;
     private int x = 0;
-
-
     private String loggerTag="RENDERER";
-
     private HashMap<Pair<Integer,Integer>,Integer> randomGrassTileIndex =new HashMap<>();
     private HashMap<Position,Integer> randomSandTileIndex =new HashMap<>();
     private Random random =new Random();
+    private LevelInfo levelInfo;
+    private RendererInfo rendererInfo;
 
 
-    public Renderer(Pair<Integer, Integer> screenSize,int tileCountX,Context context) {
+
+    public Renderer(Pair<Integer, Integer> screenSize, LevelInfo levelInfo, Context context) {
         this.screenSize = screenSize;
         this.context=context;
+        this.levelInfo=levelInfo;
         test=BitmapFactory.decodeResource
                 (context.getResources(),
                         R.drawable.small_red_ball);
 
-        tileCountXY=tileCountXYCalculate(screenSize,tileCountX);
+
+        tileCountXY=tileCountXYCalculate(screenSize,levelInfo.getTileCountX());
         tileSizeXY=tileSizeXYCalculate(screenSize,tileCountXY);
+        CoordinateSystemUtils.initInstance(tileCountXY,tileSizeXY);
 
     }
     public Pair<Integer,Integer> tileCountXYCalculate(Pair<Integer,Integer>screenSize,int tileCount){
@@ -108,41 +115,33 @@ public class Renderer {
             Drawable d=map.getDrawableAtPosition(p);
             canvas.drawBitmap(d.getBitmap(),d.getAbsolutePosition().getX(),d.getAbsolutePosition().getY(),null);
         }
-
     }
-    public void updateMoveables(Map map,Path path){
-        for (Position p: map.getDrawableObjects()) {
+    public void updateMoveables(Map map,Path path) {
+        for (Position p : map.getDrawableObjects()) {
             Drawable d = map.getDrawableAtPosition(p);
             //TODO bug fixme! https://app.asana.com/0/1168799679896241/1169218700246419
-            if(d!=null){
+            if (d != null) {
                 d.getNextAction(
                         path,
-                        context,
-                        this::fromAbsoluteToTilePosition,
-                        this::fromTileToAbsolutePositionWithRedundancy)
-                        .performAction(map);
+                        map,
+                        context)
+                        .performAction(map,getInfo(),levelInfo);
             }
         }
     }
+    public void updateSchenario(Schenario schenario, Handler canvasThreadHandler, Map map){
+        schenario.trigger(map,context,canvasThreadHandler).performAction(map,rendererInfo,levelInfo);
+    }
 
-    public Position fromAbsoluteToTilePosition(Position absolutePosition){
-        return new Position(
-                absolutePosition.getX()/tileSizeXY.first,
-                absolutePosition.getY()/tileSizeXY.second
-        );
+    public RendererInfo getInfo(){
+        return rendererInfo==null?(rendererInfo=new RendererInfo(screenSize,tileCountXY,tileSizeXY)):rendererInfo;
     }
-    public Position fromTileToAbsolutePosition(Position tilePosition){
-        return new Position(
-                tilePosition.getX()*tileSizeXY.first,
-                tilePosition.getY()*tileSizeXY.second
-        );
+
+
+    public void scheduleAction(Action action,Map map){
+        action.performAction(map,rendererInfo,levelInfo);
     }
-    public Position fromTileToAbsolutePositionWithRedundancy(Position tilePosition){
-        return new Position(
-                tilePosition.getX()*tileSizeXY.first+random.nextInt(20),
-                tilePosition.getY()*tileSizeXY.second+random.nextInt(20)
-        );
-    }
+
 
     public Pair<Integer, Integer> getTileSizeXY() {
         return tileSizeXY;

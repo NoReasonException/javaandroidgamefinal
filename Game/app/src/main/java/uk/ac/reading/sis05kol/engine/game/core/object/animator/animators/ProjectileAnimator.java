@@ -1,25 +1,23 @@
 package uk.ac.reading.sis05kol.engine.game.core.object.animator.animators;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
-
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
 import uk.ac.reading.sis05kol.engine.game.core.utils.BitmapUtils;
 import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
 
 public class ProjectileAnimator extends DrawableAnimator {
     private float angle;
-    public ProjectileAnimator(Element element, Context context,float angle) {
-        super(element, context);
+    public ProjectileAnimator(Element element, Context context, LevelInfo levelInfo) {
+        super(element, context,levelInfo);
         this.angle=angle;
     }
 
-    public ProjectileAnimator(Element element, Context context, float scale,float angle) {
-        super(element, context, scale);
+    public ProjectileAnimator(Element element, Context context, LevelInfo levelInfo,float angle) {
+        super(element, context, levelInfo);
         Log.e("CCC","executed at angle "+angle);
         this.angle=angle;
         rotateBitmaps();

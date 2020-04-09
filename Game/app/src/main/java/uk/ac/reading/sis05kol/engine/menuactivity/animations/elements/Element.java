@@ -274,10 +274,10 @@ public enum Element {
 
     },13,0),
     FIREPROJECTILE(new int[]{
-            R.drawable.fp1,
+            R.drawable.yellow_ball,
             R.drawable.fp2,
 
-    },2,0);
+    },1,0);
 
 
 
