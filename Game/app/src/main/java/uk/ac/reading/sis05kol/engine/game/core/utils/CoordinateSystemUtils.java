@@ -32,8 +32,8 @@ public class CoordinateSystemUtils {
     }
     public Position fromTileToAbsolutePositionWithRedundancy(Position tilePosition){
         return new Position(
-                tilePosition.getX()*tileSizeXY.first+random.nextInt(20),
-                tilePosition.getY()*tileSizeXY.second+random.nextInt(20)
+                tilePosition.getX()*tileSizeXY.first+random.nextInt(15),
+                tilePosition.getY()*tileSizeXY.second+random.nextInt(15)
         );
     }
     public static CoordinateSystemUtils initInstance(Pair<Integer, Integer> tileCountXY, Pair<Integer, Integer> tileSizeXY) {

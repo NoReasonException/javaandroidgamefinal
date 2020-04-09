@@ -70,17 +70,13 @@ public class TheGame extends GameThread {
         rendererInfo=renderer.getInfo();
         //levelInfo=levelInfo.setInitialPositionOfObjectOffset(new Pair<Integer,Integer>(Double.valueOf(renderer.getTileSizeXY().first*0.1).intValue(),Double.valueOf(renderer.getTileSizeXY().second*0.1).intValue()));
 
-
-
-
-
-
-
         grass=scaleTiles(grass,renderer.getTileSizeXY());
         sand=scaleTiles(sand,renderer.getTileSizeXY());
-        path=Path.getTesting();
+        path=Path.getWithTileCountX7();
+
+
         Drawable portal = new BluePortal(mGameView.getContext(), CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(0,0)),levelInfo);
-        Drawable portalend = new RedPortal(mGameView.getContext(),CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(3,7)),levelInfo);
+        Drawable portalend = new RedPortal(mGameView.getContext(),CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(rendererInfo.getTileCountXY().first-1,rendererInfo.getTileCountXY().second-1)),levelInfo);
 
         map = new Map(portal,portalend,renderer.getTileCountXY());
 

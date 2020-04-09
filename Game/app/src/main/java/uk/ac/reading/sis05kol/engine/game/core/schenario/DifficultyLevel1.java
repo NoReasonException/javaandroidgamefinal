@@ -12,7 +12,7 @@ import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
 public class DifficultyLevel1 implements Schenario {
     private int state=0;
-    private int max=500;
+    private int max=250;
     private LevelInfo levelInfo;
     public static String loggerTag ="DIFFICULTYLEVEL1";
 
@@ -44,7 +44,7 @@ public class DifficultyLevel1 implements Schenario {
                 }
             }.init(map,context,levelInfo));*/
             return Action.buildEmplaceObjectAction(null,null,
-                    new BlueGhost(context,levelInfo, CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(1,1))));
+                    new BlueGhost(context,levelInfo, CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(2,0))));
         }
         return Action.buildIdleAction(null,null);
     }

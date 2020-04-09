@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -31,6 +32,8 @@ public class BlueGhost extends Drawable{
     private int plusSpeedOffset=1;
 
     private Path.Node currentNode;
+    private Path.Node nextNode;
+    private ArrayList<Path.Node> visitedNodes=new ArrayList<>();
 
     private boolean toDestruct=false;
     public BlueGhost(Context context, LevelInfo levelInfo, Position absolutePosition) {
@@ -53,68 +56,80 @@ public class BlueGhost extends Drawable{
             return Action.buildDeleteMeAction(null,null, CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(getAbsolutePosition()),this);
         }
 
+
+        plusSpeedOffset=random.nextInt(2);
+
         Position tilePosition = CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(getAbsolutePosition());
         Path.Node currNode=path.getNodeByPosition(tilePosition);
 
+
         if(currentNode==null){
             currentNode=currNode;
-        }
-        else if(currNode!=null && currentNode.getLinks().contains(currNode)){
-            currentNode=currNode;
-            Log.i(loggerTag,"i am in"+getAbsolutePosition()+" node "+String.valueOf(currentNode));
+            nextNode=currentNode.getRandomNext();
         }
 
-
-
-
-
-
-
-        Log.i(loggerTag,"i am in"+getAbsolutePosition()+" node "+String.valueOf(currentNode));
+        if(nextNode==null){
+            return Action.buildIdleAction(null,null);
+        }
+        /*if(currNode!=null&&currNode!=currentNode){
+            if(currNode==nextNode && !visitedNodes.contains(currNode)){
+                currentNode=currNode;
+                visitedNodes.add(currNode);
+                nextNode=currNode.getRandomNext();
+            }
+            else{
+                //donothing
+            }
+        }*/
 
         currentIndex=currentNode.getAnimatorIndex();
-        List<Path.Node> nodes = currentNode.getLinks();
-        if(nodes==null||nodes.size()==0){
-            Position newPosition = getAbsolutePosition();
-            return Action.buildMoveAction(null,null,tilePosition,newPosition,this);
-        }
-        Path.Node next=nodes.get(0);
+        Path.Node next=nextNode;
+
+
         Log.i(loggerTag,"i am in node "+String.valueOf(currentNode)+" and next node is"+next);
         Position tilePositionNext=next.getPosition();
-        Position absolutePositionNext=CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(tilePositionNext);
+        Position absolutePositionNext=CoordinateSystemUtils.getInstance().fromTileToAbsolutePositionWithRedundancy(tilePositionNext);
 
         int xDeviation=Math.abs(absolutePositionNext.getX()-getAbsolutePosition().getX());
         int yDeviation=Math.abs(absolutePositionNext.getY()-getAbsolutePosition().getY());
+
         Position newPosition;
+
         if(xDeviation<=acceptablePixelDeviation){
             if(yDeviation>acceptablePixelDeviation) {
                 newPosition= getAbsolutePosition()
-                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed+plusSpeedOffset:-speed));
+                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed:-speed));
             }else {
                 newPosition= getAbsolutePosition().
-                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed +plusSpeedOffset: -speed))
-                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed+plusSpeedOffset:-speed));
+                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed: -speed))
+                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed:-speed));
             }
         }else if(yDeviation<=acceptablePixelDeviation){
             if(xDeviation>acceptablePixelDeviation) {
                 newPosition= getAbsolutePosition().
-                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed+plusSpeedOffset : -speed));
+                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed : -speed));
             }
             else {
                 newPosition= getAbsolutePosition().
-                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed +plusSpeedOffset: -speed))
-                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed+plusSpeedOffset:-speed));
+                        setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed : -speed))
+                        .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed:-speed));
             }
         }
         else {
             newPosition= getAbsolutePosition().
-                    setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed +plusSpeedOffset: -speed))
-                    .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed+plusSpeedOffset:-speed));
+                    setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() >= getAbsolutePosition().getX() ? speed : -speed))
+                    .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>=getAbsolutePosition().getY()?speed:-speed));
+        }
+        if(xDeviation<=acceptablePixelDeviation && yDeviation<=acceptablePixelDeviation){
+            currentNode=nextNode;
+            if(currentNode==null){
+                return Action.buildIdleAction(null,null);
+            }
+            nextNode=currentNode.getRandomNext();
         }
 
 
-
-        return Action.buildMoveAction(null,null,tilePosition,newPosition,this);
+        return Action.buildMoveAction(null,null,getAbsolutePosition(),newPosition,this);
 
     }
 

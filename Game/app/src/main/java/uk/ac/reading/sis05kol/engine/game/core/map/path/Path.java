@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
@@ -14,6 +15,7 @@ public class Path {
     private Node first;
     private static String loggerTag="PATH";
     private static Path instance;
+    private static Path instancex7;
 
     private static final int DOWNINDEX=0;
     private static final int UPINDEX=1;
@@ -25,7 +27,20 @@ public class Path {
         private List<Node> links=new ArrayList<Node>();
         private Random random=new Random();
 
-        public Node(Position position, List<Node> links,int animatorIndex) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return Objects.equals(position, node.position);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(position);
+        }
+
+        public Node(Position position, List<Node> links, int animatorIndex) {
             this.position = position;
             this.links = links;
             this.animatorIndex=animatorIndex;
@@ -64,6 +79,7 @@ public class Path {
          * @return Node
          */
         public Node getRandomNext() {
+            if(links.isEmpty()) return null;
             int next = Math.abs(random.nextInt(links.size()));
             return links.get(next);
         }
@@ -80,7 +96,7 @@ public class Path {
         return first;
     }
 
-    public static Path getTesting(){
+    public static Path getWithTileCountX4(){
         if(instance==null) {
             Node i42ref;
             Node i53ref;
@@ -140,6 +156,133 @@ public class Path {
 
         }
         return instance;
+
+    }
+    //nodexy
+    public static Path getWithTileCountX7(){
+        //Main Path
+        Node node10=new Node(new Position(1,0),RIGHTINDEX);
+        Node node20=new Node(new Position(2,0),RIGHTINDEX);
+        Node node30=new Node(new Position(3,0),RIGHTINDEX);
+
+        Node node30ref= node10
+                .addNode(node20)
+                .addNode(node30);
+
+        Node node40=new Node(new Position(4,0),DOWNINDEX);
+        Node node41=new Node(new Position(4,1),DOWNINDEX);
+        Node node42=new Node(new Position(4,2),DOWNINDEX);
+        Node node43=new Node(new Position(4,3),DOWNINDEX);
+        Node node44=new Node(new Position(4,4),DOWNINDEX);
+
+        Node node44ref=node40
+                .addNode(node41)
+                .addNode(node42)
+                .addNode(node43)
+                .addNode(node44);
+
+        node30ref.addNode(node40);
+
+
+        Node node34=new Node(new Position(3,4),LEFTINDEX);
+        Node node24=new Node(new Position(2,4),LEFTINDEX);
+        Node node14=new Node(new Position(1,4),DOWNINDEX);
+
+        Node node14ref = node34
+                .addNode(node24)
+                .addNode(node14);
+
+        node44ref.addNode(node34);
+
+
+        Node node15=new Node(new Position(1,5),DOWNINDEX);
+        Node node16=new Node(new Position(1,6),DOWNINDEX);
+        Node node17=new Node(new Position(1,7),DOWNINDEX);
+        Node node18=new Node(new Position(1,8),DOWNINDEX);
+        Node node19=new Node(new Position(1,9),LEFTINDEX);
+
+        Node node19ref=node15
+                .addNode(node16)
+                .addNode(node17)
+                .addNode(node18)
+                .addNode(node19);
+
+        node14ref.addNode(node15);
+
+        Node node09=new Node(new Position(0,9),DOWNINDEX);
+        Node node0_10=new Node(new Position(0,10),DOWNINDEX);
+        Node node0_11=new Node(new Position(0,11),RIGHTINDEX);
+
+        Node node0_11ref=node09
+                .addNode(node0_10)
+                .addNode(node0_11);
+
+        node19ref.addNode(node09);
+
+
+        Node node1_11=new Node(new Position(1,11),RIGHTINDEX);
+        Node node2_11=new Node(new Position(2,11),RIGHTINDEX);
+        Node node3_11=new Node(new Position(3,11),DOWNINDEX);
+
+        Node node3_11ref=node1_11
+                .addNode(node2_11)
+                .addNode(node3_11);
+
+        node0_11ref.addNode(node1_11);
+
+        Node node3_12=new Node(new Position(3,12),DOWNINDEX);
+        Node node3_13=new Node(new Position(3,13),RIGHTINDEX);
+
+        Node node3_13ref=node3_12.addNode(node3_13);
+
+        node3_11ref.addNode(node3_12);
+
+
+
+        Node node4_13=new Node(new Position(4,13),RIGHTINDEX);
+        Node node5_13=new Node(new Position(5,13),RIGHTINDEX);
+
+        Node node6_13ref=node4_13
+                .addNode(node5_13);
+
+        node3_13ref.addNode(node4_13);
+        //branch 01
+
+        Node node54=new Node(new Position(5,4),RIGHTINDEX);
+        Node node64=new Node(new Position(6,4),RIGHTINDEX);
+
+        Node node64ref=node54
+                .addNode(node64);
+
+        node44.addNode(node54);
+
+
+        Node node65=new Node(new Position(6,5),DOWNINDEX);
+        Node node66=new Node(new Position(6,6),DOWNINDEX);
+        Node node67=new Node(new Position(6,7),DOWNINDEX);
+        Node node68=new Node(new Position(6,8),DOWNINDEX);
+        Node node69=new Node(new Position(6,9),DOWNINDEX);
+        Node node6_10=new Node(new Position(6,10),DOWNINDEX);
+        Node node6_11=new Node(new Position(6,11),DOWNINDEX);
+        Node node6_12=new Node(new Position(6,12),DOWNINDEX);
+
+        Node node6_12ref=node65
+                .addNode(node66)
+                .addNode(node67)
+                .addNode(node68)
+                .addNode(node69)
+                .addNode(node6_10)
+                .addNode(node6_11)
+                .addNode(node6_12);
+
+        node64ref.addNode(node65);
+
+
+        if(instancex7==null) {
+            instancex7=new Path(new Pair<>(7,14),node10);
+
+        }
+        return instancex7;
 
     }
 

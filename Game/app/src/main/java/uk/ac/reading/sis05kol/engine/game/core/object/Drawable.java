@@ -43,7 +43,7 @@ abstract public class Drawable implements Actionable {
         return animators.get(DEFAULT_ANIMATOR).getBitmap();
     }
 
-    public void setAbsolutePosition(Position absolutePosition) {
-        this.absolutePosition = absolutePosition;
+    public void setAbsolutePosition(Position aposition) {
+        this.absolutePosition = aposition;
     }
 }

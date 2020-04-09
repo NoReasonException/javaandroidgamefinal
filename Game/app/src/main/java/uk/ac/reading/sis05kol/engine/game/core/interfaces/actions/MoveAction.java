@@ -1,6 +1,7 @@
 package uk.ac.reading.sis05kol.engine.game.core.interfaces.actions;
 
 import android.arch.core.util.Function;
+import android.util.Log;
 
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.info.RendererInfo;
