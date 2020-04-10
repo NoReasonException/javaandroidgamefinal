@@ -142,7 +142,6 @@ public class Renderer {
                         curr=(MapNonAwareActionAble) bullet;
                         curr.getNextNonMapAwareAction(path,map,context).performNonMapAwareAction(map,rendererInfo,levelInfo);
                     }
-
                 }
                 return null;
             }

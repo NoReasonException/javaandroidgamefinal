@@ -8,11 +8,16 @@ import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapAwareAction;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.BlueGhost;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.Ghost;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.GreenGhost;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.PurpleGhost;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.RedGhost;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
 public class DifficultyLevel1 implements Schenario {
     private int state=0;
     private int max=250;
+    private boolean blue=false;
     private LevelInfo levelInfo;
     public static String loggerTag ="DIFFICULTYLEVEL1";
 
@@ -43,8 +48,16 @@ public class DifficultyLevel1 implements Schenario {
 
                 }
             }.init(map,context,levelInfo));*/
+            Ghost a ;
+            if(blue){
+                a=new BlueGhost(context,levelInfo, CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(2,0)));
+                blue=false;
+            } else {
+                a=new RedGhost(context,levelInfo, CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(2,0)));
+                blue=true;
+            }
             return MapAwareAction.buildEmplaceObjectAction(null,null,
-                    new BlueGhost(context,levelInfo, CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(2,0))));
+                    a);
         }
         return MapAwareAction.buildIdleAction(null,null);
     }

@@ -9,6 +9,7 @@ import uk.ac.reading.sis05kol.engine.game.core.interfaces.nonAwareMapActions.map
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
+import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
 public class MoveAction extends MapNonAwareAction {
     private Drawable entity;
@@ -22,6 +23,11 @@ public class MoveAction extends MapNonAwareAction {
 
     @Override
     public MapNonAwareActionResult performNonMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
+        Position newTilePosition= CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(newAbsolutePosition);
+        if(map.existsObjectAtPosition(newTilePosition)){
+            Drawable d = map.getDrawableAtPosition(newTilePosition);
+            return MapNonAwareActionResult.buildCollicionDetectedAction(d);
+        }
         entity.setAbsolutePosition(newAbsolutePosition);
         return MapNonAwareActionResult.buildActionDone();
     }

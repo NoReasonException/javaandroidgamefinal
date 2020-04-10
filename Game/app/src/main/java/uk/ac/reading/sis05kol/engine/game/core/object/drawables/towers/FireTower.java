@@ -15,7 +15,7 @@ import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
-import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.BlueGhost;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.Ghost;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.projectiles.FireProjectile;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
@@ -29,7 +29,7 @@ public class FireTower extends Drawable {
     private LevelInfo levelInfo;
 
     private int testState=0;
-    private int testMaxState=50;
+    private int testMaxState=60;
 
     private BulletSystem bulletSystem;
 
@@ -67,7 +67,7 @@ public class FireTower extends Drawable {
             for (Position position : view) {
                 if (map.existsObjectAtPosition(position)) {
                     atPosition=map.getDrawableAtPosition(position);
-                    if (map.getDrawableAtPosition(position) instanceof BlueGhost) {
+                    if (map.getDrawableAtPosition(position) instanceof Ghost) {
                         return MapAwareAction.buildSubscribeBulletAction(null, null, getAbsolutePosition(),
                                 new FireProjectile(context, getAbsolutePosition(), atPosition.getAbsolutePosition(), levelInfo, bulletSystem), bulletSystem);
                     }
