@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.actions.Action;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapAwareAction;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.BlueGhost;
@@ -21,7 +21,7 @@ public class DifficultyLevel1 implements Schenario {
     }
 
     @Override
-    public Action trigger(Map map, Context context, Handler canvasThreadHandler) {
+    public MapAwareAction trigger(Map map, Context context, Handler canvasThreadHandler) {
         state=(state+1)%max;
 
         if(state==42){
@@ -43,9 +43,9 @@ public class DifficultyLevel1 implements Schenario {
 
                 }
             }.init(map,context,levelInfo));*/
-            return Action.buildEmplaceObjectAction(null,null,
+            return MapAwareAction.buildEmplaceObjectAction(null,null,
                     new BlueGhost(context,levelInfo, CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(2,0))));
         }
-        return Action.buildIdleAction(null,null);
+        return MapAwareAction.buildIdleAction(null,null);
     }
 }

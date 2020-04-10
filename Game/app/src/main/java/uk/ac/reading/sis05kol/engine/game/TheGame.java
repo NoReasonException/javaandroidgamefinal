@@ -21,6 +21,7 @@ import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.BluePortal;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.FireTower;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.RedPortal;
+import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
 import uk.ac.reading.sis05kol.engine.game.core.schenario.DifficultyLevel1;
 import uk.ac.reading.sis05kol.engine.game.core.schenario.Schenario;
@@ -46,6 +47,8 @@ public class TheGame extends GameThread {
     private LevelInfo levelInfo;
     private RendererInfo rendererInfo;
 
+    private BulletSystem bulletSystem;
+
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView) {
         //House keeping
@@ -55,6 +58,7 @@ public class TheGame extends GameThread {
         grass= loadGrass(gameView);
         sand=loadSand(gameView);
         schenario=new DifficultyLevel1(levelInfo);
+        bulletSystem=BulletSystem.getInstance();
     }
     //This is run before a new game (also after an old game)
     @Override
@@ -127,8 +131,11 @@ public class TheGame extends GameThread {
             renderer.drawBackground(canvas, grass);
             renderer.drawPath(canvas, sand, path);
             renderer.drawMap(canvas, map);
+            renderer.drawBullets(canvas,bulletSystem);
+            renderer.updateBullets(map,path,bulletSystem);
             renderer.updateMoveables(map, path);
             renderer.updateSchenario(schenario,handler,map);
+
 
     }
 
@@ -145,7 +152,7 @@ public class TheGame extends GameThread {
                 Position absolutePosition = CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(tilePosition);
                 absolutePosition=absolutePosition.addX(rendererInfo.getInitialPositionOfObjectOffset().first).addY(rendererInfo.getInitialPositionOfObjectOffset().second);
                 if(!path.existsInPath(tilePosition) && !map.existsObjectAtPosition(tilePosition)){
-                    Drawable d = new FireTower(mGameView.getContext(),levelInfo,absolutePosition);
+                    Drawable d = new FireTower(mGameView.getContext(),levelInfo,absolutePosition,bulletSystem);
                     map.setDrawableAtPosition(tilePosition,d);
                     Log.i(loggerTag,"actionOnTouch added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
                 }else {

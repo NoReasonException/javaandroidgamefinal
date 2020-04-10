@@ -1,17 +1,17 @@
-package uk.ac.reading.sis05kol.engine.game.core.interfaces.actions;
+package uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions;
 
 import android.arch.core.util.Function;
-import android.util.Log;
 
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.info.RendererInfo;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.actionResult.ActionResult;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapAwareAction;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.mapAwareActionResult.MapAwareActionResult;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
-public class MoveAction extends Action {
+public class MoveAction extends MapAwareAction {
     private Position oldPos;
     private Position newPos;
     private Drawable entity;
@@ -28,13 +28,13 @@ public class MoveAction extends Action {
     }
 
     @Override
-    public ActionResult performAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
+    public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
         if(map.moveDrawable(CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(entity.getAbsolutePosition()),CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(newPos),entity)){
             entity.setAbsolutePosition(newPos);
             informSubscribersAndCleanup(true);
-            return ActionResult.buildActionDone();
+            return MapAwareActionResult.buildActionDone();
         }
-        return ActionResult
+        return MapAwareActionResult
                 .buildCollisionDetectedResult(map
                         .getDrawableAtPosition(CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(entity.getAbsolutePosition())));
     }

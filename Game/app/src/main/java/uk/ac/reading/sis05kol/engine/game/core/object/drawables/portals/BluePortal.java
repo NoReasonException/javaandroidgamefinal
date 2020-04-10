@@ -2,7 +2,7 @@ package uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals;
 
 import android.content.Context;
 
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.actions.Action;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapAwareAction;
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
@@ -17,7 +17,7 @@ public class BluePortal extends Drawable {
     }
 
     @Override
-    public Action getNextAction(Path p, Map map, Context context) {
-        return Action.buildIdleAction(null,null);
+    public MapAwareAction getNextMapAwareAction(Path p, Map map, Context context) {
+        return MapAwareAction.buildIdleAction(null,null);
     }
 }

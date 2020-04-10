@@ -7,13 +7,18 @@ import android.graphics.Canvas;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
+
 import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.info.RendererInfo;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.actions.Action;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapAwareAction;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapNonAwareActionAble;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
@@ -116,21 +121,48 @@ public class Renderer {
             canvas.drawBitmap(d.getBitmap(),d.getAbsolutePosition().getX(),d.getAbsolutePosition().getY(),null);
         }
     }
+    public void drawBullets(Canvas canvas,BulletSystem bulletSystem){
+        bulletSystem.syncWithBulletSystem(new Function<ArrayList<Drawable>, Void>() {
+            @Override
+            public Void apply(ArrayList<Drawable> drawables) {
+                for (Drawable bullet: new ArrayList<>(drawables)) {
+                    canvas.drawBitmap(bullet.getBitmap(),bullet.getAbsolutePosition().getX(),bullet.getAbsolutePosition().getY(),null);
+                }
+                return null;
+            }
+        });
+    }
+    public void updateBullets(Map map,Path path,BulletSystem bulletSystem){
+        bulletSystem.syncWithBulletSystem(new Function<ArrayList<Drawable>, Void>() {
+            @Override
+            public Void apply(ArrayList<Drawable> drawables) {
+                MapNonAwareActionAble curr;
+                for (Drawable bullet: new ArrayList<>(drawables)) {
+                    if(bullet instanceof MapNonAwareActionAble){
+                        curr=(MapNonAwareActionAble) bullet;
+                        curr.getNextNonMapAwareAction(path,map,context).performNonMapAwareAction(map,rendererInfo,levelInfo);
+                    }
+
+                }
+                return null;
+            }
+        });
+    }
     public void updateMoveables(Map map,Path path) {
         for (Position p : map.getDrawableObjects()) {
             Drawable d = map.getDrawableAtPosition(p);
             //TODO bug fixme! https://app.asana.com/0/1168799679896241/1169218700246419
             if (d != null) {
-                d.getNextAction(
+                d.getNextMapAwareAction(
                         path,
                         map,
                         context)
-                        .performAction(map,getInfo(),levelInfo);
+                        .performMapAwareAction(map,getInfo(),levelInfo);
             }
         }
     }
     public void updateSchenario(Schenario schenario, Handler canvasThreadHandler, Map map){
-        schenario.trigger(map,context,canvasThreadHandler).performAction(map,rendererInfo,levelInfo);
+        schenario.trigger(map,context,canvasThreadHandler).performMapAwareAction(map,rendererInfo,levelInfo);
     }
 
     public RendererInfo getInfo(){
@@ -138,8 +170,8 @@ public class Renderer {
     }
 
 
-    public void scheduleAction(Action action,Map map){
-        action.performAction(map,rendererInfo,levelInfo);
+    public void scheduleAction(MapAwareAction action, Map map){
+        action.performMapAwareAction(map,rendererInfo,levelInfo);
     }
 
 

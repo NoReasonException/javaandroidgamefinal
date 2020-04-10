@@ -6,10 +6,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import android.arch.core.util.Function;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.actions.Action;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapAwareAction;
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
@@ -50,10 +49,10 @@ public class BlueGhost extends Drawable{
     }
 
     @Override
-    public Action getNextAction(Path path, Map map, Context context) {
+    public MapAwareAction getNextMapAwareAction(Path path, Map map, Context context) {
 
         if(toDestruct){
-            return Action.buildDeleteMeAction(null,null, CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(getAbsolutePosition()),this);
+            return MapAwareAction.buildDeleteMeAction(null,null, CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(getAbsolutePosition()),this);
         }
 
 
@@ -69,19 +68,8 @@ public class BlueGhost extends Drawable{
         }
 
         if(nextNode==null){
-            return Action.buildIdleAction(null,null);
+            return MapAwareAction.buildIdleAction(null,null);
         }
-        /*if(currNode!=null&&currNode!=currentNode){
-            if(currNode==nextNode && !visitedNodes.contains(currNode)){
-                currentNode=currNode;
-                visitedNodes.add(currNode);
-                nextNode=currNode.getRandomNext();
-            }
-            else{
-                //donothing
-            }
-        }*/
-
         currentIndex=currentNode.getAnimatorIndex();
         Path.Node next=nextNode;
 
@@ -123,13 +111,13 @@ public class BlueGhost extends Drawable{
         if(xDeviation<=acceptablePixelDeviation && yDeviation<=acceptablePixelDeviation){
             currentNode=nextNode;
             if(currentNode==null){
-                return Action.buildIdleAction(null,null);
+                return MapAwareAction.buildIdleAction(null,null);
             }
             nextNode=currentNode.getRandomNext();
         }
 
 
-        return Action.buildMoveAction(null,null,getAbsolutePosition(),newPosition,this);
+        return MapAwareAction.buildMoveAction(null,null,getAbsolutePosition(),newPosition,this);
 
     }
 
@@ -146,7 +134,7 @@ public class BlueGhost extends Drawable{
 
             @Override
             public Void apply(Void input) {
-                //drawable.setToDestruct(true);
+                drawable.setToDestruct(true);
                 return null;
 
             }
