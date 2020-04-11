@@ -4,11 +4,11 @@ import android.arch.core.util.Function;
 
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.info.RendererInfo;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.DeleteMeAction;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.EmplaceObjectAction;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.IdleAction;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.MoveAction;
-import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.SubcribeBulletAction;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.MapAwareDeleteMeAction;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.MapAwareEmplaceObjectAction;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.MapAwareIdleAction;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.MapAwareMoveAction;
+import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.MapAwareSubcribeBulletAction;
 import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.mapAwareActionResult.MapAwareActionResult;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
@@ -24,24 +24,24 @@ abstract public class MapAwareAction extends Action {
 
     abstract public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo);
 
-    public static MapAwareAction buildMoveAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position oldPos, Position newPos, Drawable entity){
-        return new MoveAction(onSuccessCallback,onFailureCallback,oldPos,newPos,entity);
+    public static MapAwareAction buildMoveAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position oldAbsolutePosition, Position newAbsolutePosition, Drawable entity){
+        return new MapAwareMoveAction(onSuccessCallback,onFailureCallback,oldAbsolutePosition,newAbsolutePosition,entity);
     }
     public static MapAwareAction buildEmplaceObjectAction(
             Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback,
             Drawable entity){
-        return new EmplaceObjectAction(onSuccessCallback,onFailureCallback,entity);
+        return new MapAwareEmplaceObjectAction(onSuccessCallback,onFailureCallback,entity);
 
     }
-    public static MapAwareAction buildDeleteMeAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position myPosition, Drawable entity){
-        return new DeleteMeAction(onSuccessCallback,onFailureCallback,myPosition,entity);
+    public static MapAwareAction buildDeleteMeAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position myAbsolutePosition, Drawable entity){
+        return new MapAwareDeleteMeAction(onSuccessCallback,onFailureCallback,myAbsolutePosition,entity);
     }
 
     public static MapAwareAction buildSubscribeBulletAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position absolutePosition, Drawable drawable, BulletSystem bulletSystem){
-        return new SubcribeBulletAction(onSuccessCallback,onFailureCallback,absolutePosition,drawable,bulletSystem);
+        return new MapAwareSubcribeBulletAction(onSuccessCallback,onFailureCallback,absolutePosition,drawable,bulletSystem);
     }
     public static MapAwareAction buildIdleAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback){
-        return new IdleAction(onSuccessCallback,onFailureCallback);
+        return new MapAwareIdleAction(onSuccessCallback,onFailureCallback);
     }
 }
 

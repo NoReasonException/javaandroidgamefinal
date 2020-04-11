@@ -15,6 +15,8 @@ import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.Portal;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.RedPortal;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
 public class Ghost extends Drawable{
@@ -23,7 +25,7 @@ public class Ghost extends Drawable{
     private static final int RIGHTINDEX=2;
     private static final int LEFTINDEX=3;
     private int currentIndex=DOWNINDEX;
-    private static String loggerTag="BLUEGHOST";
+    private static String loggerTag="GHOST";
     private Random random=new Random();
     private int acceptablePixelDeviation=5;
     private int speed=3;
@@ -46,7 +48,8 @@ public class Ghost extends Drawable{
     public MapAwareAction getNextMapAwareAction(Path path, Map map, Context context) {
 
         if(toDestruct){
-            return MapAwareAction.buildDeleteMeAction(null,null, CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(getAbsolutePosition()),this);
+
+            return MapAwareAction.buildDeleteMeAction(null,null, getAbsolutePosition(),this);
         }
         plusSpeedOffset=random.nextInt(2);
 
@@ -67,30 +70,30 @@ public class Ghost extends Drawable{
         int xDeviation=Math.abs(absolutePositionNext.getX()-getAbsolutePosition().getX());
         int yDeviation=Math.abs(absolutePositionNext.getY()-getAbsolutePosition().getY());
 
-        Position newPosition;
+        Position newAbsolutePosition;
 
         if(xDeviation<=acceptablePixelDeviation){
             if(yDeviation>acceptablePixelDeviation) {
-                newPosition= getAbsolutePosition()
+                newAbsolutePosition= getAbsolutePosition()
                         .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed:-speed));
             }else {
-                newPosition= getAbsolutePosition().
+                newAbsolutePosition= getAbsolutePosition().
                         setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed: -speed))
                         .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed:-speed));
             }
         }else if(yDeviation<=acceptablePixelDeviation){
             if(xDeviation>acceptablePixelDeviation) {
-                newPosition= getAbsolutePosition().
+                newAbsolutePosition= getAbsolutePosition().
                         setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed : -speed));
             }
             else {
-                newPosition= getAbsolutePosition().
+                newAbsolutePosition= getAbsolutePosition().
                         setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() > getAbsolutePosition().getX() ? speed : -speed))
                         .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>getAbsolutePosition().getY()?speed:-speed));
             }
         }
         else {
-            newPosition= getAbsolutePosition().
+            newAbsolutePosition= getAbsolutePosition().
                     setX(getAbsolutePosition().getX()+ (absolutePositionNext.getX() >= getAbsolutePosition().getX() ? speed : -speed))
                     .setY(getAbsolutePosition().getY()+(absolutePositionNext.getY()>=getAbsolutePosition().getY()?speed:-speed));
         }
@@ -103,7 +106,7 @@ public class Ghost extends Drawable{
         }
 
 
-        return MapAwareAction.buildMoveAction(null,null,getAbsolutePosition(),newPosition,this);
+        return MapAwareAction.buildMoveAction(null,null,getAbsolutePosition(),newAbsolutePosition,this);
 
     }
 
@@ -112,19 +115,27 @@ public class Ghost extends Drawable{
     }
 
     @Override
-    public Function<Void, Void> getOnCollisionHandler() {
+    public Function<Drawable, Void> getOnCollisionHandler() {
 
 
-        return new Function<Void, Void>() {
+        return new Function<Drawable, Void>() {
             Ghost drawable;
 
             @Override
-            public Void apply(Void input) {
+            public Void apply(Drawable input) {
+                Log.d(loggerTag,"CALLBACK OK");
                 drawable.setToDestruct(true);
+                Log.d(loggerTag,String.valueOf(input)+" AAAG");
+                if(input instanceof Portal){
+                    Log.d(loggerTag,"COLLISION WITH PORTAL");
+                }
+                else {
+                    Log.d(loggerTag,"COLLISION WITH OTHER OBJ");
+                }
                 return null;
 
             }
-            public Function<Void, Void>init(Ghost drawable){
+            public Function<Drawable, Void>init(Ghost drawable){
                 this.drawable=drawable;
                 return this;
             }

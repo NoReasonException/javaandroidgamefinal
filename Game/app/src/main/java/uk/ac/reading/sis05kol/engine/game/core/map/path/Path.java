@@ -242,7 +242,7 @@ public class Path {
         Node node4_13=new Node(new Position(4,13),RIGHTINDEX);
         Node node5_13=new Node(new Position(5,13),RIGHTINDEX);
 
-        Node node6_13ref=node4_13
+        Node node5_13ref=node4_13
                 .addNode(node5_13);
 
         node3_13ref.addNode(node4_13);
@@ -276,6 +276,12 @@ public class Path {
                 .addNode(node6_12);
 
         node64ref.addNode(node65);
+
+
+        //last join tile
+        Node node6_13=new Node(new Position(6,13),DOWNINDEX);
+        Node node6_13ref1=node5_13ref.addNode(node6_13);
+        Node node6_13ref2=node6_12.addNode(node6_13);
 
 
         if(instancex7==null) {

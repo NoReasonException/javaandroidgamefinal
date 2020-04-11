@@ -7,6 +7,6 @@ public class MapNonAwareCollisionDetectedResult extends MapNonAwareActionResult{
 
     public MapNonAwareCollisionDetectedResult(Drawable withObject) {
         this.withObject = withObject;
-        withObject.getOnCollisionHandler().apply(null);
+        withObject.getOnCollisionHandler().apply(withObject);
     }
 }

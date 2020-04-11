@@ -11,10 +11,10 @@ import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
-public class EmplaceObjectAction extends MapAwareAction {
+public class MapAwareEmplaceObjectAction extends MapAwareAction {
     private Drawable entity;
     private String loggerTag="EMPLACEOBJECTACTION";
-    public EmplaceObjectAction(
+    public MapAwareEmplaceObjectAction(
             Function<Void,Void> onSuccessCallback,
             Function<Void,Void>onFailureCallback,
                       Drawable entity) {
@@ -28,7 +28,7 @@ public class EmplaceObjectAction extends MapAwareAction {
         if(map.existsObjectAtPosition(entityPosition)) {
             informSubscribersAndCleanup(false);
             Log.d(loggerTag,"EmplaceObjectAction failed on object"+entity+" at position"+entityPosition+"exists something there");
-            return MapAwareActionResult.buildCollisionDetectedResult(map.getDrawableAtPosition(entityPosition));
+            return MapAwareActionResult.buildCollisionDetectedResult(map.getDrawableAtPosition(entityPosition),entity);
         }
         else {
             Log.d(loggerTag,"EmplaceObjectAction completed on object"+entity+" at position"+entityPosition+"something there = no");

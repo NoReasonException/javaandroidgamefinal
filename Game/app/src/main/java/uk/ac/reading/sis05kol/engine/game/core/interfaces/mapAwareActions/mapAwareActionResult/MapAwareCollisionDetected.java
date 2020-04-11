@@ -3,10 +3,13 @@ package uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.mapAw
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 
 public class MapAwareCollisionDetected extends MapAwareActionResult {
+    private Drawable object;
     private Drawable withObject;
 
-    public MapAwareCollisionDetected(Drawable withObject) {
+    public MapAwareCollisionDetected(Drawable object, Drawable withObject) {
+        this.object = object;
         this.withObject = withObject;
-        withObject.getOnCollisionHandler().apply(null);
+        object.getOnCollisionHandler().apply(withObject);
+        withObject.getOnCollisionHandler().apply(object);
     }
 }

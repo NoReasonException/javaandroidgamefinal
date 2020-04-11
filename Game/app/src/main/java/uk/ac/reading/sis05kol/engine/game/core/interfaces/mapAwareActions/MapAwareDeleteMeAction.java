@@ -10,24 +10,29 @@ import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.mapAwa
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
-import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
+import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
-public class SubcribeBulletAction extends MapAwareAction {
+public class MapAwareDeleteMeAction extends MapAwareAction {
 
     private Drawable drawable;
     private Position absolutePosition;
-    private BulletSystem bulletSystem;
 
-    public SubcribeBulletAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position absolutePosition, Drawable drawable, BulletSystem bulletSystem){
+    public MapAwareDeleteMeAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position absolutePosition, Drawable drawable){
         super(onSuccessCallback,onFailureCallback);
         this.drawable=drawable;
         this.absolutePosition =absolutePosition;
-        this.bulletSystem=bulletSystem;
     }
 
     @Override
     public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
-        bulletSystem.subscribeBullet(drawable);
+        Position tilePosition = CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(absolutePosition);
+        boolean result =map.removeDrawable(tilePosition,drawable);
+        informSubscribersAndCleanup(result);
+        if(result){
+            return MapAwareActionResult.buildActionDone();
+        }
+        /*return MapAwareActionResult.buildCollisionDetectedResult(
+                map.getDrawableAtPosition(absolutePosition), );*/ //TODO fix that!
         return MapAwareActionResult.buildActionDone();
     }
 }

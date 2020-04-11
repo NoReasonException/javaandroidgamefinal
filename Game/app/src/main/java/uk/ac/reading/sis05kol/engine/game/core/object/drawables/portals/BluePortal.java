@@ -11,13 +11,8 @@ import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
 import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
 
-public class BluePortal extends Drawable {
+public class BluePortal extends Portal {
     public BluePortal(Context context, Position absolutePosition, LevelInfo levelInfo) {
-        super(new DrawableAnimator(Element.BLUEPORTAL,context,levelInfo),absolutePosition);
-    }
-
-    @Override
-    public MapAwareAction getNextMapAwareAction(Path p, Map map, Context context) {
-        return MapAwareAction.buildIdleAction(null,null);
+        super(context,absolutePosition,levelInfo,new DrawableAnimator(Element.BLUEPORTAL,context,levelInfo));
     }
 }

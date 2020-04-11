@@ -18,7 +18,6 @@ public class ProjectileAnimator extends DrawableAnimator {
 
     public ProjectileAnimator(Element element, Context context, LevelInfo levelInfo,float angle) {
         super(element, context, levelInfo);
-        Log.e("CCC","executed at angle "+angle);
         this.angle=angle;
         rotateBitmaps();
     }

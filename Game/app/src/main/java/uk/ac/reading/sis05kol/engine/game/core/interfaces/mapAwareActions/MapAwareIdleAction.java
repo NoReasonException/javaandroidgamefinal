@@ -8,8 +8,8 @@ import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapAwareAction;
 import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.mapAwareActionResult.MapAwareActionResult;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 
-public class IdleAction extends MapAwareAction {
-    public IdleAction(Function<Void, Void> onSuccessCallback, Function<Void, Void> onFailureCallback) {
+public class MapAwareIdleAction extends MapAwareAction {
+    public MapAwareIdleAction(Function<Void, Void> onSuccessCallback, Function<Void, Void> onFailureCallback) {
         super(onSuccessCallback, onFailureCallback);
     }
 

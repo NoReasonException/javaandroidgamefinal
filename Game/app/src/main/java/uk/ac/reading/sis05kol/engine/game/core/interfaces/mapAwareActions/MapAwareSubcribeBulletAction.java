@@ -10,25 +10,24 @@ import uk.ac.reading.sis05kol.engine.game.core.interfaces.mapAwareActions.mapAwa
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
+import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
 
-public class DeleteMeAction extends MapAwareAction {
+public class MapAwareSubcribeBulletAction extends MapAwareAction {
 
     private Drawable drawable;
-    private Position position;
+    private Position absolutePosition;
+    private BulletSystem bulletSystem;
 
-    public DeleteMeAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position p, Drawable drawable){
+    public MapAwareSubcribeBulletAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position absolutePosition, Drawable drawable, BulletSystem bulletSystem){
         super(onSuccessCallback,onFailureCallback);
         this.drawable=drawable;
-        this.position=p;
+        this.absolutePosition =absolutePosition;
+        this.bulletSystem=bulletSystem;
     }
 
     @Override
     public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
-        boolean result =map.removeDrawable(position,drawable);
-        informSubscribersAndCleanup(result);
-        if(result){
-            return MapAwareActionResult.buildActionDone();
-        }
-        return MapAwareActionResult.buildCollisionDetectedResult(map.getDrawableAtPosition(position));
+        bulletSystem.subscribeBullet(drawable);
+        return MapAwareActionResult.buildActionDone();
     }
 }

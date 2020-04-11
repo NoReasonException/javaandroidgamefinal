@@ -6,17 +6,9 @@ import android.content.Context;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 
-public interface MapNonAwareActionAble{
+public interface MapNonAwareActionAble extends ActionAble{
     public MapNonAwareAction getNextNonMapAwareAction(Path p,
                                                       Map m,
                                                       Context context);
 
-    default public Function<Void,Void> getOnCollisionHandler() {
-        return new Function<Void, Void>() {
-            @Override
-            public Void apply(Void input) {
-                return null;
-            }
-        };
-    }
 }

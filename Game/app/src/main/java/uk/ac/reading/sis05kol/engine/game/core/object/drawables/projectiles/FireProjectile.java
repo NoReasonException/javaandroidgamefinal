@@ -82,10 +82,10 @@ public class FireProjectile extends Drawable implements MapNonAwareActionAble {
     }
 
     @Override
-    public Function<Void, Void> getOnCollisionHandler() {
-        return new Function<Void, Void>() {
+    public Function<Drawable, Void> getOnCollisionHandler() {
+        return new Function<Drawable, Void>() {
             @Override
-            public Void apply(Void input) {
+            public Void apply(Drawable input) {
                 toDestruct=true;
                 return null;
             }
