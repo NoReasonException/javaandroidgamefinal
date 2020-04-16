@@ -1,4 +1,4 @@
-package uk.ac.reading.sis05kol.engine.menuactivity.animations;
+package uk.ac.reading.sis05kol.engine.menuanimators;
 
 import android.arch.core.util.Function;
 import android.view.MotionEvent;

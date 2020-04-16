@@ -1,8 +1,9 @@
 package uk.ac.reading.sis05kol.engine.game.core.renderer;
 
+import android.arch.core.util.Function;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 

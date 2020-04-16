@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from score.views import getScores,postScore
+from score.views import getScores,postScore,clearScores
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('getScores/',getScores,name='getScores'),
     path('postScore/',postScore,name='postScore'),
+    path('clearScores/', clearScores, name='clearScores')
 ]

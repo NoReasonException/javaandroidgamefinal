@@ -1,4 +1,4 @@
-package uk.ac.reading.sis05kol.engine.menuactivity.animations;
+package uk.ac.reading.sis05kol.engine.menuanimators;
 
 import android.annotation.SuppressLint;
 import android.arch.core.util.Function;
@@ -8,7 +8,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.ImageView;
 
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
+import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
 
 public class MenuTowerAnimator  implements Runnable {
     private Handler handler = new Handler(Looper.getMainLooper());

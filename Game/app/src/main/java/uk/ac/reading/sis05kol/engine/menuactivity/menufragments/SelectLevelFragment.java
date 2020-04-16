@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import uk.ac.reading.sis05kol.engine.R;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.SelectLevelButtonAnimator;
+import uk.ac.reading.sis05kol.engine.menuanimators.SelectLevelButtonAnimator;
 import uk.ac.reading.sis05kol.engine.menuactivity.menufragments.HandlersSet.SelectLevelFragmentHandlers;
 
 /**

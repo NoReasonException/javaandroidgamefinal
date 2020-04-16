@@ -13,7 +13,7 @@ import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.animators.ProjectileAnimator;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
+import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
 
 public class FireProjectile extends Drawable implements MapNonAwareActionAble {
     private int speed = 5;

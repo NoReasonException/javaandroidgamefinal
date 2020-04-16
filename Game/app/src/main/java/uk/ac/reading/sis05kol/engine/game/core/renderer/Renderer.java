@@ -1,5 +1,6 @@
 package uk.ac.reading.sis05kol.engine.game.core.renderer;
 
+import android.arch.core.util.Function;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
@@ -167,12 +167,6 @@ public class Renderer {
     public RendererInfo getInfo(){
         return rendererInfo==null?(rendererInfo=new RendererInfo(screenSize,tileCountXY,tileSizeXY)):rendererInfo;
     }
-
-
-    public void scheduleAction(MapAwareAction action, Map map){
-        action.performMapAwareAction(map,rendererInfo,levelInfo);
-    }
-
 
     public Pair<Integer, Integer> getTileSizeXY() {
         return tileSizeXY;

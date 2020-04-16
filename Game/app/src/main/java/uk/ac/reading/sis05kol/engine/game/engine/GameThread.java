@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -61,9 +62,12 @@ public abstract class GameThread extends Thread {
 
     //Used to ensure appropriate threading
     static final Integer monitor = 1;
+
+    private View youLostContainer;
 	
 
-	public GameThread(GameView gameView) {		
+	public GameThread(GameView gameView,View youLostContainer) {
+		this.youLostContainer=youLostContainer;
 		mGameView = gameView;
 		
 		mSurfaceHolder = gameView.getHolder();
@@ -73,6 +77,8 @@ public abstract class GameThread extends Thread {
 		mBackgroundImage = BitmapFactory.decodeResource
 							(gameView.getContext().getResources(), 
 							R.drawable.background);
+
+		youLostContainer.setVisibility(View.GONE);
 	}
 	
 	/*
@@ -99,8 +105,6 @@ public abstract class GameThread extends Thread {
 			mLastTime = System.currentTimeMillis() + 100;
 
 			setState(STATE_RUNNING);
-			
-			setScore(0);
 		}
 	}
 	
@@ -141,19 +145,16 @@ public abstract class GameThread extends Thread {
 
 
 	protected void doDraw(Canvas canvas) {
-		
 		if(canvas == null) return;
-
-		if(mBackgroundImage != null) canvas.drawBitmap(mBackgroundImage, 150, 150, null);
+		if(mBackgroundImage != null)
+			canvas.drawBitmap(mBackgroundImage, 150, 150, null);
 
 	}
 	
 	private void updatePhysics() {
 		now = System.currentTimeMillis();
 		elapsed = (now - mLastTime) / 1000.0f;
-
 		updateGame(elapsed);
-
 		mLastTime = now;
 	}
 	
@@ -165,7 +166,7 @@ public abstract class GameThread extends Thread {
 	
 	//Finger touches the screen
 	public boolean onTouch(MotionEvent e) {
-		if(e.getAction() != MotionEvent.ACTION_DOWN) return false;
+		/*if(e.getAction() != MotionEvent.ACTION_DOWN) return false;
 		
 		if(mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN) {
 			doStart();
@@ -181,7 +182,18 @@ public abstract class GameThread extends Thread {
 				this.actionOnTouch(e.getRawX(), e.getRawY());
 		}
 		 
-		return false;
+		return false;*/
+		if(mMode == STATE_READY){
+			doStart();
+		}
+		if(mMode == STATE_PAUSE) {
+			unpause();
+			return true;
+		}
+		synchronized (monitor) {
+			this.actionOnTouch(e.getRawX(), e.getRawY());
+		}
+		return true;
 	}
 	
 	protected void actionOnTouch(float x, float y) {
@@ -207,7 +219,7 @@ public abstract class GameThread extends Thread {
 			mLastTime = System.currentTimeMillis();
 		}
 		setState(STATE_RUNNING);
-	}	
+	}
 
 	//Send messages to View/Activity thread
 	public void setState(int mode) {
@@ -219,34 +231,52 @@ public abstract class GameThread extends Thread {
 	public void setState(int mode, CharSequence message) {
 		synchronized (monitor) {
 			mMode = mode;
-
+			if(mMode==STATE_LOSE){
+				mHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						youLostContainer.setVisibility(View.VISIBLE);
+					}
+				});
+			}
+			else{
+				mHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						youLostContainer.setVisibility(View.INVISIBLE);
+					}
+				});
+			}
 			if (mMode == STATE_RUNNING) {
+
 				Message msg = mHandler.obtainMessage();
 				Bundle b = new Bundle();
 				b.putString("text", "");
 				b.putInt("viz", View.INVISIBLE);
-				b.putBoolean("showAd", false);	
+				b.putBoolean("showAd", false);
 				msg.setData(b);
 				mHandler.sendMessage(msg);
-			} 
-			else {				
+			}
+			else {
 				Message msg = mHandler.obtainMessage();
 				Bundle b = new Bundle();
-				
+
 				Resources res = mContext.getResources();
 				CharSequence str = "";
-				if (mMode == STATE_READY)
+				if (mMode == STATE_READY) {
 					str = res.getText(R.string.mode_ready);
-				else 
-					if (mMode == STATE_PAUSE)
-						str = res.getText(R.string.mode_pause);
-					else 
-						if (mMode == STATE_LOSE)
-							str = res.getText(R.string.mode_lose);
-						else 
-							if (mMode == STATE_WIN) {
-								str = res.getText(R.string.mode_win);
-							}
+				}
+				else if (mMode == STATE_PAUSE) {
+					str = res.getText(R.string.mode_pause);
+				}
+				else if (mMode == STATE_LOSE) {
+
+					str = res.getText(R.string.mode_lose);
+
+				}
+				else if (mMode == STATE_WIN) {
+					str = res.getText(R.string.mode_win);
+				}
 
 				if (message != null) {
 					str = message + "\n" + str;
@@ -302,14 +332,9 @@ public abstract class GameThread extends Thread {
 		}
 	}
 
-	public float getScore() {
+	public long getScore() {
 		return score;
 	}
-	
-	public void updateScore(long score) {
-		this.setScore(this.score + score);
-	}
-	
 	
 	protected CharSequence getScoreString() {
 		return Long.toString(Math.round(this.score));

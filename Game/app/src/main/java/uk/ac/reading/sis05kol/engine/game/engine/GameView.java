@@ -144,14 +144,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				thread.start();
 			}
 			else {
-				if(thread.getState() == Thread.State.TERMINATED){
+				//TODO Maybe fix it?
+				/*if(thread.getState() == Thread.State.TERMINATED){
 					//Start a new thread
 					//Should be this to update screen with old game: new GameThread(this, thread);
 					//The method should set all fields in new thread to the value of old thread's fields 
 					thread = new TheGame(this);
 					thread.setRunning(true);
 					thread.start();
-				}
+				}*/
 			}
 		}
 	}

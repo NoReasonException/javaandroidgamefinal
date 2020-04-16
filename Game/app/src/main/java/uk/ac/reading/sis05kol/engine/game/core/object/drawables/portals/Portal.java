@@ -9,7 +9,6 @@ import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
 
 public class Portal extends Drawable {
     public Portal(Context context, Position absolutePosition, LevelInfo levelInfo,DrawableAnimator animator) {

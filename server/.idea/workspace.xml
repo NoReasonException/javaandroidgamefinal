@@ -7,6 +7,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -60,7 +63,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1587058978165</updated>
-      <workItem from="1587058982224" duration="1578000" />
+      <workItem from="1587058982224" duration="10507000" />
     </task>
     <servers />
   </component>
@@ -68,21 +71,29 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1320" height="185" key="GridCell.Tab.0.bottom" timestamp="1587059478846">
+    <state width="1320" height="185" key="GridCell.Tab.0.bottom" timestamp="1587070604593">
       <screen x="0" y="900" width="1366" height="768" />
     </state>
-    <state width="1320" height="185" key="GridCell.Tab.0.bottom/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587059478846" />
-    <state width="1320" height="185" key="GridCell.Tab.0.center" timestamp="1587059478846">
+    <state width="1320" height="185" key="GridCell.Tab.0.bottom/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587070604593" />
+    <state width="1320" height="185" key="GridCell.Tab.0.center" timestamp="1587070604593">
       <screen x="0" y="900" width="1366" height="768" />
     </state>
-    <state width="1320" height="185" key="GridCell.Tab.0.center/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587059478846" />
-    <state width="1320" height="185" key="GridCell.Tab.0.left" timestamp="1587059478846">
+    <state width="1320" height="185" key="GridCell.Tab.0.center/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587070604593" />
+    <state width="1320" height="185" key="GridCell.Tab.0.left" timestamp="1587070604593">
       <screen x="0" y="900" width="1366" height="768" />
     </state>
-    <state width="1320" height="185" key="GridCell.Tab.0.left/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587059478846" />
-    <state width="1320" height="185" key="GridCell.Tab.0.right" timestamp="1587059478846">
+    <state width="1320" height="185" key="GridCell.Tab.0.left/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587070604593" />
+    <state width="1320" height="185" key="GridCell.Tab.0.right" timestamp="1587070604593">
       <screen x="0" y="900" width="1366" height="768" />
     </state>
-    <state width="1320" height="185" key="GridCell.Tab.0.right/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587059478846" />
+    <state width="1320" height="185" key="GridCell.Tab.0.right/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587070604593" />
+    <state x="0" y="900" width="704" height="768" key="find.popup" timestamp="1587062426426">
+      <screen x="0" y="900" width="1366" height="768" />
+    </state>
+    <state x="0" y="900" width="704" height="768" key="find.popup/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587062426426" />
+    <state x="346" y="989" width="672" height="678" key="search.everywhere.popup" timestamp="1587062416143">
+      <screen x="0" y="900" width="1366" height="768" />
+    </state>
+    <state x="346" y="989" width="672" height="678" key="search.everywhere.popup/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587062416143" />
   </component>
 </project>

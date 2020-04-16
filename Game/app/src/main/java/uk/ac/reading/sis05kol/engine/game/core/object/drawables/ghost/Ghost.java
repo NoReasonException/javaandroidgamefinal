@@ -16,7 +16,7 @@ import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.Portal;
-import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.RedPortal;
+import uk.ac.reading.sis05kol.engine.game.core.score.LifesSystem;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
 public class Ghost extends Drawable{
@@ -123,14 +123,9 @@ public class Ghost extends Drawable{
 
             @Override
             public Void apply(Drawable input) {
-                Log.d(loggerTag,"CALLBACK OK");
-                drawable.setToDestruct(true);
-                Log.d(loggerTag,String.valueOf(input)+" AAAG");
+                setToDestruct(true);
                 if(input instanceof Portal){
-                    Log.d(loggerTag,"COLLISION WITH PORTAL");
-                }
-                else {
-                    Log.d(loggerTag,"COLLISION WITH OTHER OBJ");
+                    LifesSystem.getInstance().looseLife();
                 }
                 return null;
 

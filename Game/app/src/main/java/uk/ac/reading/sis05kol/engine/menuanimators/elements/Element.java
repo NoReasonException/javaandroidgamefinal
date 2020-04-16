@@ -1,4 +1,4 @@
-package uk.ac.reading.sis05kol.engine.menuactivity.animations.elements;
+package uk.ac.reading.sis05kol.engine.menuanimators.elements;
 
 import uk.ac.reading.sis05kol.engine.R;
 

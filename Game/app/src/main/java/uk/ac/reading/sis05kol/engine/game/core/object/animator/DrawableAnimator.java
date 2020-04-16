@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
+import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
 
 public class DrawableAnimator {
 

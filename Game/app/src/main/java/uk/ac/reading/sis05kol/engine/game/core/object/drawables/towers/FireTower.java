@@ -19,7 +19,7 @@ import uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost.Ghost;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.projectiles.FireProjectile;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
+import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
 
 public class FireTower extends Drawable {
     private static final int IDLEINDEX=0;

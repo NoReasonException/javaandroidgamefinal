@@ -5,10 +5,13 @@ import android.graphics.Canvas;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import uk.ac.reading.sis05kol.engine.R;
@@ -25,6 +28,7 @@ import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
 import uk.ac.reading.sis05kol.engine.game.core.schenario.DifficultyLevel1;
 import uk.ac.reading.sis05kol.engine.game.core.schenario.Schenario;
+import uk.ac.reading.sis05kol.engine.game.core.score.LifesSystem;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 import uk.ac.reading.sis05kol.engine.game.engine.GameThread;
 import uk.ac.reading.sis05kol.engine.game.engine.GameView;
@@ -46,23 +50,56 @@ public class TheGame extends GameThread {
     private Schenario schenario;
     private LevelInfo levelInfo;
     private RendererInfo rendererInfo;
-
     private BulletSystem bulletSystem;
+    private  View progressBackground;
+    private ArrayList<View>lifes;
+    private View timer;
 
     //This is run before anything else, so we can prepare things here
-    public TheGame(GameView gameView) {
+    public TheGame(GameView gameView, View progressBackground,ArrayList<View>lifes,View timer,View youLostContainer) {
         //House keeping
-        super(gameView);
+        super(gameView,youLostContainer);
+        this.progressBackground=progressBackground;
+        this.lifes=lifes;
+        this.timer=timer;
 
         levelInfo=new LevelInfo(7,0.08f);
         grass= loadGrass(gameView);
         sand=loadSand(gameView);
         schenario=new DifficultyLevel1(levelInfo);
         bulletSystem=BulletSystem.getInstance();
+
     }
     //This is run before a new game (also after an old game)
     @Override
     public void setupBeginning() {
+        LifesSystem.setInstance(new LifesSystem(
+                handler,
+                progressBackground,
+                lifes,
+                timer) {
+            @Override
+            public long getLifes() {
+                return getScore();
+            }
+
+            @Override
+            public void setLifes(long lifes) {
+                setScore(lifes);
+            }
+
+            @Override
+            public Function<LifesSystem, Void> gameOverCallback() {
+                return new Function<LifesSystem, Void>() {
+                    @Override
+                    public Void apply(LifesSystem aVoid) {
+                        setState(STATE_LOSE);
+                        aVoid.reset();
+                        return null;
+                    }
+                };
+            }
+        });
 
         Pair<Integer,Integer>screenSize=new Pair<Integer,Integer>(
                 Double.valueOf(mCanvasWidth).intValue(),
@@ -132,11 +169,6 @@ public class TheGame extends GameThread {
             renderer.drawPath(canvas, sand, path);
             renderer.drawMap(canvas, map);
             renderer.drawBullets(canvas,bulletSystem);
-            renderer.updateBullets(map,path,bulletSystem);
-            renderer.updateMoveables(map, path);
-            renderer.updateSchenario(schenario,handler,map);
-
-
     }
 
 
@@ -177,6 +209,9 @@ public class TheGame extends GameThread {
     @Override
     protected void updateGame(float secondsElapsed) {
 
+        renderer.updateBullets(map,path,bulletSystem);
+        renderer.updateMoveables(map, path);
+        renderer.updateSchenario(schenario,handler,map);
 
     }
 

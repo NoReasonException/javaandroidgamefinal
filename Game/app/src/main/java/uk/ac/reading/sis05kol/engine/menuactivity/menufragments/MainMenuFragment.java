@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import uk.ac.reading.sis05kol.engine.R;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.MainMenuButtonAnimator;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.MenuTowerAnimator;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
+import uk.ac.reading.sis05kol.engine.menuanimators.MainMenuButtonAnimator;
+import uk.ac.reading.sis05kol.engine.menuanimators.MenuTowerAnimator;
+import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
 import uk.ac.reading.sis05kol.engine.menuactivity.menufragments.HandlersSet.MainMenuFragmentHandlers;
 
 /**

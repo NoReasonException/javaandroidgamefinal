@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -35,4 +35,55 @@
             android:textColor="#ffffffff"
             android:textSize="20sp"/>
     </RelativeLayout>
-</FrameLayout>
+
+    <ImageView
+        android:id="@+id/timerbackground"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="50dp"
+        android:layout_y="710dp"
+        android:src="@drawable/title" />
+    <ImageView
+
+        android:id="@+id/life1"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="-60dp"
+        android:layout_y="750dp"
+        android:src="@drawable/love" />
+    <ImageView
+        android:id="@+id/life2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="-20dp"
+        android:layout_y="750dp"
+        android:src="@drawable/love" />
+    <ImageView
+        android:id="@+id/life3"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_x="20dp"
+        android:layout_y="750dp"
+        android:src="@drawable/love" />
+    <TextView
+
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="260dp"
+        android:layout_y="753dp"
+        android:font="@font/font"
+        android:fontFamily="@font/font"
+        android:text="00:00"
+        android:textColor="#c0d41b"
+
+        android:textSize="45px" />
+
+    <fragment android:name="uk.ac.reading.sis05kol.engine.game.fragments.YouLostFragment"
+        android:id="@+id/youLostContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+
+</AbsoluteLayout>

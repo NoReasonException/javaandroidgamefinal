@@ -7,10 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.game.TheGame;
@@ -23,6 +27,11 @@ public class GameActivity extends Activity {
 
     private GameThread mGameThread;
     private GameView mGameView;
+    private View progressViewBackground;
+    private ArrayList<View> progressViewlifes;
+    private View progressViewtimer;
+    private View fragmentView;
+
 
     /** Called when the activity is first created. */
     @SuppressLint("SourceLockedOrientationActivity")
@@ -49,7 +58,10 @@ public class GameActivity extends Activity {
         mGameView = (GameView)findViewById(R.id.gamearea);
         mGameView.setStatusView((TextView)findViewById(R.id.text));
         mGameView.setScoreView((TextView)findViewById(R.id.score));
-
+        progressViewBackground=findViewById(R.id.timerbackground);
+        progressViewlifes=new ArrayList<>(Arrays.asList(findViewById(R.id.life1),findViewById(R.id.life2),findViewById(R.id.life3)));
+        progressViewtimer=findViewById(R.id.timer);
+        fragmentView=findViewById(R.id.youLostContainer);
 
         this.startGame(mGameView, null, savedInstanceState);
     }
@@ -63,7 +75,7 @@ public class GameActivity extends Activity {
     private void startGame(GameView gView, GameThread gThread, Bundle savedInstanceState) {
 
         //Set up a new game, we don't care about previous states
-        mGameThread = new TheGame(mGameView);
+        mGameThread = new TheGame(mGameView,progressViewBackground,progressViewlifes,progressViewtimer,fragmentView);
         mGameView.setThread(mGameThread);
         mGameThread.setState(GameThread.STATE_READY);
     }

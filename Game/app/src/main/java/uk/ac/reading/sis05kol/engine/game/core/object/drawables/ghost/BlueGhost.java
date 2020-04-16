@@ -3,12 +3,11 @@ package uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost;
 import android.content.Context;
 
 import java.util.Arrays;
-import java.util.List;
 
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.map.Position;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
-import uk.ac.reading.sis05kol.engine.menuactivity.animations.elements.Element;
+import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
 
 public class BlueGhost extends Ghost {
     public BlueGhost(Context context, LevelInfo levelInfo, Position absolutePosition) {
