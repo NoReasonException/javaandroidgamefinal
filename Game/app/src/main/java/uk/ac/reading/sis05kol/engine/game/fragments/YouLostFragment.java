@@ -20,6 +20,7 @@ import java.util.Optional;
 import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.connectivity.ScoreServerDriver;
 import uk.ac.reading.sis05kol.engine.menuanimators.MainMenuButtonAnimator;
+import uk.ac.reading.sis05kol.engine.menuanimators.MainMenuButtonAnimatorOnce;
 
 public class YouLostFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -27,6 +28,7 @@ public class YouLostFragment extends Fragment {
     private Function<Void,Void> playAgainCallback;
     private static String loggerTag="YOULOSTFRAGMENT";
     private Handler handler=new Handler();
+    private String currentScore="00:00";
 
     private View parentView;
     public Function<Void, Void> getPlayAgainCallback() {
@@ -53,10 +55,10 @@ public class YouLostFragment extends Fragment {
     }
 
     public void initializeHandlers(View i){
-        View playAgainBtn = i.findViewById(R.id.again);
+        /*View playAgainBtn = i.findViewById(R.id.again);*/
         View syncBtn = i.findViewById(R.id.sync);
 
-        playAgainBtn.setOnTouchListener(
+        /*playAgainBtn.setOnTouchListener(
                 new MainMenuButtonAnimator(
                         i.getResources(),
                         Optional
@@ -68,7 +70,7 @@ public class YouLostFragment extends Fragment {
                                         Log.i(loggerTag,"IGNORE CALL");
                                         return null;
                                     }
-                                })));
+                                })));*/
         syncBtn.setOnTouchListener(new MainMenuButtonAnimator(i.getResources(), new Function<Void, Void>() {
             @Override
             public Void apply(Void input) {
@@ -92,8 +94,15 @@ public class YouLostFragment extends Fragment {
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog,int id) {
 
-                                                ScoreServerDriver.setScore(userInput.getText().toString(),"30:44");
-                                                initializeScores(parentView);
+                                                ScoreServerDriver.setScore(userInput.getText().toString(),currentScore);
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        initializeScores(parentView);
+                                                    }
+                                                },1000);
+
+                                                updateCurrentUsersInfo(parentView,userInput.getText().toString(),currentScore);
                                             }
                                         })
                                 .setNegativeButton("Cancel",
@@ -115,6 +124,15 @@ public class YouLostFragment extends Fragment {
             }
         }));
     }
+
+    public void updateCurrentUsersInfo(View i,String name,String time){
+
+        TextView yourPositionName= i.findViewById(R.id.playerYourname);
+        TextView yourPositionScore= i.findViewById(R.id.playerYourscore);
+        yourPositionName.setText(name);
+        yourPositionScore.setText(time);
+    }
+
     public void initializeScores(View i){
         TextView firstPositionName = i.findViewById(R.id.player1name);
         TextView firstPositionScore= i.findViewById(R.id.player1score);
@@ -122,8 +140,9 @@ public class YouLostFragment extends Fragment {
         TextView secondPositionScore= i.findViewById(R.id.player2score);
         TextView thirdPositionName= i.findViewById(R.id.player3name);
         TextView thirdPositionScore= i.findViewById(R.id.player3score);
-        TextView yourPositionName= i.findViewById(R.id.playerYourname);
-        TextView yourPositionScore= i.findViewById(R.id.playerYourscore);
+
+
+
         Log.i(loggerTag,"update scores");
         ScoreServerDriver.getScores(handler, new Function<ArrayList<Pair<String, String>>, Void>() {
             @Override
@@ -163,9 +182,9 @@ public class YouLostFragment extends Fragment {
                 return null;
             }
         });
-
-
-
     }
 
+    public void setCurrentScore(String currentScore) {
+        this.currentScore = currentScore;
+    }
 }

@@ -1,6 +1,8 @@
 package uk.ac.reading.sis05kol.engine.game.core.object;
 
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +48,8 @@ abstract public class Drawable implements MapAwareActionAble {
      * Assuming that every Drawable as AT LEAST one drawable
      * @return
      */
-    public Bitmap getBitmap(){
-        return animators.get(DEFAULT_ANIMATOR).getBitmap();
+    public Pair<Bitmap, Paint> getBitmap(){
+        return new Pair<>(animators.get(DEFAULT_ANIMATOR).getBitmap(),null);
     }
 
     public void setAbsolutePosition(Position aposition) {

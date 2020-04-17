@@ -15,7 +15,7 @@ import uk.ac.reading.sis05kol.engine.game.core.object.animator.animators.Project
 import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
 import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
 
-public class FireProjectile extends Drawable implements MapNonAwareActionAble {
+public class Bullet extends Drawable implements MapNonAwareActionAble {
     private int speed = 5;
     private float rotation;
     private Position absoluteTarget;
@@ -29,7 +29,7 @@ public class FireProjectile extends Drawable implements MapNonAwareActionAble {
         return (-1f)*((from.getY()-to.getY())) / ((from.getX()-to.getX()));
     }
 
-    public FireProjectile(Context context, Position absolutePosition, Position absoluteTarget, LevelInfo levelInfo, BulletSystem bulletSystem) {
+    public Bullet(Context context, Position absolutePosition, Position absoluteTarget, LevelInfo levelInfo, BulletSystem bulletSystem) {
         super(new ProjectileAnimator(Element.FIREPROJECTILE,
                         context,
                         levelInfo,

@@ -161,28 +161,31 @@ tools:context=".menuactivity.menufragments.MainMenuFragment"
         android:textSize="65px" />
 
     <ImageView
-        android:id="@+id/tower2"
+        android:id="@+id/diff3"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_x="250dp"
         android:layout_y="240dp"
-        android:src="@drawable/pa1" />
+        android:src="@drawable/pa1"
+        android:visibility="visible"/>
 
     <ImageView
-        android:id="@+id/tower3"
+        android:id="@+id/diff2"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_x="195dp"
         android:layout_y="240dp"
-        android:src="@drawable/pa1" />
+        android:src="@drawable/pa1"
+        android:visibility="visible"/>
 
     <ImageView
-        android:id="@+id/tower4"
+        android:id="@+id/diff1"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_x="140dp"
         android:layout_y="240dp"
-        android:src="@drawable/pa1" />
+        android:src="@drawable/pa1"
+        android:visibility="visible"/>
 
 </AbsoluteLayout>
 

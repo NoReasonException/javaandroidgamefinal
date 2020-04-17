@@ -2,12 +2,15 @@ package uk.ac.reading.sis05kol.engine.game.core.object.drawables.ghost;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import android.arch.core.util.Function;
+import android.util.Pair;
+
 import uk.ac.reading.sis05kol.engine.game.core.interfaces.MapAwareAction;
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
@@ -16,6 +19,7 @@ import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.animator.DrawableAnimator;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.Portal;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.projectiles.Bullet;
 import uk.ac.reading.sis05kol.engine.game.core.score.LifesSystem;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 
@@ -31,17 +35,27 @@ public class Ghost extends Drawable{
     private int speed=3;
     private int plusSpeedOffset=1;
 
+    private int ghostlifes;
+    private int maxGhostlifes;//used to calculate alpha
+
     private Path.Node currentNode;
     private Path.Node nextNode;
     private ArrayList<Path.Node> visitedNodes=new ArrayList<>();
 
     private boolean toDestruct=false;
-    public Ghost(Context context, LevelInfo levelInfo, Position absolutePosition, List<DrawableAnimator> animators) {
+    public Ghost(Context context, LevelInfo levelInfo, Position absolutePosition, List<DrawableAnimator> animators,int ghostlifes) {
         super(animators,absolutePosition);
+        this.ghostlifes =ghostlifes;
+        this.maxGhostlifes=ghostlifes;
     }
     @Override
-    public Bitmap getBitmap() {
-        return animators.get(currentIndex).getBitmap();
+    public Pair<Bitmap, Paint> getBitmap() {
+        Bitmap bitmap=animators.get(currentIndex).getBitmap();
+        Paint p = null;
+        //p.setAlpha((ghostlifes/maxGhostlifes)*100);
+        //return bitmap;
+        return new Pair<Bitmap,Paint>(bitmap,p);
+
     }
 
     @Override
@@ -123,9 +137,16 @@ public class Ghost extends Drawable{
 
             @Override
             public Void apply(Drawable input) {
-                setToDestruct(true);
+
                 if(input instanceof Portal){
                     LifesSystem.getInstance().looseLife();
+                }
+                else{//is a bullet //TODO sometimes just losses life without reason , maybe the collision system has some bug?
+                    ghostlifes-=1;
+                    if(ghostlifes<0){
+                        setToDestruct(true);
+                    }
+                    Log.i(loggerTag+".getOnCollisionHandler","Ghost at position "+absolutePosition.toString()+" was hit by a bullet");
                 }
                 return null;
 

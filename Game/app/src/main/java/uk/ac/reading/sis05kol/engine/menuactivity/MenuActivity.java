@@ -3,6 +3,7 @@ package uk.ac.reading.sis05kol.engine.menuactivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.arch.core.util.Function;
 import android.content.Intent;
@@ -68,11 +69,12 @@ public class MenuActivity extends Activity {
             @SuppressLint("ResourceType")
             @Override
             public void run() {
+
                 FrameLayout l = findViewById(R.id.menuContainer);
-                FragmentTransaction tr = getFragmentManager().beginTransaction();
+                FragmentManager manager=getFragmentManager();
+                FragmentTransaction tr = manager.beginTransaction();
                 //tr.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
                 tr.replace(R.id.menuContainer,selectLevelFragment);
-
                 tr.commitNow();
             }
         },50);
@@ -117,7 +119,11 @@ public class MenuActivity extends Activity {
             public void run() {
                 synchronized (this) {
                     if (allowCreateNewActivity) {
-                        startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt("difficultyLevel",((MainMenuFragment)mainMenuFragment).getDifficultyLevel().getId());
+                        intent.putExtras(b);
+                        startActivity(intent);
                         allowCreateNewActivity = false;
                     }
                 }
@@ -133,7 +139,11 @@ public class MenuActivity extends Activity {
             public void run() {
                 synchronized (this) {
                     if (allowCreateNewActivity) {
-                        startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt("difficultyLevel",((MainMenuFragment)mainMenuFragment).getDifficultyLevel().getId());
+                        intent.putExtras(b);
+                        startActivity(intent);
                         allowCreateNewActivity = false;
                     }
                 }
@@ -149,7 +159,11 @@ public class MenuActivity extends Activity {
             public void run() {
                 synchronized (this) {
                     if (allowCreateNewActivity) {
-                        startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt("difficultyLevel",((MainMenuFragment)mainMenuFragment).getDifficultyLevel().getId());
+                        intent.putExtras(b);
+                        startActivity(intent);
                         allowCreateNewActivity = false;
                     }
                 }
@@ -165,7 +179,11 @@ public class MenuActivity extends Activity {
             public void run() {
                 synchronized (this) {
                     if (allowCreateNewActivity) {
-                        startActivity(new Intent(getApplicationContext(), GameActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt("difficultyLevel",((MainMenuFragment)mainMenuFragment).getDifficultyLevel().getId());
+                        intent.putExtras(b);
+                        startActivity(intent);
                         allowCreateNewActivity = false;
                     }
                 }

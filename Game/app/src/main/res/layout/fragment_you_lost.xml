@@ -37,7 +37,7 @@
             android:font="@font/font"
             android:fontFamily="@font/font"
             android:textSize="13dp"
-            android:text="You can try again\n by touching\n anywhere you want" />
+            android:text="Now let everyone\non the internet know\nthat you have lost\n" />
 
         <!-- Background , title , buttons and labels-->
 
@@ -53,21 +53,22 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="100dp"
+            android:layout_x="140dp"
             android:layout_y="215dp"
             android:font="@font/font"
             android:fontFamily="@font/font"
-            android:text="@string/you_obviously_lost"
+            android:text="Leaderboard"
             android:textColor="#c0d41b"
             android:textSize="55px" />
 
-        <ImageView
+        <!--<ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button1"
             android:layout_x="30dip"
             android:layout_y="520dip"
-            android:id="@+id/again"/>
+            android:id="@+id/again"
+            android:visibility="invisible"/>-->
 
 
         <ImageView
@@ -75,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button1"
-            android:layout_x="200dip"
+            android:layout_x="120dip"
             android:layout_y="520dip"
             android:id="@+id/sync"/>
 
@@ -84,7 +85,7 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="225dip"
+            android:layout_x="145dip"
             android:layout_y="540dip"
             android:id="@+id/exit_text"
             android:text="Sync your score"
@@ -92,7 +93,7 @@
             android:fontFamily="@font/font"
             />
 
-        <TextView
+        <!--<TextView
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +103,8 @@
             android:text="play again"
             android:font="@font/font"
             android:fontFamily="@font/font"
-            />
+            android:visibility="invisible"
+            />-->
 
         <!--- Hall of fame , player 1-->
         <ImageView
@@ -232,7 +234,7 @@
             android:layout_y="460dp"
             android:font="@font/font"
             android:fontFamily="@font/font"
-            android:text="0:44"
+            android:text="\?\?:\?\?"
             android:textColor="#c0d41b"
             android:textSize="65px" />
 

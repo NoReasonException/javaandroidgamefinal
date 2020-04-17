@@ -5,12 +5,14 @@ import android.app.Fragment;
 import android.arch.core.util.Function;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import uk.ac.reading.sis05kol.engine.R;
+import uk.ac.reading.sis05kol.engine.game.core.etc.DifficultyLevel;
 import uk.ac.reading.sis05kol.engine.menuanimators.MainMenuButtonAnimator;
 import uk.ac.reading.sis05kol.engine.menuanimators.MenuTowerAnimator;
 import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
@@ -26,9 +28,13 @@ public class MainMenuFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Handler handler=new Handler();
 
 
     private MenuTowerAnimator silentAnimator;
+    private MenuTowerAnimator diff1Animator;
+    private MenuTowerAnimator diff2Animator;
+    private MenuTowerAnimator diff3Animator;
     private boolean silentStatus=true;
     private MenuTowerAnimator difficultyAnimator;
 
@@ -39,6 +45,8 @@ public class MainMenuFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private DifficultyLevel difficultyLevel =DifficultyLevel.HARD;
 
     public MainMenuFragment() {
         // Required empty public constructor
@@ -114,5 +122,71 @@ public class MainMenuFragment extends Fragment {
                 }
             }
         }).init(getDrawable));
+
+        ImageView diff1=i.findViewById(R.id.diff1);
+        diff1Animator=new MenuTowerAnimator(diff1, getDrawable, Element.POISONIDLE);
+
+
+
+        ImageView diff2=i.findViewById(R.id.diff2);
+        diff2Animator=new MenuTowerAnimator(diff2, getDrawable, Element.POISONIDLE);
+
+
+
+        ImageView diff3=i.findViewById(R.id.diff3);
+        diff3Animator=new MenuTowerAnimator(diff3, getDrawable, Element.POISONIDLE);
+        diff1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        diff1.setAlpha(1f);
+                        diff2.setAlpha(0.4f);
+                        diff3.setAlpha(0.4f);
+                        setDifficultyLevel(DifficultyLevel.EASY);
+
+                    }
+                });
+            }
+        });
+        diff2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        diff1.setAlpha(1f);
+                        diff2.setAlpha(1f);
+                        diff3.setAlpha(0.4f);
+                        setDifficultyLevel(DifficultyLevel.NORMAL);
+                    }
+                });
+            }
+        });
+        diff3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        diff1.setAlpha(1f);
+                        diff2.setAlpha(1f);
+                        diff3.setAlpha(1f);
+                        setDifficultyLevel(DifficultyLevel.HARD);
+                    }
+                });
+            }
+        });
+
+
+    }
+
+    public DifficultyLevel getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
     }
 }

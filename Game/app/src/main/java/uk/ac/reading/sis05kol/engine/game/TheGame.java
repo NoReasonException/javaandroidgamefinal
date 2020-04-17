@@ -1,20 +1,22 @@
 package uk.ac.reading.sis05kol.engine.game;
+import android.app.Fragment;
+import android.arch.core.util.Function;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Handler;
+
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import uk.ac.reading.sis05kol.engine.R;
+import uk.ac.reading.sis05kol.engine.game.core.etc.DifficultyLevel;
 import uk.ac.reading.sis05kol.engine.game.core.info.LevelInfo;
 import uk.ac.reading.sis05kol.engine.game.core.info.RendererInfo;
 import uk.ac.reading.sis05kol.engine.game.core.map.Map;
@@ -24,9 +26,13 @@ import uk.ac.reading.sis05kol.engine.game.core.object.Drawable;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.BluePortal;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.FireTower;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.RedPortal;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.IceTower;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.PoisonTower;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
-import uk.ac.reading.sis05kol.engine.game.core.schenario.DifficultyLevel1;
+import uk.ac.reading.sis05kol.engine.game.core.schenario.EasySchenario;
+import uk.ac.reading.sis05kol.engine.game.core.schenario.HardSchenario;
+import uk.ac.reading.sis05kol.engine.game.core.schenario.NormalSchenario;
 import uk.ac.reading.sis05kol.engine.game.core.schenario.Schenario;
 import uk.ac.reading.sis05kol.engine.game.core.score.LifesSystem;
 import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
@@ -54,21 +60,50 @@ public class TheGame extends GameThread {
     private  View progressBackground;
     private ArrayList<View>lifes;
     private View timer;
+    private DifficultyLevel difficultyLevel = DifficultyLevel.NORMAL;
+    protected Function<Void,Void> selectTowerCallback;
 
     //This is run before anything else, so we can prepare things here
-    public TheGame(GameView gameView, View progressBackground,ArrayList<View>lifes,View timer,View youLostContainer) {
+    public TheGame(GameView gameView,
+                   View progressBackground,
+                   ArrayList<View>lifes,
+                   View timer,
+                   View youLostContainer,
+                   Fragment youLostFragment,
+                   DifficultyLevel difficultyLevel,
+                   Function<Void,Void>selectTowerCallback) {
         //House keeping
-        super(gameView,youLostContainer);
+        super(gameView,youLostContainer,youLostFragment);
         this.progressBackground=progressBackground;
         this.lifes=lifes;
         this.timer=timer;
+        this.difficultyLevel=difficultyLevel;
 
+        this.selectTowerCallback=selectTowerCallback;
         levelInfo=new LevelInfo(7,0.08f);
         grass= loadGrass(gameView);
         sand=loadSand(gameView);
-        schenario=new DifficultyLevel1(levelInfo);
+        schenario=new EasySchenario(levelInfo); //always initialize the variables , in case of any error
         bulletSystem=BulletSystem.getInstance();
+        Log.i(loggerTag,"difficultyLevel is set to "+difficultyLevel);
 
+        initializeSchenario();
+
+
+
+    }
+    private void initializeSchenario(){
+        switch (difficultyLevel){
+            case EASY:
+                schenario=new EasySchenario(levelInfo);
+                break;
+            case NORMAL:
+                schenario=new NormalSchenario(levelInfo);
+                break;
+            case HARD:
+                schenario=new HardSchenario(levelInfo);
+                break;
+        }
     }
     //This is run before a new game (also after an old game)
     @Override
@@ -179,6 +214,7 @@ public class TheGame extends GameThread {
         handler.post(new Runnable() {
             @Override
             public void run() {
+                selectTowerCallback.apply(null);
                 Position tilePosition=CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(new Position(
                         Float.valueOf(x).intValue(),Float.valueOf(y).intValue()));
                 Position absolutePosition = CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(tilePosition);

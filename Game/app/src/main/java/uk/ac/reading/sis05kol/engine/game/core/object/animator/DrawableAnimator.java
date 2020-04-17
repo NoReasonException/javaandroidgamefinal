@@ -16,9 +16,14 @@ public class DrawableAnimator {
     private int state ;
     private LevelInfo levelInfo;
 
+    private int delayState;
+    private int maxDelayState;
+
     public DrawableAnimator(Element element, Context context, LevelInfo levelInfo) {
         this.element = element;
         this.state = 0;
+        this.delayState=0;
+        this.maxDelayState=5;
         this.levelInfo=levelInfo;
         this.bitmapArray= resourcesToMemory(element,context);
         bitmapArray=reshapeResources(bitmapArray,levelInfo.getScale());
@@ -43,7 +48,10 @@ public class DrawableAnimator {
 
     public Bitmap getBitmap() {
         Bitmap b= bitmapArray.get(state);
-        state=(state+1)%element.max;
+        delayState=(delayState+1)%maxDelayState;
+        if(delayState==3){
+            state=(state+1)%element.max;
+        }
         return b;
     }
     public void reset(){

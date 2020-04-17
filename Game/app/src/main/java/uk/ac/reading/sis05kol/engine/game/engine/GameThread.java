@@ -1,5 +1,6 @@
 package uk.ac.reading.sis05kol.engine.game.engine;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,8 +13,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import uk.ac.reading.sis05kol.engine.R;
+import uk.ac.reading.sis05kol.engine.game.core.score.LifesSystem;
+import uk.ac.reading.sis05kol.engine.game.fragments.YouLostFragment;
 
 public abstract class GameThread extends Thread {
 	//Different mMode states
@@ -64,9 +68,10 @@ public abstract class GameThread extends Thread {
     static final Integer monitor = 1;
 
     private View youLostContainer;
+	private Fragment youLostFragment;
 	
 
-	public GameThread(GameView gameView,View youLostContainer) {
+	public GameThread(GameView gameView, View youLostContainer, Fragment youLostFragment) {
 		this.youLostContainer=youLostContainer;
 		mGameView = gameView;
 		
@@ -79,6 +84,7 @@ public abstract class GameThread extends Thread {
 							R.drawable.background);
 
 		youLostContainer.setVisibility(View.GONE);
+		this.youLostFragment=youLostFragment;
 	}
 	
 	/*
@@ -235,6 +241,7 @@ public abstract class GameThread extends Thread {
 				mHandler.post(new Runnable() {
 					@Override
 					public void run() {
+						((YouLostFragment)youLostFragment).setCurrentScore(LifesSystem.getInstance().getTimer());
 						youLostContainer.setVisibility(View.VISIBLE);
 					}
 				});

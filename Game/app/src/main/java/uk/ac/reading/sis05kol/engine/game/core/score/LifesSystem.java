@@ -1,5 +1,6 @@
 package uk.ac.reading.sis05kol.engine.game.core.score;
 
+import android.arch.core.util.Function;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.widget.TextView;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.function.Function;
 
 abstract public class LifesSystem {
     private static LifesSystem instance;
@@ -119,8 +119,9 @@ abstract public class LifesSystem {
         background.setAlpha(1f);
         timer.setAlpha(1f);
         lifes.stream().forEach(life->life.setAlpha(1f));
-
     }
 
-
+    public String getTimer() {
+        return toTimerString(timerseconds);
+    }
 }

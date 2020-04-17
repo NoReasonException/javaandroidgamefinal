@@ -118,7 +118,7 @@ public class Renderer {
     public void drawMap(Canvas canvas, Map map){
         for (Position p: map.getDrawableObjects()) {
             Drawable d=map.getDrawableAtPosition(p);
-            canvas.drawBitmap(d.getBitmap(),d.getAbsolutePosition().getX(),d.getAbsolutePosition().getY(),null);
+            canvas.drawBitmap(d.getBitmap().first,d.getAbsolutePosition().getX(),d.getAbsolutePosition().getY(),d.getBitmap().second);
         }
     }
     public void drawBullets(Canvas canvas,BulletSystem bulletSystem){
@@ -126,7 +126,7 @@ public class Renderer {
             @Override
             public Void apply(ArrayList<Drawable> drawables) {
                 for (Drawable bullet: new ArrayList<>(drawables)) {
-                    canvas.drawBitmap(bullet.getBitmap(),bullet.getAbsolutePosition().getX(),bullet.getAbsolutePosition().getY(),null);
+                    canvas.drawBitmap(bullet.getBitmap().first,bullet.getAbsolutePosition().getX(),bullet.getAbsolutePosition().getY(),bullet.getBitmap().second);
                 }
                 return null;
             }

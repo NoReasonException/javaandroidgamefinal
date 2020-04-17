@@ -5,14 +5,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-public class SelectLevelButtonAnimator implements View.OnTouchListener {
+public class VariableOpaqueButtonAnimator implements View.OnTouchListener {
 
     private View v;
     private float x;
     private float y;
     private boolean pressed=false;
     private Function<Void,Void> callback;
-    public SelectLevelButtonAnimator(View v,Function<Void,Void>callback) {
+    public VariableOpaqueButtonAnimator(View v, Function<Void,Void>callback) {
         this.x=v.getScaleX();
         this.y=v.getScaleY();
         this.callback=callback;
