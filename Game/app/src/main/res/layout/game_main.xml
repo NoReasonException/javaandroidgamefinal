@@ -2,7 +2,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <uk.ac.reading.sis05kol.engine.game.engine.GameView
+    <main.game.engine.GameView
         android:id="@+id/gamearea"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
@@ -90,7 +90,7 @@
 
         android:textSize="45px" />
 
-    <fragment android:name="uk.ac.reading.sis05kol.engine.game.fragments.YouLostFragment"
+    <fragment android:name="main.game.fragments.YouLostFragment"
         android:id="@+id/youLostContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

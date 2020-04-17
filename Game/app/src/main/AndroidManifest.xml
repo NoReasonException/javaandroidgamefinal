@@ -10,14 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".gameactivity.GameActivity"></activity>
-        <activity android:name=".menuactivity.MenuActivity">
+        <activity android:name="main.menuactivity.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".game.engine.GameActivity"></activity>
+        <activity android:name="main.game.engine.GameActivity"></activity>
     </application>
 
 </manifest>
