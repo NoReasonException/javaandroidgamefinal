@@ -52,6 +52,10 @@ public class YouLostFragment extends Fragment {
         return i;
     }
 
+    /**
+     * initialize handlers and callbacks
+     * @param i the parent view
+     */
     public void initializeHandlers(View i){
         /*View playAgainBtn = i.findViewById(R.id.again);*/
         View syncBtn = i.findViewById(R.id.sync);
@@ -123,6 +127,12 @@ public class YouLostFragment extends Fragment {
         }));
     }
 
+    /**
+     * update the last box , your stats!
+     * @param i         The parent view
+     * @param name      Your name
+     * @param time      Your time
+     */
     public void updateCurrentUsersInfo(View i,String name,String time){
 
         TextView yourPositionName= i.findViewById(R.id.playerYourname);
@@ -131,6 +141,10 @@ public class YouLostFragment extends Fragment {
         yourPositionScore.setText(time);
     }
 
+    /**
+     * initialize the score table
+     * @param i the parent view
+     */
     public void initializeScores(View i){
         TextView firstPositionName = i.findViewById(R.id.player1name);
         TextView firstPositionScore= i.findViewById(R.id.player1score);

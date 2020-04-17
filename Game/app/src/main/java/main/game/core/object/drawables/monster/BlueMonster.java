@@ -9,6 +9,9 @@ import main.game.core.map.Position;
 import main.game.core.object.animator.DrawableAnimator;
 import main.menuanimators.elements.Element;
 
+/**
+ * The blue monster
+ */
 public class BlueMonster extends Monster {
     public BlueMonster(Context context, LevelInfo levelInfo, Position absolutePosition) {
         super(context, levelInfo, absolutePosition,

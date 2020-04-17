@@ -7,6 +7,9 @@ import main.game.core.map.Position;
 import main.game.core.object.animator.DrawableAnimator;
 import main.menuanimators.elements.Element;
 
+/**
+ * RedPortal
+ */
 public class RedPortal extends Portal {
     public RedPortal(Context context, Position absolutePosition, LevelInfo levelInfo) {
         super(context,absolutePosition,levelInfo,new DrawableAnimator(Element.REDPORTAL,context,levelInfo));

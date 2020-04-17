@@ -9,6 +9,9 @@ import main.game.core.map.Position;
 import main.game.core.object.animator.DrawableAnimator;
 import main.menuanimators.elements.Element;
 
+/**
+ * the Green monster
+ */
 public class GreenMonster extends Monster {
     public GreenMonster(Context context, LevelInfo levelInfo, Position absolutePosition) {
         super(context, levelInfo, absolutePosition,

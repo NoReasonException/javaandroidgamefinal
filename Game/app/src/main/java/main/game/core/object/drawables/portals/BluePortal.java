@@ -7,6 +7,9 @@ import main.game.core.map.Position;
 import main.game.core.object.animator.DrawableAnimator;
 import main.menuanimators.elements.Element;
 
+/**
+ * BluePortal
+ */
 public class BluePortal extends Portal {
     public BluePortal(Context context, Position absolutePosition, LevelInfo levelInfo) {
         super(context,absolutePosition,levelInfo,new DrawableAnimator(Element.BLUEPORTAL,context,levelInfo));

@@ -2,6 +2,9 @@ package main.game.core.map;
 
 import java.util.Objects;
 
+/**
+ * represents a position  ,absolute or relative , WATCH BECAUSE THE DISTINCTION IS VERY IMPORTANT
+ */
 public class Position {
     private int x;
     private int y;

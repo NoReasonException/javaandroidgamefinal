@@ -45,8 +45,10 @@ abstract public class Drawable implements MapAwareActionAble {
     }
 
     /**
-     * Assuming that every Drawable as AT LEAST one drawable
-     * @return
+     * Assuming that every Drawable as AT LEAST one drawable , then the
+     * defaiult behavior is to use the first one
+     *
+     * @return the bitmap to draw in canvas
      */
     public Pair<Bitmap, Paint> getBitmap(){
         return new Pair<>(animators.get(DEFAULT_ANIMATOR).getBitmap(),null);

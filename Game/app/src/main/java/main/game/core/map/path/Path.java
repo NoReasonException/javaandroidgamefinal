@@ -21,6 +21,9 @@ public class Path {
     private static final int RIGHTINDEX=2;
     private static final int LEFTINDEX=3;
 
+    /**
+     * represents a Node in graph
+     */
     public static class Node{
         private Position position;
         private int animatorIndex=0;
@@ -55,10 +58,19 @@ public class Path {
             this.animatorIndex=animatorIndex;
         }
 
+        /**
+         * handles the ghost animators
+         * @return
+         */
         public int getAnimatorIndex() {
             return animatorIndex;
         }
 
+        /**
+         * adds a node as a neighboor to the current node
+         * @param node the new neighboor
+         * @return the new neighboor , useful for chaining
+         */
         public Node addNode(Node node){
             this.links.add(node);
             return node;
@@ -161,6 +173,9 @@ public class Path {
     //nodexy
 
 
+    /**
+     * useful for passing the Path from activity to activity (via its id)
+     */
     public static enum PathType {
         PATH1(genPath1(),1),
         PATH2(genPath2(),2),
@@ -197,6 +212,11 @@ public class Path {
             }
         }
     }
+
+    /**
+     * path number 4
+     * @return the path number 4
+     */
     public static Path genPath4(){
         //Main Path
         Node node10=new Node(new Position(1,0),RIGHTINDEX);
@@ -325,6 +345,10 @@ public class Path {
         return new Path(new Pair<>(7,14),node10);
 
     }
+    /**
+     * path number 3
+     * @return the path number 3
+     */
     public static Path genPath3(){
         Node node10=new Node(new Position(1,0),RIGHTINDEX);
         Node node20=new Node(new Position(2,0),DOWNINDEX);
@@ -410,6 +434,10 @@ public class Path {
         return new Path(new Pair<>(7,14),node10);
 
     }
+    /**
+     * path number 2
+     * @return the path number 2
+     */
     public static Path genPath2(){
         Node node10=new Node(new Position(1,0),RIGHTINDEX);
         Node node20=new Node(new Position(2,0),DOWNINDEX);
@@ -457,6 +485,10 @@ public class Path {
         return new Path(new Pair<>(7,14),node10);
 
     }
+    /**
+     * path number 1
+     * @return the path number 1
+     */
     public static Path genPath1(){
         Node node10=new Node(new Position(1,0),RIGHTINDEX);
         Node node20=new Node(new Position(2,0),DOWNINDEX);
@@ -512,12 +544,24 @@ public class Path {
 
     }
 
+    /**
+     * accepts as parameter the TILE POSITION and returns the node , recursive version
+     * @param tilePosition the tilePosition
+     * @return the node or null
+     */
     public Node getNodeByPosition(Position tilePosition){
         if(!existsInPath(tilePosition))return null;
         return _getNodeByPosition(tilePosition,getFirst());
 
     }
-    public Node _getNodeByPosition(Position tilePosition,Node curr){
+
+    /**
+     * recursive utillity , @see the getNodeByPosition
+     * @param tilePosition
+     * @param curr
+     * @return
+     */
+    private Node _getNodeByPosition(Position tilePosition, Node curr){
         if(curr.getPosition().equals(tilePosition))return curr;
         for (Node i :curr.getLinks()) {
             return _getNodeByPosition(tilePosition,i);
@@ -525,9 +569,16 @@ public class Path {
         return null;
     }
 
+    /**
+     * returns true if this position exists in the path
+     */
     public boolean existsInPath(Position p){
         return _existsInPath(p,getFirst());
     }
+
+    /**
+     * recursive utillity , @see existsInPath
+     */
     private boolean _existsInPath(Position p,Node curr){
         boolean b ;
         if(p.equals(curr.getPosition())){

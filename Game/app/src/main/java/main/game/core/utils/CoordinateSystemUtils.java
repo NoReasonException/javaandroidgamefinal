@@ -18,18 +18,29 @@ public class CoordinateSystemUtils {
 
     private static CoordinateSystemUtils instance;
 
+    /**
+     * convert from absolute to Tile positional systems
+     * @param absolutePosition
+     * @return the tile position , @note there is information loss
+     */
     public Position fromAbsoluteToTilePosition(Position absolutePosition){
         return new Position(
                 absolutePosition.getX()/tileSizeXY.first,
                 absolutePosition.getY()/tileSizeXY.second
         );
     }
+    /**
+     * convert from tile to absolute positional systems
+     * @param tilePosition
+     * @return the absolute position ,@note there is information loss
+     */
     public Position fromTileToAbsolutePosition(Position tilePosition){
         return new Position(
                 tilePosition.getX()*tileSizeXY.first,
                 tilePosition.getY()*tileSizeXY.second
         );
     }
+    //deprecated
     public Position fromTileToAbsolutePositionWithRedundancy(Position tilePosition){
         return new Position(
                 tilePosition.getX()*tileSizeXY.first+random.nextInt(15),

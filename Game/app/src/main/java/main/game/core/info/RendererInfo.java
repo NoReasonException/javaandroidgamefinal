@@ -2,6 +2,9 @@ package main.game.core.info;
 
 import android.util.Pair;
 
+/**
+ * various information regarding screen and tile sizes needed by Renderer
+ */
 public class RendererInfo {
 
     private Pair<Integer,Integer> screenSize;   //screenSize given

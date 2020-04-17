@@ -25,6 +25,13 @@ public class MapAwareSubcribeBulletAction extends MapAwareAction {
         this.bulletSystem=bulletSystem;
     }
 
+    /**
+     * subscribes a bullet into a given position
+     * @param map               the Map
+     * @param rendererInfo      the RendererInfo instance
+     * @param levelInfo         the LevelInfo instance
+     * @return
+     */
     @Override
     public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
         bulletSystem.subscribeBullet(drawable);

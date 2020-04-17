@@ -42,14 +42,25 @@ abstract public class LifesSystem {
         startTick();
         updateMoneyCounter();
     }
+
+    /**
+     * starts the clock
+     */
     public void startTick(){
         tick=true;
         tick();
     }
+
+    /**
+     * stops the clock
+     */
     public void endTick(){
         tick=false;
     }
 
+    /**
+     * ticks the clock
+     */
     public void tick(){
         mGameHandler.postDelayed(new Runnable() {
             @Override
@@ -62,20 +73,36 @@ abstract public class LifesSystem {
         },1000);
     }
 
+    /**
+     * adds money to your account
+     * @param amount
+     */
     public void addMoney(int amount){
         money+=amount;
         updateMoneyCounter();
 
     }
 
+    /**
+     * retrieves the money from your account
+     * @return
+     */
     public int getMoney() {
         return money;
     }
 
+    /**
+     * remove money from your account
+     * @param amount
+     */
     public void removeMoney(int amount){
         money-=amount;
         updateMoneyCounter();
     }
+
+    /**
+     * when there is change in your account ,this updates the view
+     */
     public void updateMoneyCounter(){
         mGameHandler.post(new Runnable() {
             @Override
@@ -85,6 +112,9 @@ abstract public class LifesSystem {
         });
     }
 
+    /**
+     * in every tick() , the view is updated
+     */
     public void updateClock(){
         timerseconds+=1;
         ((TextView)timer).setText(toTimerString(timerseconds));
@@ -99,6 +129,9 @@ abstract public class LifesSystem {
         return minutesPrefix+minutes+":"+secondsPrefix+seconds;
     }
 
+    /**
+     * initialization of LifesSystem
+     */
     public void init(){
 
         if(!isInitialized){
@@ -114,6 +147,9 @@ abstract public class LifesSystem {
     public abstract long getLifes();
     public abstract void setLifes(long lifes);
 
+    /**
+     * callback when a life is lost
+     */
     public void looseLife(){
         setLifes(getLifes()-1);
         if(getLifes()<0){
@@ -134,18 +170,24 @@ abstract public class LifesSystem {
 
     public abstract Function<LifesSystem,Void> gameOverCallback();
 
+    //deprecated
     public void onMakeViewInvisibleCallback(){
         background.setAlpha(0.6f);
         timer.setAlpha(0.6f);
         lifes.stream().forEach(life->life.setAlpha(0.6f));
 
     }
+    //deprecated
     public void onMakeViewVisibleCallback(){
         background.setAlpha(1f);
         timer.setAlpha(1f);
         lifes.stream().forEach(life->life.setAlpha(1f));
     }
 
+    /**
+     * gets the timer as shown on View
+     * @return
+     */
     public String getTimer() {
         return toTimerString(timerseconds);
     }

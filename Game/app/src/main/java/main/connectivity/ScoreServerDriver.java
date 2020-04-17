@@ -16,9 +16,19 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+
+/**
+ * the ScoreServer Driver , a light wrapper over AsyncHttpClient for communicating with our server
+ */
 public class ScoreServerDriver extends HttpUtils {
 
 
+    /**
+     * calls the .getScores() controller , on success calls the success callback , otherwise it calls the failure callback
+     * @param handler the main handler to post jobs
+     * @param success the success callback
+     * @param failure the failure callback
+     */
     public static void getScores(Handler handler, Function<ArrayList<Pair<String,String>>,Void> success, Function<String,Void> failure){
         get("getScores/", new RequestParams(), new AsyncHttpResponseHandler() {
 
@@ -80,17 +90,23 @@ public class ScoreServerDriver extends HttpUtils {
             }
         });
     }
+
+    /**
+     * sets a given key,value pair as score
+     * @param name the name of the player
+     * @param time the time of the player in number format (02:33 -> 0233 as string)
+     */
     public static void setScore(String name,String time){//is given as MM:SS
         time=time.replace(":","");
         get("postScore/?name="+name+"&time="+time, new RequestParams(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
+                //DO NOTHING
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                //DO NOTHING
             }
         });
     }

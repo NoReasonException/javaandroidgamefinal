@@ -21,6 +21,12 @@ public class MapNonAwareMoveAction extends MapNonAwareAction {
         this.newAbsolutePosition=newAbsolutePosition;
     }
 
+    /**
+     * performs a MapNonAwareMoveAction
+     * @param map               The Map object
+     * @param rendererInfo      The RendererInfo instance
+     * @param levelInfo         The LevelInfo instance
+     */
     @Override
     public MapNonAwareActionResult performNonMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
         Position newTilePosition= CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(newAbsolutePosition);

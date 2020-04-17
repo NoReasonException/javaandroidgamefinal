@@ -15,6 +15,9 @@ public class Portal extends Drawable {
         super(animator,absolutePosition);
     }
 
+    /**
+     * i am a portal  ,i am IDLE all the time!
+     */
     @Override
     public MapAwareAction getNextMapAwareAction(Path p, Map map, Context context) {
         return MapAwareAction.buildIdleAction(null,null);

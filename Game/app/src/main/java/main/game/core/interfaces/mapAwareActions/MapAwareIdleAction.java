@@ -13,6 +13,13 @@ public class MapAwareIdleAction extends MapAwareAction {
         super(onSuccessCallback, onFailureCallback);
     }
 
+    /**
+     * DoNothingActon
+     * @param map           the Map
+     * @param rendererInfo  the RendererInfo instance
+     * @param levelInfo     the LevelInfo instance
+     * @return              a MapAwareIdleActon
+     */
     @Override
     public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
         informSubscribersAndCleanup(true);

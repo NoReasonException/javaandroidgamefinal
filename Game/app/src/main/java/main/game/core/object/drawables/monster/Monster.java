@@ -49,6 +49,7 @@ public class Monster extends Drawable{
         this.maxGhostlifes=ghostlifes;
         this.earningsFromDeath=earningsFromDeath;
     }
+
     @Override
     public Pair<Bitmap, Paint> getBitmap() {
         Bitmap bitmap=animators.get(currentIndex).getBitmap();
@@ -59,6 +60,13 @@ public class Monster extends Drawable{
 
     }
 
+    /**
+     * calculates the next action of the monster , ensuring that is stays in the predefined path
+     * @param path      the Path Object
+     * @param map       the Map Object
+     * @param context   the content given from the mGameView
+     * @return          a mapAwareAction
+     */
     @Override
     public MapAwareAction getNextMapAwareAction(Path path, Map map, Context context) {
 
@@ -129,6 +137,10 @@ public class Monster extends Drawable{
         this.toDestruct = toDestruct;
     }
 
+
+    /**
+     * handles the collision detector callbacks
+     */
     @Override
     public Function<Drawable, Void> getOnCollisionHandler() {
 
@@ -140,6 +152,7 @@ public class Monster extends Drawable{
             public Void apply(Drawable input) {
 
                 if(input instanceof Portal){
+                    setToDestruct(true);
                     LifesSystem.getInstance().looseLife();
                 }
                 else{//is a bullet //TODO sometimes just losses life without reason , maybe the collision system has some bug?

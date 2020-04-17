@@ -22,8 +22,16 @@ abstract public class MapAwareAction extends Action {
         super(onSuccessCallback,onFailureCallback);
     }
 
+    /**
+     * perform the action
+     * @param map               The Map Object
+     * @param rendererInfo      The RendererInfo instance
+     * @param levelInfo         The LevelInfo instance
+     * @return a MapAwareResult
+     */
     abstract public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo);
 
+    ///Builders
     public static MapAwareAction buildMoveAction(Function<Void,Void> onSuccessCallback, Function<Void,Void>onFailureCallback, Position oldAbsolutePosition, Position newAbsolutePosition, Drawable entity){
         return new MapAwareMoveAction(onSuccessCallback,onFailureCallback,oldAbsolutePosition,newAbsolutePosition,entity);
     }

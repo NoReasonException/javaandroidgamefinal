@@ -21,6 +21,14 @@ public class MapNonAwareDeleteMeAction extends MapNonAwareAction {
         this.bulletSystem = bulletSystem;
     }
 
+    /**
+     * removes a bullet actually (only a bullet triggers a MapNonAwareDeleteMeAction)
+     * TODO :this may cause problems if more than one Drawable children fires this event , ClassCastException, refactor it
+     * @param map               the Map instance
+     * @param rendererInfo      the RendererInfo instance
+     * @param levelInfo         the LevelInfo instance
+     * @return                  a MapNonAwareActionResult
+     */
     @Override
     public MapNonAwareActionResult performNonMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
         bulletSystem.removeBullet(entity);

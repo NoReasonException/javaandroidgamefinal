@@ -1,5 +1,8 @@
 package main.game.core.info;
 
+/**
+ * various information about the screen size and the scale of the bitmaps
+ */
 public class LevelInfo {
     int tileCountX;
     float scale;

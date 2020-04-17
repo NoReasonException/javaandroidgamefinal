@@ -47,6 +47,11 @@ public class Tower extends Drawable {
         return cost;
     }
 
+    /**
+     * detects enemies in the given radius
+     * @param radius the radius
+     * @return a list of all positions inside radius
+     */
     private List<Position> getViewRange(int radius){
         List<Position> p = new ArrayList<>();
         Position tilePosition = CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(absolutePosition);
@@ -61,6 +66,13 @@ public class Tower extends Drawable {
         return p.stream().filter((position)->position.getX()>0&&position.getY()>0).collect(Collectors.toList());
     }
 
+    /**
+     * detects enemies and shoots at them!
+     * @param p             The Path Object
+     * @param map           The Map Object
+     * @param context       The Context taken from mGameView
+     * @return
+     */
     @Override
     public MapAwareAction getNextMapAwareAction(Path p, Map map, Context context) {
         testState = (testState + 1) % testMaxState;

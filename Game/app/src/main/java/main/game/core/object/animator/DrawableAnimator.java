@@ -28,6 +28,13 @@ public class DrawableAnimator {
         this.bitmapArray= resourcesToMemory(element,context);
         bitmapArray=reshapeResources(bitmapArray,levelInfo.getScale());
     }
+
+    /**
+     * scale bitmaps according to LevelInfo
+     * @param resources the Resourses Object
+     * @param scale the scale factor (1-> no change,2 -> double the size,4->quadtriple the size)
+     * @return a mapped list with the bitmaps
+     */
     private List<Bitmap> reshapeResources(List<Bitmap>resources, float scale){
         return resources.stream().
                 map((b)->Bitmap.createScaledBitmap(b,
@@ -35,6 +42,13 @@ public class DrawableAnimator {
                         Double.valueOf(b.getHeight()*scale).intValue(), true)).
                 collect(Collectors.toList());
     }
+
+    /**
+     * load the resources into memory
+     * @param element the element enum
+     * @param context the context object
+     * @return the List with the goodies!
+     */
     private ArrayList<Bitmap> resourcesToMemory(Element element, Context context){
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
         for (int elementId :

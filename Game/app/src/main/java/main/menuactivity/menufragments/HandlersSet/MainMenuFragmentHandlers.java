@@ -2,6 +2,9 @@ package main.menuactivity.menufragments.HandlersSet;
 
 import android.arch.core.util.Function;
 
+/**
+ * button callbacks
+ */
 public class MainMenuFragmentHandlers {
 
     private Function<Void,Void> playButtonCallback;

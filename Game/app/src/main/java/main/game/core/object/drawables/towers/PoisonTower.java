@@ -10,6 +10,9 @@ import main.game.core.object.animator.DrawableAnimator;
 import main.game.core.renderer.BulletSystem;
 import main.menuanimators.elements.Element;
 
+/**
+ * PoisonTower
+ */
 public class PoisonTower extends Tower {
     public PoisonTower(Context context, LevelInfo levelInfo, Position absolutePosition, BulletSystem bulletSystem) {
         super(context, Arrays.asList(

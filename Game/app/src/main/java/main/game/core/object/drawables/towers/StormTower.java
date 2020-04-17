@@ -10,6 +10,9 @@ import main.game.core.object.animator.DrawableAnimator;
 import main.game.core.renderer.BulletSystem;
 import main.menuanimators.elements.Element;
 
+/**
+ * StormTower
+ */
 public class StormTower extends Tower {
     public StormTower(Context context, LevelInfo levelInfo, Position absolutePosition, BulletSystem bulletSystem) {
         super(context, Arrays.asList(

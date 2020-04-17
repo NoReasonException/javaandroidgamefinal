@@ -10,6 +10,9 @@ import main.game.core.object.animator.DrawableAnimator;
 import main.game.core.renderer.BulletSystem;
 import main.menuanimators.elements.Element;
 
+/**
+ * IceTower
+ */
 public class IceTower extends Tower {
     public IceTower(Context context, LevelInfo levelInfo, Position absolutePosition, BulletSystem bulletSystem) {
         super(context, Arrays.asList(

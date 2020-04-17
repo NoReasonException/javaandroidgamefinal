@@ -19,16 +19,30 @@ public class BulletSystem {
         this.bullets = new ArrayList<>();
     }
 
+    /**
+     * Enrolls a bullet
+     * @param d the drawable bullet
+     */
     public void subscribeBullet(Drawable d) {
         synchronized (bullets) {
             this.bullets.add(d);
         }
     }
+
+    /**
+     * removes a bullet
+     * @param d the bullet to delete
+     */
     public void removeBullet(Drawable d) {
         synchronized (bullets) {
             this.bullets.remove(d);
         }
     }
+
+    /**
+     * set callback to avoid ConcurrentModificationExceptions
+     * @param function the callback
+     */
     public void syncWithBulletSystem(Function<ArrayList<Drawable>,Void> function){
         synchronized (bullets){
             function.apply(bullets);

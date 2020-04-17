@@ -27,6 +27,13 @@ public class MapAwareMoveAction extends MapAwareAction {
         this.entity = entity;
     }
 
+    /**
+     * moves an object from position A to position B
+     * @param map               the Map object
+     * @param rendererInfo      the RendererInfo instance
+     * @param levelInfo         the Levelnfo instance
+     * @return                  a MapAwareMoveAction
+     */
     @Override
     public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
         if(map.moveDrawable(CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(entity.getAbsolutePosition())

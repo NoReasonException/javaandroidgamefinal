@@ -1,5 +1,8 @@
 package main.game.core.etc;
 
+/**
+ * It is used to pass the difficulty level from Activity to activity (using the ID)
+ */
 public enum DifficultyLevel {
     EASY(0),NORMAL(1),HARD(2);
     private int id;

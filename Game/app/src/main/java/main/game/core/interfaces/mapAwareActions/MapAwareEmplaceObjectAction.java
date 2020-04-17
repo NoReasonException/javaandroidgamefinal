@@ -22,6 +22,13 @@ public class MapAwareEmplaceObjectAction extends MapAwareAction {
         this.entity = entity;
     }
 
+    /***
+     * emplaces a object into the Map
+     * @param map               the Map
+     * @param rendererInfo      the RendererInfo instance
+     * @param levelInfo         the LevelInfo instance
+     * @return                  a MapAwareEmplaceObjectAction
+     */
     @Override
         public MapAwareActionResult performMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo) {
         Position entityPosition= CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(entity.getAbsolutePosition());

@@ -19,6 +19,13 @@ abstract public class MapNonAwareAction extends Action {
         super(onSuccessCallback, onFailureCallback);
     }
 
+    /**
+     * perform the NonMapAwareAction
+     * @param map               The Map object
+     * @param rendererInfo      The RendererInfo instance
+     * @param levelInfo         The LevelInfo instance
+     * @return  a MapNonAwareActionResult
+     */
     abstract public MapNonAwareActionResult performNonMapAwareAction(Map map, RendererInfo rendererInfo, LevelInfo levelInfo);
 
     public static MapNonAwareDeleteMeAction buildDeleteMeAction(Function<Void, Void> onSuccessCallback, Function<Void, Void> onFailureCallback, Drawable entity, BulletSystem bulletSystem){

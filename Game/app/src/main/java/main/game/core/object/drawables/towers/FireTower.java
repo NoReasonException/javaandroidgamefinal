@@ -10,6 +10,9 @@ import main.game.core.object.animator.DrawableAnimator;
 import main.game.core.renderer.BulletSystem;
 import main.menuanimators.elements.Element;
 
+/**
+ * FireTower
+ */
 public class FireTower extends Tower {
     public FireTower(Context context, LevelInfo levelInfo, Position absolutePosition, BulletSystem bulletSystem) {
         super(context, Arrays.asList(

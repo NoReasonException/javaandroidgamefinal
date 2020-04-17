@@ -11,7 +11,7 @@ import java.util.List;
 import main.game.core.object.Drawable;
 
 /**
- * Map is considered only with tile coordinates
+ * Map is considered only with tile coordinates, detects collisions
  */
 public class Map {
         private final HashMap<Position, Drawable> map=new HashMap<>();
@@ -24,12 +24,19 @@ public class Map {
         map.put(new Position(tileCountXY.first-1,tileCountXY.second-1),outPortal);
 
     }
-    //TODO draw checks
+
     public Drawable getDrawableAtPosition(Position p ){
         synchronized (map){
             return map.get(p);
         }
     }
+
+    /**
+     * removes a drawable at given tile position
+     * @param p the position
+     * @param d the drawable
+     * @return true at success
+     */
     public boolean removeDrawable(Position p,Drawable d) {
         synchronized (map) {
             if (map.get(p) == d) {
@@ -42,11 +49,23 @@ public class Map {
         }
     }
 
+    /**
+     * returns true if exists any object at position given
+     * @param p the position
+     * @return true if exists
+     */
     public boolean existsObjectAtPosition(Position p){
         synchronized (map){
             return map.containsKey(p);
         }
     }
+
+    /**
+     * draw a drawable
+     * @param p the tile position
+     * @param d the drawable
+     * @return
+     */
     public boolean setDrawableAtPosition(Position p, Drawable d ){
         synchronized (map){
             if(existsObjectAtPosition(p)){
@@ -58,6 +77,14 @@ public class Map {
         return true;
 
     }
+
+    /**
+     * move drawable
+     * @param old the old tile position
+     * @param newp the new tile position
+     * @param d the drawable
+     * @return true on success
+     */
     public boolean moveDrawable(Position old,Position newp , Drawable d){
         synchronized (map){
             if(map.get(old)!=null &&

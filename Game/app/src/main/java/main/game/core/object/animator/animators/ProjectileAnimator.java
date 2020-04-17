@@ -22,6 +22,9 @@ public class ProjectileAnimator extends DrawableAnimator {
         rotateBitmaps();
     }
 
+    /**
+     * rotates the bitmaps by the given angle
+     */
     protected void rotateBitmaps() {
         bitmapArray=bitmapArray.stream().map(e->BitmapUtils.rotateBitmap(e,angle)).collect(Collectors.toList());
     }

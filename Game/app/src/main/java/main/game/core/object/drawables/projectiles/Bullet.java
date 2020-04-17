@@ -61,6 +61,13 @@ public class Bullet extends Drawable implements MapNonAwareActionAble {
     }
 
 
+    /**
+     * calculates the path of the bullet untill the destination
+     * @param p         the Path object
+     * @param m         the Map object
+     * @param context   the Context taken from mGameView
+     * @return          a mapAware function
+     */
     @Override
     public MapNonAwareAction getNextNonMapAwareAction(Path p, Map m, Context context) {
         int nextX0=getAbsolutePosition().getX();

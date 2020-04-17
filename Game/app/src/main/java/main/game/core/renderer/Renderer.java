@@ -55,12 +55,26 @@ public class Renderer {
         CoordinateSystemUtils.initInstance(tileCountXY,tileSizeXY);
 
     }
-    public Pair<Integer,Integer> tileCountXYCalculate(Pair<Integer,Integer>screenSize,int tileCount){
+
+    /**
+     * calculates the amount of tiles to fit the screen
+     * @param screenSize        the size of screen in pixels
+     * @param tileCountX         the X tile count
+     * @return the amount of tiles in a pair
+     */
+    public Pair<Integer,Integer> tileCountXYCalculate(Pair<Integer,Integer>screenSize,int tileCountX){
         float x_To_yRatio=screenSize.second/((1.0f)*screenSize.first);
-        Pair<Integer,Integer>tileCountXY=new Pair<>(tileCount,Double.valueOf(tileCount*x_To_yRatio).intValue());
-        Log.i(loggerTag,"Renderer Initialization : screenSize "+screenSize+" and requested tilecountX: "+tileCount+" produced tileCountXY: "+tileCountXY);
+        Pair<Integer,Integer>tileCountXY=new Pair<>(tileCountX,Double.valueOf(tileCountX*x_To_yRatio).intValue());
+        Log.i(loggerTag,"Renderer Initialization : screenSize "+screenSize+" and requested tilecountX: "+tileCountX+" produced tileCountXY: "+tileCountXY);
         return tileCountXY;
     }
+
+    /**
+     * calculates the size of the given tiles given the tilecount and the screensize
+     * @param screenSize        the screenSize in pixels as pair
+     * @param tileCountXY       the amount of tiles in pair
+     * @return                  a pair with the dimensions of a single tile
+     */
     public Pair<Integer,Integer> tileSizeXYCalculate(Pair<Integer,Integer>screenSize,Pair<Integer,Integer>tileCountXY){
         float screen_x_to_x_ratio=screenSize.first/((1.0f)*tileCountXY.first);
         float screen_y_to_y_ratio=screenSize.second/((1.0f)*tileCountXY.second);
@@ -68,6 +82,12 @@ public class Renderer {
         Log.i(loggerTag,"Renderer Initialization : screenSize "+screenSize+" and requested tileSizeXY: "+tileCountXY+" produced tileSizeXY: "+tileSizeXY);
         return tileSizeXY;
     }
+
+    /**
+     * draws the background
+     * @param canvas            The Canvas Object
+     * @param backgroundTile    The Background Tile
+     */
     public void drawBackground(Canvas canvas, List<Bitmap> backgroundTile){
         Pair<Integer,Integer>screenPosition;
         Integer randomTileIndexCurr;
@@ -87,22 +107,47 @@ public class Renderer {
         }
 
     }
+
+    /**
+     * returns a random grass tile to draw on screen
+     * @param screenPosition        the screenPosition as TILEPOSITION
+     * @param max                   the maximum amount of available tiles (in grass is 4)
+     * @return
+     */
     private Integer genRandomGrassTileIndex(Pair<Integer,Integer>screenPosition, int max){
         int newIndex=Math.abs(random.nextInt(max));
         randomGrassTileIndex.put(screenPosition,newIndex);
         return newIndex;
 
     }
+
+    /**
+     * draws the defined path
+     * @param canvas            The Canvas Object
+     * @param backgroundTile    The BackgroundTile list of bitmaps
+     * @param path              The defined Path
+     */
     public void drawPath(Canvas canvas, List<Bitmap> backgroundTile, Path path){
 
         _drawPath(canvas,backgroundTile,path.getFirst());
     }
-    public void _drawPath(Canvas canvas,List<Bitmap> backgroundTile,Path.Node currNode){
+
+    /**
+     * recursive utillity , please see @drawPath
+     */
+    private void _drawPath(Canvas canvas, List<Bitmap> backgroundTile, Path.Node currNode){
         canvas.drawBitmap(backgroundTile.get(getSandTileIndex(currNode.getPosition(),backgroundTile.size())),currNode.getPosition().getX()*tileSizeXY.first,currNode.getPosition().getY()*tileSizeXY.second,null);
         for (Path.Node n :currNode.getLinks()) {
             _drawPath(canvas,backgroundTile,n);
         }
     }
+
+    /**
+     * generates a random tile index
+     * @param tilePosition the tiles position
+     * @param max          the maximum amount of sand tiles(is 2 for sand)
+     * @return             a random but valid index
+     */
     private Integer getSandTileIndex(Position tilePosition, int max){
         if(randomSandTileIndex.containsKey(tilePosition)){
             return randomSandTileIndex.get(tilePosition);
@@ -114,12 +159,23 @@ public class Renderer {
         }
     }
 
+    /**
+     * Draws the given map
+     * @param canvas        The Canvas
+     * @param map           The Map
+     */
     public void drawMap(Canvas canvas, Map map){
         for (Position p: map.getDrawableObjects()) {
             Drawable d=map.getDrawableAtPosition(p);
             canvas.drawBitmap(d.getBitmap().first,d.getAbsolutePosition().getX(),d.getAbsolutePosition().getY(),d.getBitmap().second);
         }
     }
+
+    /**
+     * draws the subscribed bullets , @see BulletSystem
+     * @param canvas            The Canvas Object
+     * @param bulletSystem      The BulletSystem
+     */
     public void drawBullets(Canvas canvas,BulletSystem bulletSystem){
         bulletSystem.syncWithBulletSystem(new Function<ArrayList<Drawable>, Void>() {
             @Override
@@ -131,6 +187,13 @@ public class Renderer {
             }
         });
     }
+
+    /**
+     * updates the bullets trajectory
+     * @param map           The Map Object
+     * @param path          The Path Object
+     * @param bulletSystem  The Bullets System
+     */
     public void updateBullets(Map map,Path path,BulletSystem bulletSystem){
         bulletSystem.syncWithBulletSystem(new Function<ArrayList<Drawable>, Void>() {
             @Override
@@ -146,6 +209,12 @@ public class Renderer {
             }
         });
     }
+
+    /**
+     * update all drawables
+     * @param map   The Map Object
+     * @param path  The Path Object
+     */
     public void updateMoveables(Map map,Path path) {
         for (Position p : map.getDrawableObjects()) {
             Drawable d = map.getDrawableAtPosition(p);
@@ -159,9 +228,24 @@ public class Renderer {
             }
         }
     }
+
+    /**
+     * triggers the scenario in a separate thread
+     * @param schenario                 The schenario Object
+     * @param canvasThreadHandler       The CanvasThreadHandler object
+     * @param map                       The Map
+     */
     public void updateSchenario(Schenario schenario, Handler canvasThreadHandler, Map map){
-        schenario.trigger(map,context,canvasThreadHandler).performMapAwareAction(map,rendererInfo,levelInfo);
+        canvasThreadHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                //TODO this is ugly , refactor it
+                schenario.trigger(map,context,canvasThreadHandler).performMapAwareAction(map,rendererInfo,levelInfo);
+            }
+        });
+
     }
+
 
     public RendererInfo getInfo(){
         return rendererInfo==null?(rendererInfo=new RendererInfo(screenSize,tileCountXY,tileSizeXY)):rendererInfo;

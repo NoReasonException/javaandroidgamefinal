@@ -30,6 +30,14 @@ public class ChooseGhostUtils {
 
     }
 
+    /**
+     * based on the given propability , we spawn ghosts under the assumption that the random.randint() follows a uniform distribution
+     * @param ghostPropabilities        The Propabillities
+     * @param context                   The Context Object
+     * @param levelInfo                 The Level Info
+     * @param absolutePosition          The Absolute Position
+     * @return                          a generated monster
+     */
     public static Monster getRandomGhostBasedOnPropabilities(GhostPropabilities ghostPropabilities, Context context, LevelInfo levelInfo, Position absolutePosition){
         //range , 0-$maxrange
         int randomInteger = Math.abs(random.nextInt(maxrange));

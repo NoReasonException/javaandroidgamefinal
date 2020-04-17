@@ -12,6 +12,9 @@ import main.game.core.map.Position;
 import main.game.core.utils.ChooseGhostUtils;
 import main.game.core.utils.CoordinateSystemUtils;
 
+/**
+ * Triggers events and generates monsters!
+ */
 abstract public class Schenario {
     protected LevelInfo levelInfo;
     protected ChooseGhostUtils.GhostPropabilities ghostPropabilities;
@@ -26,6 +29,13 @@ abstract public class Schenario {
         this.max=max;
     }
 
+    /**
+     * the main function , runs every frame
+     * @param map                   The Map Object
+     * @param context               The Context object
+     * @param canvasThreadHandler   The CanvasThreadHandler
+     * @return                      an MapAwareAction
+     */
 
     public MapAwareAction trigger(Map map, Context context, Handler canvasThreadHandler) {
         state=(state+1)%max;
