@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import uk.ac.reading.sis05kol.engine.R;
+import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.engine.GameActivity;
 import uk.ac.reading.sis05kol.engine.menuactivity.menufragments.HandlersSet.MainMenuFragmentHandlers;
 import uk.ac.reading.sis05kol.engine.menuactivity.menufragments.HandlersSet.SelectLevelFragmentHandlers;
@@ -50,7 +51,7 @@ public class MenuActivity extends Activity {
                 this::level1ButtonAction,
                 this::level2ButtonAction,
                 this::level3ButtonAction,
-                this::levelAutogenAction
+                this::level4ButtonAction
         );
 
         this.mainMenuFragment=MainMenuFragment.newInstance(mainMenuHandlers,this::getDrawable);
@@ -122,6 +123,7 @@ public class MenuActivity extends Activity {
                         Intent intent = new Intent(getApplicationContext(), GameActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("difficultyLevel",((MainMenuFragment)mainMenuFragment).getDifficultyLevel().getId());
+                        b.putInt("pathId", Path.PathType.PATH1.getId());
                         intent.putExtras(b);
                         startActivity(intent);
                         allowCreateNewActivity = false;
@@ -142,6 +144,7 @@ public class MenuActivity extends Activity {
                         Intent intent = new Intent(getApplicationContext(), GameActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("difficultyLevel",((MainMenuFragment)mainMenuFragment).getDifficultyLevel().getId());
+                        b.putInt("pathId", Path.PathType.PATH2.getId());
                         intent.putExtras(b);
                         startActivity(intent);
                         allowCreateNewActivity = false;
@@ -162,6 +165,7 @@ public class MenuActivity extends Activity {
                         Intent intent = new Intent(getApplicationContext(), GameActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("difficultyLevel",((MainMenuFragment)mainMenuFragment).getDifficultyLevel().getId());
+                        b.putInt("pathId", Path.PathType.PATH3.getId());
                         intent.putExtras(b);
                         startActivity(intent);
                         allowCreateNewActivity = false;
@@ -172,7 +176,7 @@ public class MenuActivity extends Activity {
         },50);
         return null;
     }
-    public Void levelAutogenAction(Void b){
+    public Void level4ButtonAction(Void b){
         new Handler().postDelayed(new Runnable() {
             @SuppressLint("ResourceType")
             @Override
@@ -182,6 +186,7 @@ public class MenuActivity extends Activity {
                         Intent intent = new Intent(getApplicationContext(), GameActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("difficultyLevel",((MainMenuFragment)mainMenuFragment).getDifficultyLevel().getId());
+                        b.putInt("pathId", Path.PathType.PATH4.getId());
                         intent.putExtras(b);
                         startActivity(intent);
                         allowCreateNewActivity = false;

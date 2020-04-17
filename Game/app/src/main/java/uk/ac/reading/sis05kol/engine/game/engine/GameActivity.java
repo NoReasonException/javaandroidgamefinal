@@ -23,6 +23,7 @@ import java.util.Arrays;
 import uk.ac.reading.sis05kol.engine.R;
 import uk.ac.reading.sis05kol.engine.game.TheGame;
 import uk.ac.reading.sis05kol.engine.game.core.etc.DifficultyLevel;
+import uk.ac.reading.sis05kol.engine.game.core.map.path.Path;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.Tower;
 import uk.ac.reading.sis05kol.engine.menuanimators.VariableOpaqueButtonAnimator;
 
@@ -45,6 +46,7 @@ public class GameActivity extends Activity {
     private boolean onTowerSelection=false;
 
     private DifficultyLevel difficultyLevel=DifficultyLevel.NORMAL;
+    private Path path;
 
 
     /** Called when the activity is first created. */
@@ -73,7 +75,10 @@ public class GameActivity extends Activity {
         if(bundle!=null && id!=-1){
             difficultyLevel=DifficultyLevel.getDifficultyLevelFromID(id);
         }
-
+        int pathid=bundle.getInt("pathId",-1);
+        if(bundle!=null && id!=-1){
+            path= Path.PathType.fromIdToPath(pathid).getPath();
+        }
         //get references to all needed views
         mGameView = (GameView)findViewById(R.id.gamearea);
         mGameView.setStatusView((TextView)findViewById(R.id.text));
@@ -100,7 +105,7 @@ public class GameActivity extends Activity {
     private void startGame(GameView gView, GameThread gThread, Bundle savedInstanceState) {
 
         //Set up a new game, we don't care about previous states
-        mGameThread = new TheGame(
+        mGameThread = new TheGame(path,
                 mGameView,
                 progressViewBackground,
                 progressViewlifes,

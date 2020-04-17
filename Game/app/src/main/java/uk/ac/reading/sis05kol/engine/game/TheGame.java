@@ -66,9 +66,10 @@ public class TheGame extends GameThread {
     private int hasPressedStart=0;
     private DifficultyLevel difficultyLevel = DifficultyLevel.NORMAL;
     protected Function<Function<Tower.TowerType,Void>,Void> selectTowerCallback;
+    protected int levelID;
 
     //This is run before anything else, so we can prepare things here
-    public TheGame(GameView gameView,
+    public TheGame(Path path,GameView gameView,
                    View progressBackground,
                    ArrayList<View>lifes,
                    View timer,
@@ -84,6 +85,7 @@ public class TheGame extends GameThread {
         this.timer=timer;
         this.moneyCounter=moneyCounter;
         this.difficultyLevel=difficultyLevel;
+        this.path=path;
 
         this.selectTowerCallback=selectTowerCallback;
         levelInfo=new LevelInfo(7,0.08f);
@@ -154,7 +156,6 @@ public class TheGame extends GameThread {
 
         grass=scaleTiles(grass,renderer.getTileSizeXY());
         sand=scaleTiles(sand,renderer.getTileSizeXY());
-        path=Path.getWithTileCountX7();
 
 
         Drawable portal = new BluePortal(mGameView.getContext(), CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(new Position(0,0)),levelInfo);

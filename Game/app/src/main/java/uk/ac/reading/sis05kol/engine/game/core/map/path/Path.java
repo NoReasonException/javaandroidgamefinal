@@ -15,12 +15,12 @@ public class Path {
     private Node first;
     private static String loggerTag="PATH";
     private static Path instance;
-    private static Path instancex7;
 
     private static final int DOWNINDEX=0;
     private static final int UPINDEX=1;
     private static final int RIGHTINDEX=2;
     private static final int LEFTINDEX=3;
+
     public static class Node{
         private Position position;
         private int animatorIndex=0;
@@ -159,7 +159,45 @@ public class Path {
 
     }
     //nodexy
-    public static Path getWithTileCountX7(){
+
+
+    public static enum PathType {
+        PATH1(genPath1(),1),
+        PATH2(genPath2(),2),
+        PATH3(genPath3(),3),
+        PATH4(genPath4(),4);
+        private Path path;
+        private int id;
+
+        PathType(Path path, int id) {
+            this.path = path;
+            this.id = id;
+        }
+
+        public Path getPath() {
+            return path;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public static PathType fromIdToPath(int id){
+            switch (id){
+                case 1:
+                    return PATH1;
+                case 2:
+                    return PATH2;
+                case 3:
+                    return PATH3;
+                case 4:
+                    return PATH4;
+                default:
+                    return PATH4;
+            }
+        }
+    }
+    public static Path genPath4(){
         //Main Path
         Node node10=new Node(new Position(1,0),RIGHTINDEX);
         Node node20=new Node(new Position(2,0),RIGHTINDEX);
@@ -284,11 +322,193 @@ public class Path {
         Node node6_13ref2=node6_12.addNode(node6_13);
 
 
-        if(instancex7==null) {
-            instancex7=new Path(new Pair<>(7,14),node10);
+        return new Path(new Pair<>(7,14),node10);
 
-        }
-        return instancex7;
+    }
+    public static Path genPath3(){
+        Node node10=new Node(new Position(1,0),RIGHTINDEX);
+        Node node20=new Node(new Position(2,0),DOWNINDEX);
+        Node node21=new Node(new Position(2,1),DOWNINDEX);
+        Node node22=new Node(new Position(2,2),DOWNINDEX);
+        Node node23=new Node(new Position(2,3),DOWNINDEX);
+        Node node24=new Node(new Position(2,4),DOWNINDEX);
+        Node node25=new Node(new Position(2,5),DOWNINDEX);
+        Node node26=new Node(new Position(2,6),LEFTINDEX);
+        Node node16=new Node(new Position(1,6),DOWNINDEX);
+        Node node17=new Node(new Position(1,7),DOWNINDEX);
+        Node node18=new Node(new Position(1,8),DOWNINDEX);
+        Node node19=new Node(new Position(1,9),DOWNINDEX);
+        Node node1_10=new Node(new Position(1,10),RIGHTINDEX);
+        Node node2_10=new Node(new Position(2,10),DOWNINDEX);
+        Node node2_11=new Node(new Position(2,11),DOWNINDEX);
+        Node node2_12=new Node(new Position(2,12),RIGHTINDEX);
+        Node node3_12=new Node(new Position(3,12),DOWNINDEX);
+        Node node3_13=new Node(new Position(3,13),RIGHTINDEX);
+        Node node4_13=new Node(new Position(4,13),RIGHTINDEX);
+        Node node5_13=new Node(new Position(5,13),RIGHTINDEX);
+        Node node6_13=new Node(new Position(6,13),RIGHTINDEX);
+        Node node6_13Ref=node10
+                .addNode(node20)
+                .addNode(node21)
+                .addNode(node22)
+                .addNode(node23)
+                .addNode(node24)
+                .addNode(node25)
+                .addNode(node26)
+                .addNode(node16)
+                .addNode(node17)
+                .addNode(node18)
+                .addNode(node19)
+                .addNode(node1_10)
+                .addNode(node2_10)
+                .addNode(node2_11)
+                .addNode(node2_12)
+                .addNode(node3_12)
+                .addNode(node3_13)
+                .addNode(node4_13)
+                .addNode(node5_13)
+                .addNode(node6_13);
+
+        Node node33=new Node(new Position(3,3),RIGHTINDEX);
+        Node node43=new Node(new Position(4,3),RIGHTINDEX);
+        Node node53=new Node(new Position(5,3),DOWNINDEX);
+        Node node54=new Node(new Position(5,4),DOWNINDEX);
+        Node node55=new Node(new Position(5,5),DOWNINDEX);
+        Node node56=new Node(new Position(5,6),DOWNINDEX);
+        Node node57=new Node(new Position(5,7),LEFTINDEX);
+        Node node47=new Node(new Position(4,7),DOWNINDEX);
+        Node node48=new Node(new Position(4,8),DOWNINDEX);
+        Node node49=new Node(new Position(4,9),DOWNINDEX);
+        Node node4_10=new Node(new Position(4,10),RIGHTINDEX);
+        Node node5_10=new Node(new Position(5,10),RIGHTINDEX);
+        Node node6_10=new Node(new Position(6,10),DOWNINDEX);
+        Node node6_11=new Node(new Position(6,11),DOWNINDEX);
+        Node node6_12=new Node(new Position(6,12),DOWNINDEX);
+
+        Node node6_12Ref=node33.addNode(node43)
+                .addNode(node53)
+                .addNode(node54)
+                .addNode(node55)
+                .addNode(node56)
+                .addNode(node57)
+                .addNode(node47)
+                .addNode(node48)
+                .addNode(node49)
+                .addNode(node4_10)
+                .addNode(node5_10)
+                .addNode(node6_10)
+                .addNode(node6_11)
+                .addNode(node6_12);
+
+
+        //join the two paths
+        node23.addNode(node33);
+        node6_12Ref.addNode(node6_13);
+
+
+
+        return new Path(new Pair<>(7,14),node10);
+
+    }
+    public static Path genPath2(){
+        Node node10=new Node(new Position(1,0),RIGHTINDEX);
+        Node node20=new Node(new Position(2,0),DOWNINDEX);
+        Node node21=new Node(new Position(2,1),DOWNINDEX);
+        Node node22=new Node(new Position(2,2),DOWNINDEX);
+        Node node23=new Node(new Position(2,3),DOWNINDEX);
+        Node node24=new Node(new Position(2,4),DOWNINDEX);
+        Node node25=new Node(new Position(2,5),DOWNINDEX);
+        Node node26=new Node(new Position(2,6),LEFTINDEX);
+        Node node16=new Node(new Position(1,6),DOWNINDEX);
+        Node node17=new Node(new Position(1,7),DOWNINDEX);
+        Node node18=new Node(new Position(1,8),DOWNINDEX);
+        Node node19=new Node(new Position(1,9),DOWNINDEX);
+        Node node1_10=new Node(new Position(1,10),RIGHTINDEX);
+        Node node2_10=new Node(new Position(2,10),DOWNINDEX);
+        Node node2_11=new Node(new Position(2,11),DOWNINDEX);
+        Node node2_12=new Node(new Position(2,12),RIGHTINDEX);
+        Node node3_12=new Node(new Position(3,12),DOWNINDEX);
+        Node node3_13=new Node(new Position(3,13),RIGHTINDEX);
+        Node node4_13=new Node(new Position(4,13),RIGHTINDEX);
+        Node node5_13=new Node(new Position(5,13),RIGHTINDEX);
+        Node node6_13=new Node(new Position(6,13),RIGHTINDEX);
+        Node node6_13Ref=node10
+                .addNode(node20)
+                .addNode(node21)
+                .addNode(node22)
+                .addNode(node23)
+                .addNode(node24)
+                .addNode(node25)
+                .addNode(node26)
+                .addNode(node16)
+                .addNode(node17)
+                .addNode(node18)
+                .addNode(node19)
+                .addNode(node1_10)
+                .addNode(node2_10)
+                .addNode(node2_11)
+                .addNode(node2_12)
+                .addNode(node3_12)
+                .addNode(node3_13)
+                .addNode(node4_13)
+                .addNode(node5_13)
+                .addNode(node6_13);
+
+        return new Path(new Pair<>(7,14),node10);
+
+    }
+    public static Path genPath1(){
+        Node node10=new Node(new Position(1,0),RIGHTINDEX);
+        Node node20=new Node(new Position(2,0),DOWNINDEX);
+        Node node21=new Node(new Position(2,1),DOWNINDEX);
+        Node node22=new Node(new Position(2,2),DOWNINDEX);
+        Node node23=new Node(new Position(2,3),DOWNINDEX);
+        Node node23Ref=node10
+                .addNode(node20)
+                .addNode(node21)
+                .addNode(node22)
+                .addNode(node23);
+
+        Node node33=new Node(new Position(3,3),RIGHTINDEX);
+        Node node43=new Node(new Position(4,3),RIGHTINDEX);
+        Node node53=new Node(new Position(5,3),DOWNINDEX);
+        Node node54=new Node(new Position(5,4),DOWNINDEX);
+        Node node55=new Node(new Position(5,5),DOWNINDEX);
+        Node node56=new Node(new Position(5,6),DOWNINDEX);
+        Node node57=new Node(new Position(5,7),LEFTINDEX);
+        Node node47=new Node(new Position(4,7),DOWNINDEX);
+        Node node48=new Node(new Position(4,8),DOWNINDEX);
+        Node node49=new Node(new Position(4,9),DOWNINDEX);
+        Node node4_10=new Node(new Position(4,10),RIGHTINDEX);
+        Node node5_10=new Node(new Position(5,10),RIGHTINDEX);
+        Node node6_10=new Node(new Position(6,10),DOWNINDEX);
+        Node node6_11=new Node(new Position(6,11),DOWNINDEX);
+        Node node6_12=new Node(new Position(6,12),DOWNINDEX);
+        Node node6_13=new Node(new Position(6,13),DOWNINDEX);
+
+        Node node6_13Ref=node33.addNode(node43)
+                .addNode(node53)
+                .addNode(node54)
+                .addNode(node55)
+                .addNode(node56)
+                .addNode(node57)
+                .addNode(node47)
+                .addNode(node48)
+                .addNode(node49)
+                .addNode(node4_10)
+                .addNode(node5_10)
+                .addNode(node6_10)
+                .addNode(node6_11)
+                .addNode(node6_12)
+                .addNode(node6_13);
+
+
+        //join the two paths
+        node23.addNode(node33);
+
+
+
+        return new Path(new Pair<>(7,14),node10);
 
     }
 

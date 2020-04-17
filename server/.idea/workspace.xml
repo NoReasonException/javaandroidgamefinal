@@ -63,7 +63,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1587058978165</updated>
-      <workItem from="1587058982224" duration="10507000" />
+      <workItem from="1587058982224" duration="11133000" />
     </task>
     <servers />
   </component>
@@ -71,6 +71,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="278" y="945" width="802" height="674" key="#Plugins" timestamp="1587093256544">
+      <screen x="0" y="900" width="1366" height="768" />
+    </state>
+    <state x="278" y="945" width="802" height="674" key="#Plugins/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587093256544" />
     <state width="1320" height="185" key="GridCell.Tab.0.bottom" timestamp="1587070604593">
       <screen x="0" y="900" width="1366" height="768" />
     </state>
@@ -91,9 +95,9 @@
       <screen x="0" y="900" width="1366" height="768" />
     </state>
     <state x="0" y="900" width="704" height="768" key="find.popup/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587062426426" />
-    <state x="346" y="989" width="672" height="678" key="search.everywhere.popup" timestamp="1587062416143">
+    <state x="346" y="989" width="672" height="678" key="search.everywhere.popup" timestamp="1587093250048">
       <screen x="0" y="900" width="1366" height="768" />
     </state>
-    <state x="346" y="989" width="672" height="678" key="search.everywhere.popup/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587062416143" />
+    <state x="346" y="989" width="672" height="678" key="search.everywhere.popup/0.900.1366.768/0.0.1600.900@0.900.1366.768" timestamp="1587093250048" />
   </component>
 </project>
