@@ -28,6 +28,8 @@ import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.FireTower
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.portals.RedPortal;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.IceTower;
 import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.PoisonTower;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.StormTower;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.Tower;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.BulletSystem;
 import uk.ac.reading.sis05kol.engine.game.core.renderer.Renderer;
 import uk.ac.reading.sis05kol.engine.game.core.schenario.EasySchenario;
@@ -60,23 +62,27 @@ public class TheGame extends GameThread {
     private  View progressBackground;
     private ArrayList<View>lifes;
     private View timer;
+    private View moneyCounter;
+    private int hasPressedStart=0;
     private DifficultyLevel difficultyLevel = DifficultyLevel.NORMAL;
-    protected Function<Void,Void> selectTowerCallback;
+    protected Function<Function<Tower.TowerType,Void>,Void> selectTowerCallback;
 
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView,
                    View progressBackground,
                    ArrayList<View>lifes,
                    View timer,
+                   View moneyCounter,
                    View youLostContainer,
                    Fragment youLostFragment,
                    DifficultyLevel difficultyLevel,
-                   Function<Void,Void>selectTowerCallback) {
+                   Function<Function<Tower.TowerType,Void>,Void>selectTowerCallback) {
         //House keeping
         super(gameView,youLostContainer,youLostFragment);
         this.progressBackground=progressBackground;
         this.lifes=lifes;
         this.timer=timer;
+        this.moneyCounter=moneyCounter;
         this.difficultyLevel=difficultyLevel;
 
         this.selectTowerCallback=selectTowerCallback;
@@ -112,7 +118,7 @@ public class TheGame extends GameThread {
                 handler,
                 progressBackground,
                 lifes,
-                timer) {
+                timer,moneyCounter) {
             @Override
             public long getLifes() {
                 return getScore();
@@ -210,25 +216,66 @@ public class TheGame extends GameThread {
     //This is run whenever the phone is touched by the user
     @Override
     protected void actionOnTouch(float x, float y) {
-        if(renderer==null||map==null||mGameView==null)return;
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                selectTowerCallback.apply(null);
-                Position tilePosition=CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(new Position(
-                        Float.valueOf(x).intValue(),Float.valueOf(y).intValue()));
-                Position absolutePosition = CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(tilePosition);
-                absolutePosition=absolutePosition.addX(rendererInfo.getInitialPositionOfObjectOffset().first).addY(rendererInfo.getInitialPositionOfObjectOffset().second);
-                if(!path.existsInPath(tilePosition) && !map.existsObjectAtPosition(tilePosition)){
-                    Drawable d = new FireTower(mGameView.getContext(),levelInfo,absolutePosition,bulletSystem);
-                    map.setDrawableAtPosition(tilePosition,d);
-                    Log.i(loggerTag,"actionOnTouch added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition);
-                }else {
-                    Log.i(loggerTag,"actionOnTouch not added element ("+x+"-"+y+") tilePosition "+tilePosition+" to absolutePosition "+absolutePosition+" exists? "+map.getDrawableAtPosition(tilePosition));
-                }
+        if(getMode()!=STATE_RUNNING)return;
+        //TODO this is terrible , but is temponary workaround, i am exhausted, sorry future me (or dear reviewer)
+        if(hasPressedStart<5){
+            hasPressedStart+=1;
+            return;
+        }
+        if (renderer == null || map == null || mGameView == null) return;
 
-            }
-        });
+        Position tilePosition = CoordinateSystemUtils.getInstance().fromAbsoluteToTilePosition(new Position(
+                Float.valueOf(x).intValue(), Float.valueOf(y).intValue()));
+
+
+        if (!path.existsInPath(tilePosition) && !map.existsObjectAtPosition(tilePosition)) {
+
+            selectTowerCallback.apply(new Function<Tower.TowerType, Void>() {
+                @Override
+                public Void apply(Tower.TowerType input) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Position absolutePosition = CoordinateSystemUtils.getInstance().fromTileToAbsolutePosition(tilePosition);
+                            absolutePosition = absolutePosition.addX(rendererInfo.getInitialPositionOfObjectOffset().first).addY(rendererInfo.getInitialPositionOfObjectOffset().second);
+                            Tower tower;
+                            switch (input) {
+
+                                case FIRE:
+                                    tower = new FireTower(mGameView.getContext(), levelInfo, absolutePosition, bulletSystem);
+
+                                    break;
+                                case POISON:
+                                    tower = new PoisonTower(mGameView.getContext(), levelInfo, absolutePosition, bulletSystem);
+                                    break;
+                                case STORM:
+                                    tower = new StormTower(mGameView.getContext(), levelInfo, absolutePosition, bulletSystem);
+                                    break;
+                                case ICE:
+                                    tower = new IceTower(mGameView.getContext(), levelInfo, absolutePosition, bulletSystem);
+                                    break;
+
+                                default:
+                                    tower = new FireTower(mGameView.getContext(), levelInfo, absolutePosition, bulletSystem);
+
+                            }
+                            if(LifesSystem.getInstance().getMoney()>=tower.getCost()){
+                                LifesSystem.getInstance().removeMoney(tower.getCost());
+                                map.setDrawableAtPosition(tilePosition, tower);
+                            }
+
+
+                        }
+                    });
+                    return null;
+                }
+            });
+
+            Log.i(loggerTag, "actionOnTouch will add element (" + x + "-" + y + ") tilePosition " + tilePosition );
+        } else {
+            Log.i(loggerTag, "actionOnTouch will not added element (" + x + "-" + y + ") tilePosition " + tilePosition + " exists? " + map.getDrawableAtPosition(tilePosition));
+        }
+
 
     }
 

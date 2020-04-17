@@ -16,6 +16,6 @@ public class BlueGhost extends Ghost {
                         new DrawableAnimator(Element.GHOSTBLUEDOWN, context, levelInfo),
                         new DrawableAnimator(Element.GHOSTBLUEUP, context, levelInfo),
                         new DrawableAnimator(Element.GHOSTBLUERIGHT, context, levelInfo),
-                        new DrawableAnimator(Element.GHOSTBLUELEFT, context, levelInfo)),3);
+                        new DrawableAnimator(Element.GHOSTBLUELEFT, context, levelInfo)),3,1);
     }
 }

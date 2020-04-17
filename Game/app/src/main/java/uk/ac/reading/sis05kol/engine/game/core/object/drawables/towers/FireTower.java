@@ -26,6 +26,6 @@ public class FireTower extends Tower {
         super(context, Arrays.asList(
                 new DrawableAnimator(Element.FIREIDLE, context, levelInfo),
                 new DrawableAnimator(Element.FIREATTACK, context, levelInfo)
-        ), levelInfo, absolutePosition, bulletSystem,0.1);
+        ), levelInfo, absolutePosition, bulletSystem,0.1,2);
     }
 }

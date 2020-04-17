@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.core.util.Function;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,14 +19,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
 
 import uk.ac.reading.sis05kol.engine.R;
-import uk.ac.reading.sis05kol.engine.connectivity.ScoreServerDriver;
 import uk.ac.reading.sis05kol.engine.game.TheGame;
 import uk.ac.reading.sis05kol.engine.game.core.etc.DifficultyLevel;
-import uk.ac.reading.sis05kol.engine.menuanimators.MainMenuButtonAnimator;
+import uk.ac.reading.sis05kol.engine.game.core.object.drawables.towers.Tower;
 import uk.ac.reading.sis05kol.engine.menuanimators.VariableOpaqueButtonAnimator;
 
 public class GameActivity extends Activity {
@@ -43,8 +38,11 @@ public class GameActivity extends Activity {
     private View progressViewBackground;
     private ArrayList<View> progressViewlifes;
     private View progressViewtimer;
+    private View moneyCounter;
     private View fragmentView;
     private Handler handler=new Handler();
+
+    private boolean onTowerSelection=false;
 
     private DifficultyLevel difficultyLevel=DifficultyLevel.NORMAL;
 
@@ -83,6 +81,7 @@ public class GameActivity extends Activity {
         progressViewBackground=findViewById(R.id.timerbackground);
         progressViewlifes=new ArrayList<>(Arrays.asList(findViewById(R.id.life1),findViewById(R.id.life2),findViewById(R.id.life3)));
         progressViewtimer=findViewById(R.id.timer);
+        moneyCounter=findViewById(R.id.money);
         fragmentView=findViewById(R.id.youLostContainer);
 
 
@@ -106,6 +105,7 @@ public class GameActivity extends Activity {
                 progressViewBackground,
                 progressViewlifes,
                 progressViewtimer,
+                moneyCounter,
                 fragmentView,
                 getFragmentManager().findFragmentById(R.id.youLostContainer),
                 difficultyLevel,
@@ -182,70 +182,85 @@ public class GameActivity extends Activity {
     public void onNothingSelected(AdapterView<?> arg0) {
         // Do nothing if nothing is selected
     }
-    public Void selectTowerDialogStart(Void avoid){
+    public Void selectTowerDialogStart(Function<Tower.TowerType,Void>onTowerSelectionCallback){
         handler.post(new Runnable() {
             @Override
             public void run() {
-                LayoutInflater li = LayoutInflater.from(mGameView.getContext());
-                View view = li.inflate(R.layout.select_tower, null);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mGameView.getContext());
+                if(!onTowerSelection){
+                    onTowerSelection=true;
 
-                // set prompts.xml to alertdialog builder
-                alertDialogBuilder.setView(view);
+                    LayoutInflater li = LayoutInflater.from(mGameView.getContext());
+                    View view = li.inflate(R.layout.select_tower, null);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mGameView.getContext());
 
-                final EditText userInput = (EditText) view
-                        .findViewById(R.id.editTextDialogUserInput);
+                    // set prompts.xml to alertdialog builder
+                    alertDialogBuilder.setView(view);
 
-                View fireView=view.findViewById(R.id.fireTower);
-                View poisonView=view.findViewById(R.id.poisonTower);
-                View stormView=view.findViewById(R.id.stormTower);
-                View iceView=view.findViewById(R.id.iceTower);
+                    final EditText userInput = (EditText) view
+                            .findViewById(R.id.editTextDialogUserInput);
 
-                fireView.setOnTouchListener(new VariableOpaqueButtonAnimator(fireView, new Function<Void, Void>() {
-                    @Override
-                    public Void apply(Void input) {
-                        return null;
-                    }
-                }));
-                poisonView.setOnTouchListener(new VariableOpaqueButtonAnimator(fireView, new Function<Void, Void>() {
-                    @Override
-                    public Void apply(Void input) {
-                        return null;
-                    }
-                }));
-                stormView.setOnTouchListener(new VariableOpaqueButtonAnimator(fireView, new Function<Void, Void>() {
-                    @Override
-                    public Void apply(Void input) {
-                        return null;
-                    }
-                }));
-                iceView.setOnTouchListener(new VariableOpaqueButtonAnimator(fireView, new Function<Void, Void>() {
-                    @Override
-                    public Void apply(Void input) {
-                        return null;
-                    }
-                }));
+                    View fireView=view.findViewById(R.id.fireTower);
+                    View poisonView=view.findViewById(R.id.poisonTower);
+                    View stormView=view.findViewById(R.id.stormTower);
+                    View iceView=view.findViewById(R.id.iceTower);
 
 
-                // set dialog message
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
 
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                    // set dialog message
+                    alertDialogBuilder
+                            .setCancelable(false);
 
-                // show it
-                alertDialog.show();
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    fireView.setOnTouchListener(new VariableOpaqueButtonAnimator(fireView, new Function<Void, Void>() {
+                        @Override
+                        public Void apply(Void input) {
+                            onTowerSelectionCallback.apply(Tower.TowerType.FIRE);
+                            alertDialog.cancel();
+                            setOnTowerSelection(false);
+                            return null;
+                        }
+                    }));
+                    poisonView.setOnTouchListener(new VariableOpaqueButtonAnimator(fireView, new Function<Void, Void>() {
+                        @Override
+                        public Void apply(Void input) {
+                            onTowerSelectionCallback.apply(Tower.TowerType.POISON);
+                            alertDialog.cancel();
+                            setOnTowerSelection(false);
+                            return null;
+                        }
+                    }));
+                    stormView.setOnTouchListener(new VariableOpaqueButtonAnimator(fireView, new Function<Void, Void>() {
+                        @Override
+                        public Void apply(Void input) {
+                            onTowerSelectionCallback.apply(Tower.TowerType.STORM);
+                            alertDialog.cancel();
+                            setOnTowerSelection(false);
+                            return null;
+                        }
+                    }));
+                    iceView.setOnTouchListener(new VariableOpaqueButtonAnimator(fireView, new Function<Void, Void>() {
+                        @Override
+                        public Void apply(Void input) {
+                            onTowerSelectionCallback.apply(Tower.TowerType.ICE);
+                            alertDialog.cancel();
+                            setOnTowerSelection(false);
+                            return null;
+                        }
+                    }));
+                    // show it
+                    alertDialog.show();
+
+                }
+
 
             }
         });
         return null;
+    }
+
+    public void setOnTowerSelection(boolean onTowerSelection) {
+        this.onTowerSelection = onTowerSelection;
     }
 }
 

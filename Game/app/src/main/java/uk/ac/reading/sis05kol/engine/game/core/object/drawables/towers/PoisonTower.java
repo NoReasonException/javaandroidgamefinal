@@ -15,6 +15,6 @@ public class PoisonTower extends Tower {
         super(context, Arrays.asList(
                 new DrawableAnimator(Element.POISONIDLE, context, levelInfo),
                 new DrawableAnimator(Element.POISONATTACK, context, levelInfo)
-        ), levelInfo, absolutePosition, bulletSystem,0.4);
+        ), levelInfo, absolutePosition, bulletSystem,0.4,3);
     }
 }

@@ -16,7 +16,7 @@ public class GreenGhost extends Ghost {
                                 new DrawableAnimator(Element.GHOSTGREENDOWN, context, levelInfo),
                                 new DrawableAnimator(Element.GHOSTGREENUP, context, levelInfo),
                                 new DrawableAnimator(Element.GHOSTGREENRIGHT, context, levelInfo),
-                                new DrawableAnimator(Element.GHOSTGREENLEFT, context, levelInfo)),5);
+                                new DrawableAnimator(Element.GHOSTGREENLEFT, context, levelInfo)),5,5);
     }
 }
 

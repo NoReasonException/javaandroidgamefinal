@@ -24,6 +24,10 @@ import uk.ac.reading.sis05kol.engine.game.core.utils.CoordinateSystemUtils;
 import uk.ac.reading.sis05kol.engine.menuanimators.elements.Element;
 
 public class Tower extends Drawable {
+
+    public static enum TowerType{
+        FIRE,POISON,STORM,ICE;
+    }
     private static final int IDLEINDEX=0;
     private static final int ATTACKINDEX=1;
     private String loggerTAG  ="TOWER";
@@ -34,12 +38,18 @@ public class Tower extends Drawable {
     private int testMaxState=100;
 
     private BulletSystem bulletSystem;
+    private int cost;
 
-    public Tower(Context context,List<DrawableAnimator> animators, LevelInfo levelInfo, Position absolutePosition, BulletSystem bulletSystem,double difficulty) {
+    public Tower(Context context,List<DrawableAnimator> animators, LevelInfo levelInfo, Position absolutePosition, BulletSystem bulletSystem,double difficulty,int cost) {
         super(animators, absolutePosition);
         this.levelInfo=levelInfo;
         this.bulletSystem=bulletSystem;
         this.testMaxState=Double.valueOf(((1-difficulty)*testMaxState)).intValue();
+        this.cost=cost;
+    }
+
+    public int getCost() {
+        return cost;
     }
 
     private List<Position> getViewRange(int radius){

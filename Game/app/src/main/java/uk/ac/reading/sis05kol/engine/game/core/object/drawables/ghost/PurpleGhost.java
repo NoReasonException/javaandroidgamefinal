@@ -15,6 +15,6 @@ public class PurpleGhost extends Ghost {
                 new DrawableAnimator(Element.GHOSTPURPLEDOWN, context, levelInfo),
                 new DrawableAnimator(Element.GHOSTPURPLEUP, context, levelInfo),
                 new DrawableAnimator(Element.GHOSTPURPLERIGHT, context, levelInfo),
-                new DrawableAnimator(Element.GHOSTPURPLELEFT, context, levelInfo)),8);
+                new DrawableAnimator(Element.GHOSTPURPLELEFT, context, levelInfo)),8,12);
     }
 }

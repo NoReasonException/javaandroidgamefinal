@@ -18,8 +18,10 @@ abstract public class LifesSystem {
     private View background;
     private ArrayList<View>lifes;
     private View timer;
+    private View moneyCounter;
     private Handler mGameHandler;
     private int timerseconds=0;
+    private int money=20;
 
 
 
@@ -33,13 +35,15 @@ abstract public class LifesSystem {
        return instance;
     }
 
-    public LifesSystem(Handler mGameHandler,View background, ArrayList<View>lifes,View timer) {
+    public LifesSystem(Handler mGameHandler,View background, ArrayList<View>lifes,View timer,View moneyCounter) {
         this.mGameHandler=mGameHandler;
         this.background=background;
         this.lifes=lifes;
         this.timer=timer;
+        this.moneyCounter=moneyCounter;
         init();
         startTick();
+        updateMoneyCounter();
     }
     public void startTick(){
         tick=true;
@@ -60,6 +64,30 @@ abstract public class LifesSystem {
             }
         },1000);
     }
+
+    public void addMoney(int amount){
+        money+=amount;
+        updateMoneyCounter();
+
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void removeMoney(int amount){
+        money-=amount;
+        updateMoneyCounter();
+    }
+    public void updateMoneyCounter(){
+        mGameHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView)moneyCounter).setText(money+"£");
+            }
+        });
+    }
+
     public void updateClock(){
         timerseconds+=1;
         ((TextView)timer).setText(toTimerString(timerseconds));
@@ -91,7 +119,7 @@ abstract public class LifesSystem {
 
     public void looseLife(){
         setLifes(getLifes()-1);
-        if(getLifes()<200){//WARN FIXIT
+        if(getLifes()<200){//WARN FIXIT <0
             endTick();
             gameOverCallback().apply(this);
         }

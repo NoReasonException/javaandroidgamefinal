@@ -15,6 +15,6 @@ public class IceTower extends Tower {
         super(context, Arrays.asList(
                 new DrawableAnimator(Element.ICEIDLE, context, levelInfo),
                 new DrawableAnimator(Element.ICEATTACK, context, levelInfo)
-        ), levelInfo, absolutePosition, bulletSystem,0.8);
+        ), levelInfo, absolutePosition, bulletSystem,0.8,8);
     }
 }

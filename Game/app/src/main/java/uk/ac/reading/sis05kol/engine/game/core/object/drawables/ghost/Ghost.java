@@ -37,16 +37,18 @@ public class Ghost extends Drawable{
 
     private int ghostlifes;
     private int maxGhostlifes;//used to calculate alpha
+    private int earningsFromDeath;
 
     private Path.Node currentNode;
     private Path.Node nextNode;
     private ArrayList<Path.Node> visitedNodes=new ArrayList<>();
 
     private boolean toDestruct=false;
-    public Ghost(Context context, LevelInfo levelInfo, Position absolutePosition, List<DrawableAnimator> animators,int ghostlifes) {
+    public Ghost(Context context, LevelInfo levelInfo, Position absolutePosition, List<DrawableAnimator> animators,int ghostlifes,int earningsFromDeath) {
         super(animators,absolutePosition);
         this.ghostlifes =ghostlifes;
         this.maxGhostlifes=ghostlifes;
+        this.earningsFromDeath=earningsFromDeath;
     }
     @Override
     public Pair<Bitmap, Paint> getBitmap() {
@@ -144,6 +146,7 @@ public class Ghost extends Drawable{
                 else{//is a bullet //TODO sometimes just losses life without reason , maybe the collision system has some bug?
                     ghostlifes-=1;
                     if(ghostlifes<0){
+                        LifesSystem.getInstance().addMoney(earningsFromDeath);
                         setToDestruct(true);
                     }
                     Log.i(loggerTag+".getOnCollisionHandler","Ghost at position "+absolutePosition.toString()+" was hit by a bullet");

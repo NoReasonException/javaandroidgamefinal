@@ -15,6 +15,6 @@ public class RedGhost extends Ghost {
                 new DrawableAnimator(Element.GHOSTREDDOWN, context, levelInfo),
                 new DrawableAnimator(Element.GHOSTREDUP, context, levelInfo),
                 new DrawableAnimator(Element.GHOSTREDRIGHT, context, levelInfo),
-                new DrawableAnimator(Element.GHOSTREDLEFT, context, levelInfo)),6);
+                new DrawableAnimator(Element.GHOSTREDLEFT, context, levelInfo)),6,10);
     }
 }

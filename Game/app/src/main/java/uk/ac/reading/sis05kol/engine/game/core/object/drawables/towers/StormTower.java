@@ -15,6 +15,6 @@ public class StormTower extends Tower {
         super(context, Arrays.asList(
                 new DrawableAnimator(Element.STORMIDLE, context, levelInfo),
                 new DrawableAnimator(Element.STORMIDLE, context, levelInfo)
-        ), levelInfo, absolutePosition, bulletSystem,0.6);
+        ), levelInfo, absolutePosition, bulletSystem,0.6,4);
     }
 }

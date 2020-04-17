@@ -215,7 +215,7 @@ public abstract class GameThread extends Thread {
 	 */
 	public void pause() {
 		synchronized (monitor) {
-			if (mMode == STATE_RUNNING) setState(STATE_PAUSE);
+			//if (mMode == STATE_RUNNING) setState(STATE_PAUSE);
 		}
 	}
 	
@@ -247,6 +247,7 @@ public abstract class GameThread extends Thread {
 				});
 			}
 			else{
+
 				mHandler.post(new Runnable() {
 					@Override
 					public void run() {
